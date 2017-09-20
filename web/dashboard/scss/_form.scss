@@ -1,0 +1,82 @@
+@import "variables";
+@import "mixins";
+
+form.form {
+  padding: $app-base-padding;
+  width: 100%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .17);
+  background-color: white;
+  border-radius: 3px;
+  max-width: $app-form-max-width;
+
+  @include box-sizing();
+
+  .form-group {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin-bottom: $app-base-padding;
+
+    @include box-sizing();
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .label {
+      display: block;
+      width: $app-form-label-width;
+      flex-grow: 0;
+      flex-shrink: 0;
+      text-align: right;
+      padding-right: $app-base-padding;
+
+      @include box-sizing();
+    }
+
+    .input-wrapper {
+      width: 100%;
+
+      .input-container {
+        width: 100%;
+
+        &[data-required] {
+          position: relative;
+
+          &::after {
+            content: "";
+            position: absolute;
+            display: block;
+            width:  4px;
+            height: 4px;
+            border-radius: 10px;
+            background-color: $app-blue-color;
+            box-shadow: 0 0 0 4px lighten($app-blue-color, 32%);
+
+            top: 50%;
+            margin-top: -2px;
+            right: $app-base-padding * 0.75;
+          }
+        }
+
+        input[type="text"] {
+          display: block;
+          padding: $app-base-padding * 0.75;
+          // 4px - required indicator width
+          padding-right: $app-base-padding * 0.75 * 2 + 4px;
+          border-radius: 3px;
+          outline: none;
+          width: 100%;
+          border: 1px solid $app-form-border-gray-color;
+          transition: 0.1s border;
+
+          @include box-sizing();
+
+          &:focus {
+            border-color: $app-blue-color;
+          }
+        }
+      }
+    }
+  }
+}

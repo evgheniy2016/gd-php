@@ -1,0 +1,19 @@
+@import "variables";
+@import "mixins";
+
+.app-content-wrapper {
+
+  background-color: rgba(0, 0, 0, .03);
+  position: relative;
+  z-index: $app-base-z-index;
+  overflow-y: scroll;
+
+  @include box-sizing();
+
+  .app-content {
+    padding: $app-base-padding;
+
+    @include box-sizing();
+  }
+
+}

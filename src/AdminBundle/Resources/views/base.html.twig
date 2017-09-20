@@ -1,0 +1,50 @@
+<html>
+<head>
+    <title>Dashboard - {% block title %}Empty{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="grid app-page-wrapper">
+        <div class="col app-sidebar-wrapper">
+            <div class="app-header">
+                <a href="javascript:" class="item static-item uppercase bold">Dashboard</a>
+            </div>
+            <div class="app-sidebar">
+                <a href="{{ path('administrators.index') }}" {% if sidebarService.getCurrentRoute starts with 'administrators' %}class="active"{% endif %} data-icon="supervisor_account" data-badge="99+">Администраторы</a>
+                <a href="{{ path('users.index') }}" {% if sidebarService.getCurrentRoute starts with 'users' %}class="active"{% endif %} data-icon="person" data-badge="10">Пользователи</a>
+                <a href="{{ path('bets.index') }}" {% if sidebarService.getCurrentRoute starts with 'bets' %}class="active"{% endif %} data-icon="attach_money">Ставки</a>
+                <a href="{{ path('pages.index') }}" {% if sidebarService.getCurrentRoute starts with 'pages' %}class="active"{% endif %} data-icon="insert_drive_file" data-badge="150">Статические страницы</a>
+            </div>
+        </div>
+        <div class="col app-content-wrapper">
+            <div class="app-header no-left-padding">
+                <div class="search-block">
+                    <form action="#">
+                        <input type="text" class="global-search-field" placeholder="Enter something" />
+                    </form>
+                </div>
+                <div class="pull-right">
+                    <a href="{{ path('logout') }}" class="item">logout</a>
+                    <a href="javascript:" class="item static-item no-background">{{ app.user.username }}</a>
+                </div>
+            </div>
+            <div class="app-content">
+                {% block body %}
+                    <div class="alert alert-compact card" data-icon="warning">
+                        <div class="alert-title h1">Empty page</div>
+                        <div class="alert-content">
+                            <div class="h4">Page content not implemented</div>
+                        </div>
+                        <div class="alert-footer links-list">
+                            <a href="{{  app.request.headers.get('referer') }}">Go back</a>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('dist/dashboard.bundle.js') }}"></script>
+</body>
+</html>

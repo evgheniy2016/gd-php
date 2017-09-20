@@ -1,0 +1,98 @@
+@import "variables";
+@import "mixins";
+
+.app-header {
+  background-color: $app-blue-color;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-left: $app-base-padding;
+  padding-right: $app-base-padding;
+  min-height: 52.5px;
+
+  @include box-sizing();
+
+  &.no-left-padding {
+    padding-left: 0;
+  }
+
+  &.no-right-padding {
+    padding-right: 0;
+  }
+
+  .pull-right {
+    display: flex;
+  }
+
+  .item {
+    display: inline-block;
+    padding: $app-base-padding * 0.5;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+
+    margin-left:  $app-base-padding / 2;
+    margin-right: $app-base-padding / 2;
+
+    @include box-sizing();
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    &.no-background {
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, .1);
+    }
+
+    &.static-item {
+
+      cursor: default;
+
+      @include user-select();
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  .search-block {
+    padding: $app-base-padding / 2 $app-base-padding;
+    width: 100%;
+
+    @include box-sizing();
+
+    form {
+      
+      .global-search-field {
+        display: block;
+        border: none;
+        padding: $app-base-padding * 0.75 $app-base-padding;
+        outline: none;
+        border-radius: 3px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, .05);
+        max-width: 400px;
+        min-width: 150px;
+        width: 100%;
+        transition: 0.2s box-shadow;
+
+        @include box-sizing();
+        @include user-select();
+
+        &:focus {
+          box-shadow: 0 3px 9px rgba(0, 0, 0, .2);
+        }
+      }
+    }
+  }
+}

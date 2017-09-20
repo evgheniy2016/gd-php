@@ -1,0 +1,42 @@
+@import "variables";
+@import "mixins";
+
+.table {
+  width: 100%;
+  background-color: $app-white-color;
+
+  thead tr th {
+    text-align: left;
+    text-transform: uppercase;
+    background-color: rgba(0, 0, 0, .015);
+    color: rgba(0, 0, 0, .7);
+  }
+  
+  thead tr th, tbody tr td, tfoot tr td {
+    padding: $app-base-padding;
+    vertical-align: middle;
+
+    @include box-sizing();
+
+    &.labels-list, &.contains-button {
+      padding: 0;
+    }
+
+    &.contains-button {
+      padding-right: $app-base-padding;
+    }
+    
+    &.pull-right {
+      text-align: right;
+    }
+  }
+
+  tbody tr td {
+    border-bottom: 1px solid rgba(0, 0, 0, .03);
+  }
+
+  tbody tr:last-of-type td {
+    border-bottom: none;
+  }
+
+}

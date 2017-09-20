@@ -1,0 +1,29 @@
+{% extends "@Admin/base.html.twig" %}
+
+{% block title %}AdminBundle:Administrator:index{% endblock %}
+
+{% block body %}
+    <table class="table card">
+        <thead>
+        <tr>
+            <th width="75">id</th>
+            <th width="300">username</th>
+            <th>promocodes</th>
+            <th class="pull-right contains-button">
+                <a href="{{ path('administrators.create') }}" class="button button-small">create</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for administrator in administrators %}
+        <tr>
+            <td>{{ administrator.id }}</td>
+            <td>{{ administrator.username }}</td>
+            <td class="labels-list" colspan="2">
+                {% for code in administrator.promoCodes %}<a href="javascript:" class="text-label text-label-top-offset text-lТabel-bottom-offset" data-badge="{{ code.users | length }}">{{ code.code }}</a> {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

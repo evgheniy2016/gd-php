@@ -1,0 +1,43 @@
+{% block form_start %}
+    {% do form.setMethodRendered() %}
+    {% set method = method|upper %}
+    {% if method in ["GET", "POST"] %}
+        {% set form_method = method %}
+    {% else %}
+        {% set form_method = "POST" %}
+    {% endif %}
+    <form name="{{ name }}" method="{{ form_method|lower }}"{% if action != '' %} action="{{ action }}"{% endif %}{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %} class="form">
+    {% if form_method != method %}
+        <input type="hidden" name="_method" value="{{ method }}" />
+    {% endif -%}
+{% endblock form_start %}
+
+{%- block form_end -%}
+    {%- if not render_rest is defined or render_rest -%}
+        {{ form_rest(form) }}
+    {%- endif -%}
+    </form>
+{%- endblock form_end -%}
+
+{% block form_row %}
+    <div class="form-group">
+        <div class="label">{{ form_label(form) }}</div>
+        <div class="input-wrapper">
+            <div class="input-container" {% if required %} data-required="data-required" {% endif %}>{{ form_widget(form) }}</div>
+        </div>
+    </div>
+{% endblock form_row %}
+
+{% block form_error %}
+    {% spaceless %}
+    {% if errors|length > 0 %}
+        <div class="errors">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% endspaceless %}
+{% endblock %}

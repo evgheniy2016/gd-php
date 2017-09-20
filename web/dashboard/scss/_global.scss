@@ -1,0 +1,19 @@
+@import "variables";
+@import "mixins";
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+.app-page-wrapper {
+  height: 100vh;
+}
+
+a {
+  color: $app-blue-color;
+
+  &:hover {
+    color: $app-blue-darken-color;
+  }
+}

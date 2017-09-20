@@ -10,4 +10,24 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findByRole($role)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.roles like :role')
+            ->orderBy('u.id', 'desc')
+            ->setParameter('role', "%{$role}%");
+    }
+
+    public function paginateByRole($role, $take, $page = 1)
+    {
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        return $this->findByRole($role)
+            ->setFirstResult($take * ($page - 1))
+            ->setMaxResults($take);
+    }
+
 }

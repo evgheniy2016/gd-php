@@ -1,0 +1,36 @@
+@import "variables";
+@import "mixins";
+
+.button {
+  display: inline-block;
+
+  padding: $app-base-padding * 0.75 $app-base-padding;
+  text-decoration: none;
+  color: white;
+  border-radius: 3px;
+  background-color: $app-blue-color;
+  transition: 0.2s box-shadow, 0.2s background-color;
+
+  text-transform: none;
+
+  @include user-select();
+  @include box-sizing();
+
+  &:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .1);
+    background-color: lighten($app-blue-darken-color, 5%);
+    color: $app-white-color;
+  }
+
+  &.button-danger {
+    background-color: $app-red-color;
+
+    &:hover {
+      background-color: lighten($app-red-darken-color, 5%);
+    }
+  }
+
+  &.button-small {
+    padding: $app-base-padding * 0.5 $app-base-padding * 0.75;
+  }
+}

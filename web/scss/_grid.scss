@@ -1,0 +1,17 @@
+@import "variables";
+@import "mixins";
+
+.grid {
+  display: flex;
+  width: 100%;
+
+  & > * {
+    width: 100%;
+
+    @include box-sizing();
+
+    &.pull-right {
+      margin-left: auto;
+    }
+  }
+}

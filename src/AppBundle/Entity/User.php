@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -50,6 +52,24 @@ class User implements UserInterface
      */
     private $roles;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\PromoCode", mappedBy="author")
+     */
+    private $promoCodes;
+
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PromoCode", inversedBy="users")
+     */
+    private $promoCode;
+
+    public function __construct()
+    {
+        $this->promoCodes = null;
+    }
 
     /**
      * Get id
@@ -158,6 +178,40 @@ class User implements UserInterface
     }
 
     /**
+     * Get promo codes
+     *
+     * @return ArrayCollection
+     */
+    public function getPromoCodes()
+    {
+        return $this->promoCodes;
+    }
+
+    /**
+     * Set promo code
+     *
+     * @param PromoCode $promoCode
+     *
+     * @return User
+     */
+    public function setPromoCode(PromoCode $promoCode)
+    {
+        $this->promoCode = $promoCode;
+
+        return $this;
+    }
+
+    /**
+     * Get promo code
+     *
+     * @return string
+     */
+    public function getPromoCode()
+    {
+        return $this->promoCode;
+    }
+
+    /**
      * Returns the salt that was originally used to encode the password.
      *
      * This can return null if the password was not encoded using a salt.
@@ -178,6 +232,14 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getPromoCodesAsStringList()
+    {
+        $promoCodes = $this->promoCodes->map(function (PromoCode $promoCode) {
+            return $promoCode->getCode();
+        })->toArray();
+        return implode(' ', $promoCodes);
     }
 
 }

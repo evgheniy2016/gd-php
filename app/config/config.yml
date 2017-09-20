@@ -38,6 +38,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        sidebarService: '@AdminBundle\Service\SidebarService'
 
 # Doctrine Configuration
 doctrine:

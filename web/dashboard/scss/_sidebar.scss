@@ -1,0 +1,80 @@
+@import "variables";
+
+.app-sidebar-wrapper {
+  width: $app-sidebar-width;
+
+  flex-grow: 0;
+  flex-shrink: 0;
+  box-shadow: 0 0 25px rgba(0, 0, 0, .07);
+  position: relative;
+  z-index: $app-sidebar-z-index;
+  background-color: white;
+
+  @include box-sizing();
+
+  .app-sidebar {
+    padding-top: $app-base-padding;
+
+    @include box-sizing();
+
+    a {
+      display: block;
+      padding: $app-base-padding $app-base-padding * 2 + 22px;
+      color: $app-gray-color;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+
+      @include box-sizing();
+
+      &:hover, &.active {
+        background-color: rgba(0, 0, 0, .05);
+      }
+
+      &.active {
+        color: darken($app-blue-color, 10%);
+
+        &[data-badge] {
+          &::after {
+            background-color: $app-blue-color;
+          }
+        }
+      }
+
+      &[data-icon], &[data-badge] {
+        position: relative;
+      }
+
+      &[data-icon] {
+        &::before {
+          position: absolute;
+          content: attr(data-icon);
+          font-size: 16px;
+          font-family: 'Material Icons', sans-serif;
+          top:  50%;
+          margin-top: -9px;
+          left: $app-base-padding * 1.25;
+        }
+      }
+
+      &[data-badge] {
+        &::after {
+          position: absolute;
+          content: attr(data-badge);
+          top: 50%;
+          margin-top: -(22px / 2);
+          right: $app-base-padding;
+          font-size: 10px;
+          padding: 7px 7px 5px 6px;
+          border-radius: 15px;
+          background-color: lighten($app-gray-color, 25%);
+          color: white;
+          display: block;
+          line-height: 10px;
+
+          @include box-sizing();
+        }
+      }
+    }
+  }
+}
