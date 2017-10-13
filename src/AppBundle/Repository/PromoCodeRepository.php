@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class PromoCodeRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function paginate($page, $take = 15)
+    {
+        return $this
+            ->createQueryBuilder('promo_code')
+            ->orderBy('promo_code.id', 'desc');
+    }
+
 }

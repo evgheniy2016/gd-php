@@ -8,6 +8,8 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    pagination:
+      take: 15
 
 framework:
     #esi: ~
@@ -44,13 +46,13 @@ twig:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver: pdo_sqlite
-        #host: '%database_host%'
-        #port: '%database_port%'
-        #dbname: '%database_name%'
-        #user: '%database_user%'
-        #password: '%database_password%'
-        path: '%database_path%'
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+#        path: '%database_path%'
         charset: UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml

@@ -12,3 +12,11 @@
 @import "table";
 @import "label";
 @import "form";
+@import "pagination";
+
+@import "tabs";
+
+// Pages:
+
+@import "pages/users_trades";
+@import "pages/users_balance";

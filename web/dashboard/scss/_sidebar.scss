@@ -20,7 +20,7 @@
     a {
       display: block;
       padding: $app-base-padding $app-base-padding * 2 + 22px;
-      color: $app-gray-color;
+      color: lighten($app-gray-color, 20%);
       text-decoration: none;
       font-size: 14px;
       font-weight: 500;
@@ -32,11 +32,11 @@
       }
 
       &.active {
-        color: darken($app-blue-color, 10%);
+        color: $app-gray-color;
 
         &[data-badge] {
           &::after {
-            background-color: $app-blue-color;
+            background-color: $app-gray-color;
           }
         }
       }

@@ -66,9 +66,38 @@ class User implements UserInterface
      */
     private $promoCode;
 
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BalanceHistory", mappedBy="user")
+     * @ORM\OrderBy({"id": "desc"})
+     */
+    private $balanceHistory;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="balance", type="decimal", precision=10, scale=0)
+     */
+    private $balance = 0;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Trade", mappedBy="user")
+     */
+    private $trades;
+
+    /**
+     * @var string
+     */
+    private $updatedPassword = null;
+
     public function __construct()
     {
         $this->promoCodes = null;
+        $this->balanceHistory = new ArrayCollection();
+        $this->trades = new ArrayCollection();
     }
 
     /**
@@ -240,6 +269,77 @@ class User implements UserInterface
             return $promoCode->getCode();
         })->toArray();
         return implode(' ', $promoCodes);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getBalanceHistory(): Collection
+    {
+        return $this->balanceHistory;
+    }
+
+    /**
+     * @param Collection $balanceHistory
+     */
+    public function setBalanceHistory(Collection $balanceHistory)
+    {
+        $this->balanceHistory = $balanceHistory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBalance(): string
+    {
+        return $this->balance;
+    }
+
+    /**
+     * @param string $balance
+     */
+    public function setBalance(string $balance)
+    {
+        $this->balance = $balance;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getTrades(): Collection
+    {
+        return $this->trades;
+    }
+
+    /**
+     * @param Collection $trades
+     */
+    public function setTrades(Collection $trades)
+    {
+        $this->trades = $trades;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdatedPassword(): string
+    {
+        return $this->updatedPassword ?? '';
+    }
+
+    /**
+     * @param string $updatedPassword
+     */
+    public function setUpdatedPassword(string $updatedPassword)
+    {
+        $this->updatedPassword = $updatedPassword;
+    }
+
+    public function __toString()
+    {
+        $username = $this->username;
+        $email = $this->email;
+        return "${username} (${email})";
     }
 
 }

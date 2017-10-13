@@ -3,5 +3,27 @@
 {% block title %}AdminBundle:User:index{% endblock %}
 
 {% block body %}
-<h1>Welcome to the User:index page</h1>
+
+    <table class="table card">
+        <thead>
+        <tr>
+            <th width="75">id</th>
+            <th width="300">username</th>
+            <th>promocode</th>
+            <th class="pull-right contains-button">
+                <a href="{{ path('users.create') }}" class="button button-small">create</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td><a href="{{ path('users.edit', { id: user.id }) }}">{{ user.username }}</a></td>
+            <td colspan="2">{{ user.promocode }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}

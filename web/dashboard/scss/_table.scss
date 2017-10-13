@@ -29,10 +29,23 @@
     &.pull-right {
       text-align: right;
     }
+
+    &.no-paddings {
+      padding: 0;
+    }
   }
 
   tbody tr td {
     border-bottom: 1px solid rgba(0, 0, 0, .03);
+  }
+
+  tbody tr {
+    &.highlight-row-as-error {
+      td {
+        background-color: rgba(255, 113, 97, 0.56);
+        //color: white;
+      }
+    }
   }
 
   tbody tr:last-of-type td {

@@ -1,0 +1,24 @@
+{% extends '@Admin/base.html.twig' %}
+
+{% block body_classes "no-paddings" %}
+{% block title "Show user" %}
+
+{% block body %}
+
+    <div class="tabs-container">
+        <div class="tabs-navigation-header">
+            <h3>{{ user.username }}<small class="new-line with-offset">{{ user.email }}</small></h3>
+        </div>
+        <div class="tabs-navigation">
+            <a href="{{ path('users.edit', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.edit' %}active{% endif %}">Infromation</a>
+            <a href="{{ path('users.show.trades', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.show.trades' %}active{% endif %}">Trades</a>
+            <a href="{{ path('users.show.balance', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.show.balance' %}active{% endif %}">Balance</a>
+        </div>
+        <div class="tabs-content {% block tabs_content_classes %}{% endblock %}">
+            {% block show_user_content %}
+                <h3>Please, select a page</h3>
+            {% endblock %}
+        </div>
+    </div>
+
+{% endblock %}

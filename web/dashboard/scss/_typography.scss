@@ -12,6 +12,10 @@ h1, h2, h3, h4, h5, h6 {
 
     &.new-line {
       display: block;
+
+      &.with-offset {
+        margin-top: $app-base-padding / 2;
+      }
     }
   }
 }

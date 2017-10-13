@@ -1,0 +1,21 @@
+{% extends '@Admin/base.html.twig' %}
+
+{% block title "Creating a page" %}
+
+{% block body %}
+
+    {% form_theme create_form '@Admin/form.html.twig' %}
+
+    {{ form(create_form) }}
+
+{% endblock %}
+
+{% block styles %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+{% endblock %}

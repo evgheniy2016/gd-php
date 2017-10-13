@@ -14,6 +14,10 @@
     padding: $app-base-padding;
 
     @include box-sizing();
+
+    &.no-paddings {
+      padding: 0;
+    }
   }
 
 }

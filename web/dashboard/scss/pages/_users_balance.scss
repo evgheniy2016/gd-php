@@ -1,0 +1,19 @@
+@import "../variables";
+@import "../mixins";
+
+.balance-history-type {
+  font-weight: bold;
+  color: rgba(0, 0, 0, .8);
+
+  & > .type-income {
+    color: $app-green-color;
+  }
+
+  & > .type-bonus {
+    color: $app-orange-color;
+  }
+
+  & > .type-outgoing {
+    color: $app-pomegranate-color;
+  }
+}

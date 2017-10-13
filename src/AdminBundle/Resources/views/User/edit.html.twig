@@ -1,0 +1,11 @@
+{% extends '@Admin/User/show.html.twig' %}
+
+{% block title "Creating an user" %}
+
+{% block show_user_content %}
+
+    {% form_theme edit_form '@Admin/form.html.twig' %}
+
+    {{ form(edit_form) }}
+
+{% endblock %}

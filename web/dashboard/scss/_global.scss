@@ -17,3 +17,11 @@ a {
     color: $app-blue-darken-color;
   }
 }
+
+.offset-bottom {
+  margin-bottom: $app-base-padding;
+}
+
+.offset-top {
+  margin-top: $app-base-padding;
+}

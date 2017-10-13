@@ -23,6 +23,38 @@ form.form {
       margin-bottom: 0;
     }
 
+    &[data-label-position="top"] {
+      align-items: flex-start;
+
+      .input-wrapper {
+        .input-container {
+          &[data-required] {
+            &::after {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+
+    &.no-top-offset {
+      .input-wrapper {
+        .buttons-list {
+          margin-top: 0;
+        }
+      }
+    }
+
+    &.no-label {
+      & > .label {
+        display: none;
+      }
+
+      .input-wrapper {
+        margin-left: $app-form-label-width;
+      }
+    }
+
     .label {
       display: block;
       width: $app-form-label-width;
@@ -36,6 +68,10 @@ form.form {
 
     .input-wrapper {
       width: 100%;
+
+      .buttons-list {
+        margin-top: $app-base-padding;
+      }
 
       .input-container {
         width: 100%;
@@ -59,7 +95,18 @@ form.form {
           }
         }
 
-        input[type="text"] {
+        & .form-group {
+          & > .label {
+            width: 150px;
+            text-align: left;
+          }
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        select {
+          background-color: white;
           display: block;
           padding: $app-base-padding * 0.75;
           // 4px - required indicator width
@@ -76,6 +123,62 @@ form.form {
             border-color: $app-blue-color;
           }
         }
+
+        /* CHOICE */
+        .choice-expanded {
+          .choice-widget {
+            display: flex;
+            align-items: center;
+            margin-bottom: $app-base-padding / 2;
+
+            &:last-of-type {
+              margin-bottom: 0;
+            }
+
+            label, .checkbox-container {
+              cursor: pointer;
+            }
+          }
+        }
+        /* END CHOICE */
+
+        /* CHECKBOXES */
+        .checkbox-container {
+          input[type="checkbox"] {
+            display: none;
+
+            &:checked + .checkbox-placeholder {
+              &::after {
+                content: 'check';
+                font-family: 'Material Icons', sans-serif;
+                color: $app-blue-color;
+                font-size: 18px;
+                display: block;
+                width:  12px;
+                height: 12px;
+                position: absolute;
+                top:  0px;
+                left: 0px;
+                //background-color: $app-blue-color;
+                font-weight:bold;
+              }
+            }
+          }
+
+          .checkbox-placeholder {
+            width:  22px;
+            height: 22px;
+            display: block;
+            margin-right: $app-base-padding / 2;
+
+            //border-radius: 3px;
+            border: 2px solid $app-blue-color;
+            position: relative;
+
+            @include box-sizing();
+          }
+        }
+        /* END CHECKBOXES */
       }
     }
   }

@@ -2,13 +2,16 @@
 @import "mixins";
 
 .app-header {
-  background-color: $app-blue-color;
   display: flex;
   align-items: center;
   width: 100%;
   padding-left: $app-base-padding;
   padding-right: $app-base-padding;
   min-height: 52.5px;
+
+  //background-image: linear-gradient(to bottom, #434343 0%, black 100%);
+
+  background-color: rgba(0, 0, 0, .8);
 
   @include box-sizing();
 

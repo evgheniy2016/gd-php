@@ -18,7 +18,7 @@
         {% for administrator in administrators %}
         <tr>
             <td>{{ administrator.id }}</td>
-            <td>{{ administrator.username }}</td>
+            <td><a href="{{ path('administrators.edit', {id: administrator.id}) }}">{{ administrator.username }}</a></td>
             <td class="labels-list" colspan="2">
                 {% for code in administrator.promoCodes %}<a href="javascript:" class="text-label text-label-top-offset text-lТabel-bottom-offset" data-badge="{{ code.users | length }}">{{ code.code }}</a> {% endfor %}
             </td>

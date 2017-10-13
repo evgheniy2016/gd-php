@@ -1,0 +1,25 @@
+{% extends '@Admin/User/show.html.twig' %}
+
+{% block show_user_content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th width="175">type</th>
+            <th>amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for balance_history in history %}
+        <tr>
+            <td>{{ balance_history.type }}</td>
+            <td><span class="balance-history-type"><span class="type-{{ balance_history.type }}">{{ balance_history.amount }}</span>&nbsp;{{ currency }}</span></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination with-top-offset with-left-offset with-right-offset">
+        <a href="javascript:" class="pagination-item navigate-backward">backward</a>
+        <a href="javascript:" class="pagination-item navigate-forward disabled">forward</a>
+    </div>
+{% endblock %}

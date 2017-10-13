@@ -1,0 +1,62 @@
+@import "variables";
+@import "mixins";
+
+.tabs-container {
+  width: 100%;
+
+  .tabs-navigation-header {
+    padding: $app-base-padding;
+
+    @include box-sizing();
+  }
+
+  .tabs-navigation {
+    display: flex;
+    align-items: flex-start;
+    padding-left:  $app-base-padding;
+    padding-right: $app-base-padding;
+
+    @include box-sizing();
+
+    .tab-item {
+      padding: $app-base-padding;
+      position: relative;
+      z-index: $app-base-z-index - 1;
+      text-decoration: none;
+
+      @include box-sizing();
+
+      border-top: 2px solid transparent;
+
+      &.active {
+        z-index: $app-base-z-index + 1;
+        background-color: white;
+        border-top: 2px solid $app-blue-color;
+      }
+    }
+  }
+
+  .tabs-content {
+    padding: $app-base-padding;
+    background-color: white;
+
+    position: relative;
+    z-index: $app-base-z-index;
+    border-radius: 3px;
+
+    @include box-sizing();
+
+    & > form {
+      box-shadow: none;
+      padding: 0;
+    }
+
+    & > table {
+      &.table {
+        thead tr th {
+          background-color: $app-white-color;
+        }
+      }
+    }
+  }
+}

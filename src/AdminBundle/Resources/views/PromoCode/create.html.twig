@@ -1,0 +1,11 @@
+{% extends "@Admin/base.html.twig" %}
+
+{% block title %}AdminBundle:PromoCode:create{% endblock %}
+
+{% block body %}
+
+    {% form_theme create_form '@Admin/form.html.twig' %}
+
+    {{ form(create_form) }}
+
+{% endblock %}

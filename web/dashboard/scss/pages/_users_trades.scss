@@ -1,0 +1,35 @@
+@import "../variables";
+@import "../mixins";
+
+.table {
+  thead tr th, tbody tr td, tfoot tr td {
+    &.set-trade-result-buttons {
+
+      padding-right: $app-base-padding;
+
+      .trade-result-buttons-container {
+        display: flex;
+        justify-content: flex-end;
+
+        & > a {
+          color: $app-black-color;
+          display: inline-block;
+
+          padding: $app-base-padding / 4;
+          border-radius: 3px;
+
+          @include box-sizing();
+
+          &:first-of-type {
+            margin-right: $app-base-padding / 2;
+          }
+
+          &:hover {
+            color: $app-white-color;
+            background-color: rgba(0, 0, 0, .7);
+          }
+        }
+      }
+    }
+  }
+}

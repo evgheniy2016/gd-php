@@ -91,7 +91,7 @@ class PromoCode
     /**
      * @return User
      */
-    public function getUser()
+    public function getAuthor()
     {
         return $this->author;
     }
@@ -100,7 +100,7 @@ class PromoCode
      * @param User $user
      * @return $this
      */
-    public function setUser(User $user)
+    public function setAuthor(User $user)
     {
         $this->author = $user;
 

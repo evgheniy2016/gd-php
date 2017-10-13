@@ -1,0 +1,32 @@
+{% extends "@Admin/base.html.twig" %}
+
+{% block title %}AdminBundle:PromoCode:index{% endblock %}
+
+{% block body %}
+
+    <table class="table card">
+        <thead>
+        <tr>
+            <th width="75">id</th>
+            <th width="250">promocode</th>
+            <th>administrator</th>
+            <th width="100">users</th>
+            <th class="pull-right" width="100"><a href="{{ path('promo_code.create') }}">create</a></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for promocode in promocodes %}
+        <tr>
+            <td>{{ promocode.id }}</td>
+            <td>{{ promocode.code }}</td>
+            <td><a href="{{ path('administrators.edit', { id: promocode.author.id }) }}">{{ promocode.author.username }}</a></td>
+            <td>{{ promocode.users.count }}</td>
+            <td class="pull-right">
+                <a href="{{ path('promo_code.delete', { id: promocode.id }) }}">delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

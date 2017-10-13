@@ -16,6 +16,8 @@
   margin-left: 10px;
   transition: 0.15s background-color, 0.15s box-shadow;
 
+  background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+
   @include box-sizing();
 
   &:hover {
