@@ -29,6 +29,16 @@
     </div>
 {% endblock %}
 
+{% block _appbundle_page_save_widget %}
+    <div class="form-group no-label no-top-offset">
+        <div class="input-wrapper">
+            <div class="buttons-list">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block _appbundle_user_delete_widget %}
     <div class="form-group no-label no-top-offset">
         <div class="input-wrapper">
@@ -55,14 +65,22 @@
     </div>
 {% endblock %}
 
+{% block markdown_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
 {% block markdown_widget %}
     {{ form_widget(form) }}
-
     <script>
         window.addEventListener('load', function () {
-            console.log('test');
-            var simplemde = new SimpleMDE();
-            console.log(simplemde);
+            var simplemde = new SimpleMDE({
+                spellChecker: false
+            });
+            simplemde.codemirror.on('change', function () {
+                document.querySelector('#{{ id }}_markdown').value = this.simplemde.value();
+            }.bind({
+                simplemde: simplemde
+            }));
         });
     </script>
 {% endblock %}

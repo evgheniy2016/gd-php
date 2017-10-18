@@ -21,4 +21,14 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ]);
     }
+
+    /**
+     * @Route("/foo")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function fooAction()
+    {
+        return $this->render('test.html.twig', []);
+    }
+
 }

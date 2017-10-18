@@ -1,0 +1,28 @@
+{% spaceless %}
+
+{% if params is not defined %}
+    {% set params = {} %}
+{% endif %}
+
+<div class="pagination with-top-offset with-right-offset">
+    <a href="{% spaceless %}
+        {% if pagination.hasPreviousPage %}
+            {% set previousParams = params|merge({ page: pagination.previousPage }) %}
+
+            {{ path(path, previousParams) }}
+        {% else %}
+            javascript:
+        {% endif %}
+    {% endspaceless %}" class="pagination-item navigate-backward {% if pagination.hasPreviousPage == false %}disabled{% endif %}">back</a>
+    <a href="{% spaceless %}
+        {% if pagination.hasNextPage %}
+            {% set forwardParams = params|merge({ page: pagination.nextPage }) %}
+
+            {{ path(path, forwardParams) }}
+        {% else %}
+            javascript:
+        {% endif %}
+    {% endspaceless %}" class="pagination-item navigate-forward {% if pagination.hasNextPage == false %}disabled{% endif %}">next</a>
+</div>
+
+{% endspaceless %}

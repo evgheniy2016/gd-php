@@ -3,5 +3,29 @@
 {% block title %}AdminBundle:Page:index{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Page:index page</h1>
+
+
+    <table class="table card">
+        <thead>
+        <tr>
+            <th width="75">id</th>
+            <th width="350">title</th>
+            <th>slug</th>
+            <th width="100" class="pull-right"><a href="{{ path('pages.create') }}">create</a></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for page in pages %}
+        <tr>
+            <td>{{ page.id }}</td>
+            <td>{{ page.title }}</td>
+            <td>{{ page.slug }}</td>
+            <td class="pull-right"><a href="{{ path('pages.delete', { id: page.id }) }}">delete</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% include '@Admin/pagination/pagination.html.twig' with { pagination: pages, path: 'pages.index.page' } only %}
+
 {% endblock %}

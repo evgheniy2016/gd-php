@@ -8,15 +8,20 @@
   },
   "dependencies": {
     "css-loader": "^0.28.7",
-    "style-loader": "^0.18.2"
+    "hiredis": "^0.5.0",
+    "redis": "^2.8.0",
+    "socket.io-client": "^2.0.3",
+    "style-loader": "^0.18.2",
+    "ws": "^3.2.0"
   },
   "devDependencies": {
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
-    "webpack": "^3.6.0"
+    "webpack": "^3.8.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "exchange-parser": "node exchange.js"
   },
   "repository": {
     "type": "git",

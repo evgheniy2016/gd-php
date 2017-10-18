@@ -342,5 +342,12 @@ class User implements UserInterface
         return "${username} (${email})";
     }
 
+    public function toArray()
+    {
+        return [
+            'username' => $this->getUsername()
+        ];
+    }
+
 }
 

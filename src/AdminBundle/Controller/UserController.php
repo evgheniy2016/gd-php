@@ -8,6 +8,8 @@ use AdminBundle\Form\UserType;
 use AppBundle\Entity\BalanceHistory;
 use AppBundle\Entity\Trade;
 use AppBundle\Entity\User;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -27,17 +29,25 @@ class UserController extends Controller
 {
     /**
      * @Route("/", name="users.index")
-     * @Route("/page/{page}", name="administrators.index.page", defaults={"page": 1}, requirements={"page": "\d+"})
+     * @Route("/page/{page}", name="users.index.page", defaults={"page": 1}, requirements={"page": "\d+"})
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction($page = 1)
     {
         $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
-        $users = $userRepository->paginateByRole('ROLE_USER', 15, $page)->getQuery()->getResult();
+        $users = $userRepository->findByRole('ROLE_USER');
+
+        $paginationTake = $this->getParameter('pagination')['take'];
+
+        $paginationAdapter = new DoctrineORMAdapter($users);
+        $pagination = new Pagerfanta($paginationAdapter);
+
+        $pagination->setMaxPerPage($paginationTake);
+        $pagination->setCurrentPage($page);
 
         return $this->render('AdminBundle:User:index.html.twig', [
-            'users' => $users
+            'users' => $pagination
         ]);
     }
 
@@ -126,34 +136,60 @@ class UserController extends Controller
 
     /**
      * @Route("/{id}/balance", name="users.show.balance", requirements={"id": "\d+"})
+     * @Route("/{id}/balance/page/{page}", name="users.show.balance.page", defaults={"page": 1}, requirements={"id": "\d+", "page": "\d+"})
      * @param int $id
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showBalanceAction(int $id)
+    public function showBalanceAction(int $id, int $page = 1)
     {
         $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
+        $balanceHistoryRepository = $this->getDoctrine()->getRepository('AppBundle:BalanceHistory');
+
         $user = $userRepository->find($id);
+        $balanceHistory = $balanceHistoryRepository->findForUser($user);
+
+        $paginationAdapter = new DoctrineORMAdapter($balanceHistory);
+        $pagination = new Pagerfanta($paginationAdapter);
+
+        $paginationTake = $this->getParameter('pagination')['take'];
+
+        $pagination->setMaxPerPage($paginationTake);
+        $pagination->setCurrentPage($page);
 
         return $this->render('@Admin/User/balance.html.twig', [
             'user' => $user,
-            'history' => $user->getBalanceHistory(),
+            'history' => $pagination,
             'currency' => BalanceHistory::CURRENCY_LABEL
         ]);
     }
 
     /**
-     * @Route("/{id}/trades", name="users.show.trades", requirements={"id": "\d+"})
+     * @Route("/{id}/trades", name="users.show.trades", defaults={"page": 1}, requirements={"id": "\d+"})
+     * @Route("/{id}/trades/page/{page}", name="users.show.trades.page", defaults={"page": 1}, requirements={"id": "\d+", "page": "\d+"})
      * @param int $id
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showTradesActions(int $id)
+    public function showTradesActions(int $id, int $page = 1)
     {
         $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
+        $tradeRepository = $this->getDoctrine()->getRepository('AppBundle:Trade');
         $user = $userRepository->find($id);
+
+        $trades = $tradeRepository->findForUser($user);
+
+        $paginationAdapter = new DoctrineORMAdapter($trades);
+        $pagination = new Pagerfanta($paginationAdapter);
+
+        $paginationTake = $this->getParameter('pagination')['take'];
+
+        $pagination->setMaxPerPage($paginationTake);
+        $pagination->setCurrentPage($page);
 
         return $this->render('@Admin/User/trades.html.twig', [
             'user' => $user,
-            'trades' => $user->getTrades()
+            'trades' => $pagination
         ]);
     }
 

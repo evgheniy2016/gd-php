@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\User;
 
 /**
  * TradeRepository
@@ -10,4 +11,12 @@ namespace AppBundle\Repository;
  */
 class TradeRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findForUser(User $user)
+    {
+        return $this->createQueryBuilder('trade')
+            ->where('trade.user = :user')
+            ->setParameter('user', $user);
+    }
+
 }

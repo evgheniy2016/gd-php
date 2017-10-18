@@ -10,4 +10,11 @@ namespace AppBundle\Repository;
  */
 class PageRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findAllOrderedByDesc()
+    {
+        return $this->createQueryBuilder('page')
+            ->orderBy('page.id', 'desc');
+    }
+
 }

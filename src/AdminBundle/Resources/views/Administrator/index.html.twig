@@ -26,4 +26,6 @@
         {% endfor %}
         </tbody>
     </table>
+
+    {% include '@Admin/pagination/pagination.html.twig' with { pagination: administrators, path: 'administrators.index.page' } only %}
 {% endblock %}

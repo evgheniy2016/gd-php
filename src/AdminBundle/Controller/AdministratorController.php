@@ -5,6 +5,9 @@ namespace AdminBundle\Controller;
 use AppBundle\Entity\PromoCode;
 use AppBundle\Entity\User;
 use AdminBundle\Form\UserType;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use \Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * Class AdministratorController
@@ -33,11 +38,17 @@ class AdministratorController extends Controller
     public function indexAction($page = 1)
     {
         $usersRepository = $this->getDoctrine()->getRepository('AppBundle:User');
-        /** @var User[] $administrators */
-        $administrators = $usersRepository->paginateByRole('ROLE_ADMIN', 15, $page)->getQuery()->getResult();
+        $administrators = $usersRepository->findByRole('ROLE_ADMIN');
+        $paginationAdapter = new DoctrineORMAdapter($administrators);
+        $pagination = new Pagerfanta($paginationAdapter);
+
+        $paginationTake = $this->getParameter('pagination')['take'];
+
+        $pagination->setMaxPerPage($paginationTake);
+        $pagination->setCurrentPage($page);
 
         return $this->render('@Admin/Administrator/index.html.twig', array(
-            'administrators' => $administrators
+            'administrators' => $pagination
         ));
     }
 
@@ -48,7 +59,7 @@ class AdministratorController extends Controller
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user)
-            ->add('save', SubmitType::class);
+            ->add('save', SubmitType::class, [ 'attr' => [ 'class' => 'button' ] ]);
 
         $form->remove('promoCodes');
         $form->handleRequest($request);
@@ -81,8 +92,8 @@ class AdministratorController extends Controller
         $currentPassword = $administrator->getPassword();
 
         $form = $this->createForm(UserType::class, $administrator)
-            ->add('save', SubmitType::class)
-            ->add('delete', SubmitType::class);
+            ->add('save', SubmitType::class, [ 'attr' => [ 'class' => 'button' ] ])
+            ->add('delete', SubmitType::class, [ 'attr' => [ 'class' => 'button button-danger' ] ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -18,8 +18,5 @@
         </tbody>
     </table>
 
-    <div class="pagination with-top-offset with-left-offset with-right-offset">
-        <a href="javascript:" class="pagination-item navigate-backward">backward</a>
-        <a href="javascript:" class="pagination-item navigate-forward disabled">forward</a>
-    </div>
+    {% include '@Admin/pagination/pagination.html.twig' with {pagination: history, path: 'users.show.balance.page', params: { id: user.id } } only %}
 {% endblock %}

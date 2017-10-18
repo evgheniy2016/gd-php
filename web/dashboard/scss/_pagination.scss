@@ -43,6 +43,8 @@ $pagination-button-base-padding: $app-base-padding / 4 * 3;
       @include box-sizing();
 
       &:not(.disabled) {
+        background-color: $app-white-color;
+
         &:hover {
           border-color: $app-blue-color;
           color: $app-blue-color;

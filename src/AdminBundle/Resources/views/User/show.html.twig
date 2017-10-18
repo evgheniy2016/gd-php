@@ -12,7 +12,7 @@
         <div class="tabs-navigation">
             <a href="{{ path('users.edit', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.edit' %}active{% endif %}">Infromation</a>
             <a href="{{ path('users.show.trades', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.show.trades' %}active{% endif %}">Trades</a>
-            <a href="{{ path('users.show.balance', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.show.balance' %}active{% endif %}">Balance</a>
+            <a href="{{ path('users.show.balance', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.balance' %}active{% endif %}">Balance</a>
         </div>
         <div class="tabs-content {% block tabs_content_classes %}{% endblock %}">
             {% block show_user_content %}

@@ -5,6 +5,8 @@ namespace AdminBundle\Controller;
 use AdminBundle\Form\PromoCodeType;
 use AppBundle\Entity\PromoCode;
 use AppBundle\Entity\User;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PromoCodeController extends Controller
 {
     /**
-     * @Route("/", name="promo_code.index")
+     * @Route("/", name="promo_code.index", defaults={"page": 1})
      * @Route("/page/{page}", name="promo_code.index.page", defaults={"page": 1}, requirements={"page": "\d+"})
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
@@ -26,15 +28,18 @@ class PromoCodeController extends Controller
     public function indexAction(int $page = 1)
     {
         $promoCodeRepository = $this->getDoctrine()->getRepository('AppBundle:PromoCode');
+        $promoCodes = $promoCodeRepository->findAllOrderedByIdDesc();
 
-        $take = $this->container->getParameter('pagination')['take'];
-        $promoCodes = $promoCodeRepository->paginate($page, $take)->getQuery()->getResult();
+        $paginationAdapter = new DoctrineORMAdapter($promoCodes);
+        $pagination = new Pagerfanta($paginationAdapter);
 
-        /** @var PromoCode $promoCode */
-        $promoCode = $promoCodes[0];
+        $paginationTake = $this->getParameter('pagination')['take'];
+
+        $pagination->setMaxPerPage($paginationTake);
+        $pagination->setCurrentPage($page);
 
         return $this->render('AdminBundle:PromoCode:index.html.twig', array(
-            'promocodes' => $promoCodes
+            'promocodes' => $pagination
         ));
     }
 

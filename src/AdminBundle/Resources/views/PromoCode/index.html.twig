@@ -29,4 +29,6 @@
         </tbody>
     </table>
 
+    {% include '@Admin/pagination/pagination.html.twig' with { pagination: promocodes, path: 'promo_code.index.page' } only %}
+
 {% endblock %}

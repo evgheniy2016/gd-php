@@ -18,4 +18,10 @@ class PromoCodeRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy('promo_code.id', 'desc');
     }
 
+    public function findAllOrderedByIdDesc()
+    {
+        return $this->createQueryBuilder('promo_code')
+            ->orderBy('promo_code.id', 'desc');
+    }
+
 }

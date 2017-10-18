@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
+
 /**
  * BalanceHistoryRepository
  *
@@ -10,4 +12,12 @@ namespace AppBundle\Repository;
  */
 class BalanceHistoryRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findForUser(User $user)
+    {
+        return $this->createQueryBuilder('balance_history')
+            ->where('balance_history.user = :user')
+            ->setParameter('user', $user);
+    }
+
 }
