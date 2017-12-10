@@ -18,7 +18,7 @@ class BalanceHistory
      *
      * Валюта, отображаемая при выводе элемента записи
      */
-    public const CURRENCY_LABEL = 'грн';
+    public static $CURRENCY_LABEL = 'грн';
 
     /**
      * @var int

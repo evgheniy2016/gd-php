@@ -1,0 +1,87 @@
+@import "variables";
+@import "mixins";
+
+.page-header {
+  background-color: $app-dark-color;
+  min-width: $app-container-width;
+
+  .grid {
+    width: 100%;
+    align-items: center;
+
+    .pull-right {
+      margin-left: auto;
+      width: auto;
+      flex-grow: 1;
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: inline-block;
+      padding: 19px 11px 12px;
+      width: auto;
+
+      @include box-sizing();
+
+      flex-shrink: 0;
+      flex-grow: 0;
+    }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+
+      li {
+        margin-left: 30px;
+
+        &:first-child {
+          margin-left: 33px;
+        }
+
+         a {
+           color: $app-base-text-color;
+
+           &.active {
+             color: $app-blue-text-color;
+             text-shadow: 0 0 19px $app-blue-text-color;
+           }
+         }
+      }
+    }
+
+    .wallet {
+      padding: 7px;
+      font-size: 12px;
+      background-color: $app-wallet-background;
+      border-radius: 25px;
+
+      @include box-sizing();
+
+      span, a {
+        display: inline-block;
+        padding: 7px 10px;
+
+        @include box-sizing();
+        @include user-select();
+      }
+
+      .refill {
+        background-color: $app-blue-text-color;
+
+        color: $app-dark-color;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: 0.1s background;
+
+        &:hover {
+          background-color: darken($app-blue-text-color, 10%);
+        }
+      }
+    }
+
+  }
+
+}

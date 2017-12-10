@@ -1,0 +1,35 @@
+create database 
+ Symfony Installer (1.5.9)
+ =========================
+
+ This is the official installer to start new projects based on the
+ Symfony full-stack framework.
+
+ To create a new project called blog in the current directory using
+ the latest stable version of Symfony, execute the following command:
+
+   symfony new blog
+
+ Create a project based on the Symfony Long Term Support version (LTS):
+
+   symfony new blog lts
+
+ Create a project based on a specific Symfony branch:
+
+   symfony new blog 2.8 or symfony new blog 3.0
+
+ Create a project based on a specific Symfony version:
+
+   symfony new blog 2.8.1 or symfony new blog 3.0.1
+
+ Create a demo application to learn how a Symfony application works:
+
+   symfony demo
+
+ Updating the Symfony Installer
+ ------------------------------
+
+ New versions of the Symfony Installer are released regularly. To update your
+ installer version, execute the following command:
+
+   symfony self-update -uroot -ppassword

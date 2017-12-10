@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&amp;subset=cyrillic-ext" rel="stylesheet">
+</head>
+<body>
+<div class="page-header">
+    <div class="container">
+        <div class="grid">
+            <a href="/" class="logo"><img src="{{ asset('assets/images/logo.png') }}" alt="FreshForex" /></a>
+            <ul class="header-links">
+                <li><a href="javascript:" class="active">Торговля</a></li>
+                <li><a href="javascript:">Инструкции</a></li>
+            </ul>
+            <div class="pull-right">
+                <div class="wallet">
+                    <span>$ 2000.12</span><!--
+                    --><a href="javascript:" class="refill">Пополнить счёт</a>
+                </div>
+                <ul class="header-links">
+                    <li>Здравствуйте, <span class="text-blue">Имя Пользователя</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-content container">
+    <div class="page-content-container container">
+        <div class="content-block">{% block content %}{% endblock %}</div>
+    </div>
+</div>
+<script src="{{ asset('dist/frontend.bundle.js') }}"></script>
+</body>
+</html>

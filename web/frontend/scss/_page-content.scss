@@ -1,0 +1,22 @@
+@import "variables";
+@import "mixins";
+
+.page-content {
+  margin-top: 29px;
+  background-color: #171e2e;
+  min-height: calc(100vh - 112px);
+
+  .page-content-container {
+    width: 100%;
+    padding: 0 20px;
+
+    @include box-sizing();
+
+    .content-block {
+      box-shadow: 0 3px 24px rgba(0, 0, 0, .3);
+      background-color: #1e2537;
+
+      @include box-sizing();
+    }
+  }
+}

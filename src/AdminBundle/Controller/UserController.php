@@ -160,7 +160,7 @@ class UserController extends Controller
         return $this->render('@Admin/User/balance.html.twig', [
             'user' => $user,
             'history' => $pagination,
-            'currency' => BalanceHistory::CURRENCY_LABEL
+            'currency' => BalanceHistory::$CURRENCY_LABEL
         ]);
     }
 

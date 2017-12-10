@@ -5,7 +5,8 @@
     "autoload": {
         "psr-4": {
             "AppBundle\\": "src/AppBundle",
-            "AdminBundle\\": "src/AdminBundle"
+            "AdminBundle\\": "src/AdminBundle",
+            "BinaryTradeBundle\\": "src/BinaryTradeBundle"
         },
         "classmap": [
             "app/AppKernel.php",

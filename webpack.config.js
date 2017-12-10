@@ -4,7 +4,8 @@ const path = require('path');
 const config = {
     context: path.resolve(__dirname, 'web/'),
     entry: {
-        dashboard: './dashboard/scss/main.scss'
+        dashboard: './dashboard/scss/main.scss',
+        frontend: './frontend/scss/main.scss'
     },
     output: {
         path: path.resolve(__dirname, 'web/dist'),

@@ -15,8 +15,8 @@ class Trade
 {
 
     // Constants:
-    public const DIRECTION_UP = 'up';
-    public const DIRECTION_DOWN = 'down';
+    public static $DIRECTION_UP = 'up';
+    public static $DIRECTION_DOWN = 'down';
 
     /**
      * @var int
