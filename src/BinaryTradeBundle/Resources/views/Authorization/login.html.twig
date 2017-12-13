@@ -1,0 +1,21 @@
+{% extends "BinaryTradeBundle:Layout:application.html.twig" %}
+
+{% block title "Content" %}
+
+{% block content %}
+
+    <div>
+        {{ errors.message ?? "" }}
+    </div>
+
+    <form action="{{ path('login') }}" method="post">
+        Username:
+        <input type="text" name="_username" id="username" />
+        <br>
+        Password:
+        <input type="password" name="_password" id="password" />
+        <br>
+        <input type="submit" />
+    </form>
+
+{% endblock %}

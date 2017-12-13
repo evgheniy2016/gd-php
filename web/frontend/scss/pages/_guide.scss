@@ -1,0 +1,79 @@
+@import "../variables";
+@import "../mixins";
+
+.guide-page {
+  .guide-content {
+    margin-top: $app-base-padding * 1.5;
+
+    .guide-navigation {
+      width: 320px;
+      flex-shrink: 0;
+      flex-grow: 0;
+      margin-right: $app-base-padding * 2;
+
+      @include box-sizing();
+
+      .guide-navigation-wrapper {
+        box-shadow: 0 0 $app-base-padding rgba(0, 0, 0, .4);
+
+        .guide-navigation-section {
+          margin-top: $app-base-padding / 3;
+          margin-bottom: $app-base-padding / 3;
+          padding: $app-base-padding / 4 * 3 $app-base-padding;
+          background-color: rgba(0, 0, 0, .2);
+          color: #3594e6;
+
+          @include box-sizing();
+
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+
+        .guide-navigation-links {
+          li {
+            padding: $app-base-padding;
+
+            @include box-sizing();
+
+            a {
+              color: $app-base-text-color;
+              text-decoration: none;
+            }
+          }
+        }
+      }
+    }
+
+    .guide-page-content {
+      .guide-page-content-wrapper {
+        box-shadow: 0 0 $app-base-padding rgba(0, 0, 0, .4);
+
+        .guide-title {
+          margin-bottom: $app-base-padding / 3;
+          padding: $app-base-padding;
+          background-color: rgba(0, 0, 0, .2);
+          color: #3594e6;
+
+          @include box-sizing();
+        }
+
+        .guide-text {
+          padding: $app-base-padding;
+          line-height: $app-base-padding * 1.25;
+
+          @include box-sizing();
+
+          p {
+            margin-bottom: $app-base-padding;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+
+  }
+}

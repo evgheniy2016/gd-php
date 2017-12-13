@@ -1,0 +1,392 @@
+@import "../variables";
+@import "../mixins";
+
+.home-page {
+  padding: 0;
+
+  .page-content-container {
+    padding: 0;
+
+    .section {
+
+      &.section-header {
+        position: relative;
+
+        .background-image {
+          width: 100%;
+          height: 350px;
+          background-position: center;
+          background-size: cover;
+        }
+
+        .exchange-rates {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          overflow-x: hidden;
+          display: flex;
+          padding: $app-base-padding;
+          background-color: rgba(0, 0, 0, .4);
+
+          @include box-sizing();
+
+          .rate {
+            display: flex;
+            align-items: center;
+
+            margin-right: $app-base-padding * 2;
+            font-size: 12px;
+
+            &:last-of-type {
+              margin-right: 0;
+            }
+
+            .direction {
+              width:  $app-base-padding;
+              height: $app-base-padding;
+              position: relative;
+
+              &.direction-up {
+                &:before {
+                  content: "";
+                  width: 0;
+                  height: 0;
+                  border-style: solid;
+                  border-width: 0 5px 10px 5px;
+                  border-color: transparent transparent $app-green-color transparent;
+                  position: absolute;
+                  top: 2px;
+                  left: 0;
+                }
+              }
+
+              &.direction-down {
+                &::before {
+                  content: "";
+                  width: 0;
+                  height: 0;
+                  border-style: solid;
+                  border-width: 10px 5px 0 5px;
+                  border-color: $app-red-color transparent transparent transparent;
+                  position: absolute;
+                  top: 2px;
+                  left: 0;
+                }
+              }
+            }
+
+            .pair {
+              margin-right: $app-base-padding / 2;
+            }
+
+            .exchange-rate {
+              &.rate-green {
+                color: $app-green-color;
+              }
+            }
+          }
+        }
+      }
+
+      &.section-about-us {
+        padding-top: $app-base-padding;
+
+        .section-content {
+          margin-top: $app-base-padding;
+        }
+
+        .about-us-grid {
+          flex-wrap: wrap;
+          width: 900px;
+          margin: 0 auto;
+
+          & > .col {
+            width: 50%;
+            flex-shrink:0;
+            flex-grow: 0;
+            margin-top: $app-base-padding;
+            margin-bottom: $app-base-padding * 2;
+
+            .col-circle {
+              flex-shrink: 0;
+              flex-grow: 0;
+              width: 120px;
+              height: 120px;
+              margin-right: $app-base-padding;
+
+              .circle {
+                width:  120px;
+                height: 120px;
+                display: block;
+                border-radius: 120px;
+                position: relative;
+
+                &.circle-green {
+                  background-color: #3bc97e;
+                }
+
+                &.circle-red {
+                  background-color: #c6315e;
+                }
+
+                &.circle-yellow {
+                  background-color: #fec722;
+                }
+
+                &.circle-blue {
+                  background-color: #2a71cd;
+                }
+
+                &::before {
+                  content: "";
+                  position: absolute;
+                  width:  100px;
+                  height: 100px;
+                  background-color: #171e2e;
+                  border-radius: 100px;
+                  left: 10px;
+                  top: 10px;
+                }
+
+                &::after {
+                  content: "100";
+                  position: absolute;
+                  top:  10px;
+                  left: 10px;
+                  text-align: center;
+                  width: 100px;
+                  height: 50px;
+                  padding-top: 30px;
+                  line-height: 32px * 1.25;
+                  font-size:   32px;
+                  color: white;
+                }
+              }
+            }
+
+            .col-about-us-item {
+              .about-us-item-title {
+                font-size: 18px;
+                text-transform: uppercase;
+                color: white;
+                font-weight: bold;
+                margin-bottom: $app-base-padding;
+              }
+            }
+          }
+        }
+      }
+
+      &.section-registration {
+        padding-top:    $app-base-padding * 4;
+        padding-bottom: $app-base-padding * 4;
+
+        @include box-sizing();
+
+        .form {
+          display: flex;
+          flex-wrap: wrap;
+          width: 1000px;
+          margin: 0 auto;
+
+          .form-group {
+            width: 33.333%;
+            margin-top: 0;
+            margin-bottom: 20px;
+
+            &.full-width {
+              width: 100%;
+            }
+          }
+        }
+      }
+
+      &.section-possible-trades {
+        padding-bottom: $app-base-padding * 4;
+
+        .grid {
+          width: 1000px;
+          margin: 0 auto;
+
+          .col {
+            margin-left: $app-base-padding;
+            margin-right: $app-base-padding;
+
+            .circle-image {
+              text-align: center;
+              img {
+                width:  140px;
+                height: 140px;
+                border-radius: 100px;
+                overflow: hidden;
+                margin: auto;
+              }
+            }
+
+            .description-title {
+              font-size: 20px;
+              color: white;
+              font-weight: bold;
+              text-align: center;
+              text-transform: uppercase;
+              margin-top: $app-base-padding;
+              margin-bottom: $app-base-padding * 2;
+              position: relative;
+
+              &::after {
+                content: "";
+                width: 100px;
+                height: 5px;
+                background-color: red;
+                position: absolute;
+                bottom: -$app-base-padding;
+                left: 50%;
+                margin-left: -50px;
+              }
+
+              &.line-blue {
+                &::after {
+                  background-color: #2a71cd;
+                }
+              }
+
+              &.line-red {
+                &::after {
+                  background-color: #c6315e;
+                }
+              }
+
+              &.line-yellow {
+                &::after {
+                  background-color: #fec722;
+                }
+              }
+
+              &.line-green {
+                &::after {
+                  background-color: #3bc97e;
+                }
+              }
+            }
+
+            .description-content {
+              font-size: 14px;
+              line-height: 14px * 1.25;
+              text-align: center;
+            }
+          }
+        }
+      }
+
+      &.section-incredible-trading-rules {
+        padding-top: $app-base-padding * 4;
+        padding-bottom: $app-base-padding * 6;
+
+        .section-title {
+          font-size: 36px;
+          font-weight:normal;
+        }
+
+        .start-trading-link {
+          text-align: center;
+          margin-top: $app-base-padding * 5;
+          
+          a {
+            font-size: 24px;
+            text-decoration: none;
+            padding: $app-base-padding * 1.5 $app-base-padding * 2;
+            color: white;
+
+            &:hover {
+              color: white;
+            }
+          }
+        }
+      }
+
+      &.section-contact-us {
+
+        .form {
+          display: flex;
+          flex-wrap: wrap;
+          width: 1000px;
+          margin: 0 auto;
+
+          .form-group {
+            width: 33.3333%;
+            margin-bottom: 20px;
+            margin-top: 0;
+            display: block;
+            padding-right: $app-base-padding;
+
+            @include box-sizing();
+
+            &.full-width {
+              width: 100%;
+            }
+            
+            &.content-center {
+              text-align: center;
+            }
+            
+            label {
+              display: block;
+              text-align: left;
+              margin-bottom: $app-base-padding / 2;
+            }
+            input {
+              width: 100%;
+            }
+
+            textarea {
+              width: 100%;
+              height: 250px;
+              background-color: #242c3e;
+              border: none;
+              font-size: 16px;
+              font-family: 'Roboto', sans-serif;
+              color: white;
+              padding: 10px;
+              resize: none;
+
+              @include box-sizing();
+            }
+
+            input[type="submit"] {
+              color: white;
+              font-size: 16px;
+              width: auto;
+              padding: $app-base-padding $app-base-padding * 1.5;
+            }
+          }
+        }
+      }
+      
+      &.section-footer {
+        padding: $app-base-padding;
+
+        @include box-sizing();
+
+        p {
+          text-align: center;
+          font-size: 14px;
+          line-height: 14px * 1.25;
+        }
+      }
+
+      .section-title {
+        font-size: 72px;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+        width: 100%;
+
+        margin-top: $app-base-padding;
+        margin-bottom: $app-base-padding;
+      }
+
+    }
+  }
+
+}

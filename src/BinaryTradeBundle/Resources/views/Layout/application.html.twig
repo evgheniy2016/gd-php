@@ -10,24 +10,35 @@
         <div class="grid">
             <a href="/" class="logo"><img src="{{ asset('assets/images/logo.png') }}" alt="FreshForex" /></a>
             <ul class="header-links">
-                <li><a href="javascript:" class="active">Торговля</a></li>
-                <li><a href="javascript:">Инструкции</a></li>
+                <li><a href="{{ url('homepage') }}" class="{% if app.request.attributes.get('_route') starts with 'trade' %}active{% endif %}">Торговля</a></li>
+                <li><a href="{{ url('guide.show') }}" class="{% if app.request.attributes.get('_route') starts with 'guide' %}active{% endif %}">Инструкции</a></li>
             </ul>
             <div class="pull-right">
+                {% if is_granted('ROLE_USER') %}
                 <div class="wallet">
                     <span>$ 2000.12</span><!--
                     --><a href="javascript:" class="refill">Пополнить счёт</a>
                 </div>
+                {% endif %}
                 <ul class="header-links">
-                    <li>Здравствуйте, <span class="text-blue">Имя Пользователя</span></li>
+                    {% if is_granted('ROLE_USER') %}
+                    <li>Здравствуйте, <span class="text-blue">{{ app.user.firstName }} {{ app.user.lastName }}</span></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="/admin">Админпанель</a></li>
+                        <li><a href="{{ url('logout') }}">Выйти</a></li>
+                    {% endif %}
+                    {% else %}
+                    <li><a href="{{ url('registration') }}" class="{% if app.request.attributes.get('_route') starts with 'authorization.registration' %}active{% endif %}">Регистрация</a></li>
+                    <li><a href="{{ url('login') }}" class="{% if app.request.attributes.get('_route') starts with 'authorization.login' %}active{% endif %}">Авторизация</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </div>
 </div>
-<div class="page-content container">
+<div class="page-content container {% block pageClass %}{% endblock %}">
     <div class="page-content-container container">
-        <div class="content-block">{% block content %}{% endblock %}</div>
+        {% block content %}<h1>404 - Not found</h1>{% endblock %}
     </div>
 </div>
 <script src="{{ asset('dist/frontend.bundle.js') }}"></script>

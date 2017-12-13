@@ -18,3 +18,11 @@ body {
 .text-blue {
   color: $app-blue-text-color;
 }
+
+a {
+  color: $app-base-text-color;
+
+  &:hover {
+    color: $app-blue-text-color;
+  }
+}

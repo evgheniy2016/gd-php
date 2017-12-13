@@ -34,6 +34,55 @@ class User implements UserInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="first_name", type="string", length=255, unique=false, nullable=true)
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     * @ORM\Column(name="last_name", type="string", length=255, unique=false, nullable=true)
+     */
+    private $lastName;
+
+    /**
+     * @var string
+     * @ORM\Column(name="country", type="string", length=8, unique=false, nullable=true)
+     */
+    private $country;
+
+    /**
+     * @var string
+     * @ORM\Column(name="phone", type="string", length=15, unique=false, nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @var string
+     * @ORM\Column(name="city", type="string", length=48, unique=false, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @var string
+     * @ORM\Column(name="address", type="string", length=255, unique=false, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @var string
+     * @ORM\Column(name="zip_code", type="string", length=16, unique=false, nullable=true)
+     */
+    private $zipCode;
+
+    /**
+     * @var string
+     * @ORM\Column(name="currency", type="string", length=8, unique=false, nullable=true)
+     */
+    private $currency;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
@@ -132,6 +181,150 @@ class User implements UserInterface
     public function getUsername()
     {
         return $this->username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->firstName ?? "";
+    }
+
+    /**
+     * @param string $firstName
+     * @return $this
+     */
+    public function setFirstName(string $firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName ?? "";
+    }
+
+    /**
+     * @param string $lastName
+     * @return $this
+     */
+    public function setLastName(string $lastName)
+    {
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry(): string
+    {
+        return $this->country ?? "";
+    }
+
+    /**
+     * @param string $country
+     * @return $this
+     */
+    public function setCountry(string $country)
+    {
+        $this->country = $country;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone(): string
+    {
+        return $this->phone ?? "";
+    }
+
+    /**
+     * @param string $phone
+     * @return $this
+     */
+    public function setPhone(string $phone)
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity(): string
+    {
+        return $this->city ?? "";
+    }
+
+    /**
+     * @param string $city
+     * @return $this
+     */
+    public function setCity(string $city)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress(): string
+    {
+        return $this->address ?? "";
+    }
+
+    /**
+     * @param string $address
+     * @return $this
+     */
+    public function setAddress(string $address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getZipCode(): string
+    {
+        return $this->zipCode ?? "";
+    }
+
+    /**
+     * @param string $zipCode
+     * @return $this
+     */
+    public function setZipCode(string $zipCode)
+    {
+        $this->zipCode = $zipCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency(): string
+    {
+        return $this->currency ?? "";
+    }
+
+    /**
+     * @param string $currency
+     * @return $this
+     */
+    public function setCurrency(string $currency)
+    {
+        $this->currency = $currency;
+        return $this;
     }
 
     /**

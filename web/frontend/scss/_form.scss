@@ -1,0 +1,115 @@
+@import "variables";
+@import "mixins";
+
+.form {
+  display: block;
+  width: 100%;
+
+  &.form-compact {
+    width: 450px;
+    margin: 0 auto;
+  }
+
+  .form-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+
+    &.reverse {
+      flex-direction: row-reverse;
+      align-items: flex-start;
+
+      label {
+        padding-right: 0 !important;
+        width: 19px !important;
+
+        .checkbox-placeholder {
+          margin-right: 0 !important;
+        }
+      }
+    }
+
+    &.inline {
+      label.checkbox-wrapper {
+        width: $app-base-padding * 2;
+        flex-grow: 0;
+        flex-shrink: 0;
+      }
+
+      div {
+        font-size: 14px;
+        line-height: 14px * 1.25;
+        margin-right: $app-base-padding / 2;
+      }
+    }
+
+    &.content-center {
+      justify-content: center;
+    }
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+
+    label:not(.checkbox-wrapper), label:not(.radio-wrapper), input, select {
+      flex-shrink: 0;
+      flex-grow: 0;
+    }
+
+    label:not(.checkbox-wrapper), label:not(.radio-wrapper) {
+      width: 50%;
+      text-align: right;
+      padding-right: $app-base-padding;
+
+      @include box-sizing();
+    }
+
+    input, select {
+      width: 50%;
+      padding: 10px;
+      color: white;
+      background-color: #242c3e;
+      border: none;
+      outline: none;
+
+      @include box-sizing();
+    }
+  }
+
+  input[type="button"], input[type="submit"] {
+    border: none;
+    border-radius: 5px;
+    padding: $app-base-padding / 4 * 3;
+    padding-left: $app-base-padding;
+    padding-right: $app-base-padding;
+    background: #3594e6;
+    width: auto;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #171e2e;
+    outline: none;
+
+    @include box-sizing();
+  }
+
+  .checkbox-wrapper {
+    width: auto;
+
+    input[type="checkbox"] {
+      display: none;
+
+      &:checked + .checkbox-placeholder {
+        background-color: #3594e6;
+      }
+    }
+
+    .checkbox-placeholder {
+      width: $app-base-padding;
+      height: $app-base-padding;
+      background-color: #34405a;
+      border: 2px solid #242c3e;
+    }
+  }
+
+}

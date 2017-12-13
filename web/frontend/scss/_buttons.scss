@@ -1,0 +1,18 @@
+@import "variables";
+@import "mixins";
+
+.button {
+  border: none;
+  border-radius: 5px;
+  padding: $app-base-padding / 4 * 3;
+  padding-left: $app-base-padding;
+  padding-right: $app-base-padding;
+  background: #3594e6;
+  width: auto;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #171e2e;
+  outline: none;
+
+  @include box-sizing();
+}

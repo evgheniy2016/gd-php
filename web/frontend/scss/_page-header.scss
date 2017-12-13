@@ -4,6 +4,9 @@
 .page-header {
   background-color: $app-dark-color;
   min-width: $app-container-width;
+  box-shadow: 0 0 16px rgba(0, 0, 0, .4);
+  position: relative;
+  z-index: 100;
 
   .grid {
     width: 100%;
