@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-composer install
+composer install << "\n"
 npm install
 npm install -g webpack
 

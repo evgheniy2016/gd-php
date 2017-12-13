@@ -2,7 +2,6 @@
 # Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
 # https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
-    database_test: test
     #database_host: 127.0.0.1
     #database_port: ~
     #database_name: symfony
@@ -17,4 +16,4 @@ parameters:
     #mailer_password: ~
 
     # A secret key that's used to generate certain security-related tokens
-    secret: ThisTokenIsNotSoSecretChangeIt
+    # secret: ThisTokenIsNotSoSecretChangeIt
