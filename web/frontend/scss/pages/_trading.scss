@@ -1,0 +1,216 @@
+@import "../variables";
+@import "../mixins";
+
+$terminal-graph-width: 770px;
+$terminal-exchanges-width: 380px;
+
+.trading-page {
+  .trading-terminal {
+    .graph-container {
+      width: 100%;
+    }
+
+    .exchanges-container {
+      width: $terminal-exchanges-width;
+      flex-shrink: 0;
+      flex-grow: 0;
+
+      @include box-sizing();
+
+      .exchanges-table-with-filters-container, .place-a-bet {
+        background-color: #1e2537;
+        box-shadow: 0 0 $app-base-padding rgba(0, 0, 0, .4);
+      }
+
+      .exchanges-table-with-filters-container {
+        padding-top: 8px;
+
+        @include box-sizing();
+      }
+
+      .exchange-filter {
+        justify-content: center;
+        margin-bottom: $app-base-padding;
+
+        @include box-sizing();
+
+        a {
+          &.button {
+            padding: 8px 12px;
+            margin-left: $app-base-padding / 2;
+            text-decoration: none;
+            border-radius: 25px;
+            background-color: darken(#171e2e, 2%);
+            color: $app-base-text-color;
+
+            &:first-child {
+              margin-left: 0;
+            }
+
+            &.button-small {
+              font-size: 12px;
+            }
+
+            &.active {
+              background-color: #7d8d9a;
+              color: $app-dark-color;
+            }
+          }
+        }
+      }
+
+      .exchanges-table-wrapper {
+        max-height: 300px;
+        overflow-y: auto;
+        .exchanges-table {
+          width: 100%;
+
+          thead {
+            tr {
+              th {
+                text-align: left;
+                text-transform: uppercase;
+                color: $app-blue-text-color;
+                font-size: 12px;
+
+                padding: $app-base-padding / 2 $app-base-padding;
+              }
+            }
+          }
+          tbody {
+            tr {
+              &:nth-child(2n) {
+                td {
+                  background-color: rgba(0, 0, 0, .2);
+                }
+              }
+
+              td {
+                padding: $app-base-padding / 2 $app-base-padding;
+                font-size: 12px;
+
+                &:last-of-type {
+                  font-weight: bold;
+                }
+
+                &.time-ends {
+                  color: $app-red-color;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .place-a-bet {
+        margin-top: $app-base-padding;
+
+        .grid {
+          position: relative;
+
+          a {
+            padding: $app-base-padding * 1.5 $app-base-padding;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            text-transform: uppercase;
+            color: #1e2537;
+            margin: $app-base-padding;
+            font-size: 20px;
+
+            @include box-sizing();
+
+            &.sell {
+              background-color: #3bc97e;
+              margin-right: $app-base-padding / 4;
+            }
+
+            &.buy {
+              background-color: #c6315e;
+              margin-left: $app-base-padding / 4;
+            }
+          }
+
+          div {
+            position: absolute;
+            padding: $app-base-padding / 3 $app-base-padding / 2;
+            border: 2px solid #1e2537;
+            border-radius: 8px;
+            background-color: #2a71cd;
+            color: #171e2e;
+            width: auto;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            font-size: 12px;
+
+            @include box-sizing();
+          }
+        }
+
+        .place-a-bet-form {
+
+          & > * {
+            margin: 0 $app-base-padding $app-base-padding;
+            font-size: 12px;
+
+            &:first-child {
+              margin-right: $app-base-padding / 4;
+            }
+            &:last-child {
+              margin-left: $app-base-padding / 4;
+            }
+          }
+
+          .input-field {
+            outline: none;
+            border-radius: 3px;
+            border: 2px solid #999999;
+            text-align: right;
+
+            @include box-sizing();
+          }
+
+          .submit-button {
+            padding: $app-base-padding / 4 * 3 $app-base-padding / 3;
+            border: none;
+            background: #3594e6;
+            text-transform: uppercase;
+            outline: none;
+            border-radius: 8px;
+
+            @include box-sizing();
+          }
+        }
+      }
+    }
+  }
+
+  .trading-additional-information {
+    margin-top: $app-base-padding * 2;
+
+    .tabs.grid {
+      a {
+        text-align: center;
+        text-decoration: none;
+        background-color: #232b3d;
+        padding: $app-base-padding;
+        margin-right: $app-base-padding;
+        border-radius: 8px;
+
+        @include box-sizing();
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &.active {
+          background-color: #7d8d9a;
+          color: #1f2739;
+          text-shadow: 0 0 $app-base-padding #1f2739;
+        }
+      }
+    }
+  }
+
+}

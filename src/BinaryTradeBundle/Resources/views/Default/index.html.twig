@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class="section section-header">
-        <div class="background-image" style="background-image: url('http://via.placeholder.com/1150x350')"></div>
+        <div class="background-image" style="background-image: url('{{ asset('assets/images/home_header_background.png') }}')"></div>
         <div class="exchange-rates">
             {% for i in range(0, 20) %}
             <div class="rate">
@@ -26,7 +26,7 @@
                     </div>
                     <div class="col col-about-us-item">
                         <div class="about-us-item-title">Поддержка 24/7</div>
-                        <div class="about-us-item-content">Наша основная задача - ...</div>
+                        <div class="about-us-item-content">Наша основная задача – обеспечение трейдеров выгодной и успешной торговлей</div>
                     </div>
                 </div>
                 <div class="col grid">
@@ -34,8 +34,8 @@
                         <div class="circle circle-red"></div>
                     </div>
                     <div class="col col-about-us-item">
-                        <div class="about-us-item-title">Поддержка 24/7</div>
-                        <div class="about-us-item-content">Наша основная задача - ...</div>
+                        <div class="about-us-item-title">Не требуется опыт</div>
+                        <div class="about-us-item-content">Наши профессиональные трейдеры предлагают практические советы</div>
                     </div>
                 </div>
                 <div class="col grid">
@@ -44,7 +44,7 @@
                     </div>
                     <div class="col col-about-us-item">
                         <div class="about-us-item-title">Нам доверяют</div>
-                        <div class="about-us-item-content">FRESHFOREX - лидер индустрии онлайн-торговли</div>
+                        <div class="about-us-item-content">FRESHFOREX – лидер индустрии онлайн-торговли</div>
                     </div>
                 </div>
                 <div class="col grid">
@@ -52,8 +52,8 @@
                         <div class="circle circle-blue"></div>
                     </div>
                     <div class="col col-about-us-item">
-                        <div class="about-us-item-title">Поддержка 24/7</div>
-                        <div class="about-us-item-content">Наша основная задача - ...</div>
+                        <div class="about-us-item-title">Экономическая свобода</div>
+                        <div class="about-us-item-content">Консервативные принципы ведения бизнеса Ваша уверенность и доверие</div>
                     </div>
                 </div>
             </div>
@@ -342,30 +342,30 @@
     <div class="section section-possible-trades">
         <div class="grid">
             <div class="col">
-                <div class="circle-image"><img src="http://via.placeholder.com/150x150" /></div>
+                <div class="circle-image circle-red" style="background-image: url('{{ asset('assets/images/money.png') }}')"></div>
                 <div class="description-title line-red">Валюты</div>
-                <div class="description-content">Описание описание описание описание описание описание описание описание описание описание описание описание</div>
+                <div class="description-content">Выбирайте актив из самого большого списка валютных пар и получайте до 89% доходности.</div>
             </div>
             <div class="col">
-                <div class="circle-image"><img src="http://via.placeholder.com/150x150" /></div>
-                <div class="description-title line-green">Валюты</div>
-                <div class="description-content">Описание описание описание описание описание описание описание описание описание описание описание описание</div>
+                <div class="circle-image circle-green" style="background-image: url('{{ asset('assets/images/gold.png') }}')"></div>
+                <div class="description-title line-green">Сырьевые товары</div>
+                <div class="description-content">Торгуйте золотом, серебром и широким спектром других сырьевых товаров.</div>
             </div>
             <div class="col">
-                <div class="circle-image"><img src="http://via.placeholder.com/150x150" /></div>
-                <div class="description-title line-yellow">Валюты</div>
-                <div class="description-content">Описание описание описание описание описание описание описание описание описание описание описание описание</div>
+                <div class="circle-image circle-yellow" style="background-image: url('{{ asset('assets/images/securities.png') }}')"></div>
+                <div class="description-title line-yellow">Ценные бумаги</div>
+                <div class="description-content">Торгуйте акциями таких компаний как BMW и Google.</div>
             </div>
             <div class="col">
-                <div class="circle-image"><img src="http://via.placeholder.com/150x150" /></div>
-                <div class="description-title line-blue">Валюты</div>
-                <div class="description-content">Описание описание описание описание описание описание описание описание описание описание описание описание</div>
+                <div class="circle-image circle-blue" style="background-image: url('{{ asset('assets/images/indexes.png') }}')"></div>
+                <div class="description-title line-blue">Фондовые индексы</div>
+                <div class="description-content">Торгуйте ведущими фондовыми индексами, такими как S&P500, DAX, Nasdaq и мн. др.</div>
             </div>
         </div>
     </div>
     <div class="section section section-incredible-trading-rules">
         <div class="section-title">Непревзойдённые Условия Торговли</div>
-        <div class="start-trading-link"><a href="/trade" class="button">Начать торговлю</a></div>
+        <div class="start-trading-link"><a href="{{ url('trade') }}" class="button">Начать торговлю</a></div>
     </div>
     <div class="section section-contact-us">
         <div class="section-title">Связаться с нами</div>
@@ -392,6 +392,6 @@
         </form>
     </div>
     <div class="section section-footer">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore libero praesentium sit! A accusantium ad asperiores aspernatur cum, delectus dolores eius eum iusto molestiae nihil nulla omnis quam quidem repudiandae! Autem consectetur cum dolorum eaque eveniet facere itaque magni nobis omnis pariatur quidem quod saepe unde vero, voluptatem! Cum dolores eius ex fugiat ipsum magni mollitia non perferendis qui, quia quod quos repellat sapiente temporibus tenetur veniam voluptatem? Autem deserunt earum fugiat impedit laborum molestiae placeat quidem reprehenderit vero? Aliquid aut cumque dignissimos dolore doloremque excepturi ipsum magnam rem tempore unde. Accusamus aliquam deserunt doloremque dolores dolorum nobis sapiente tenetur.</p>
+        <p>Copyright 2017 FRESHFOREX | All Rights Reserved | FRESHFOREX The site HIGH RISK INVESTMENT WARNING: Trading Binary Options is highly speculative, carries a high level of risk and may not be suitable for all investors. You may sustain a loss of some or all of your invested capital, therefore, you should not speculate with capital that you cannot afford to lose. Please <a href="/page/risk-warning">click here</a> to read full risk warning. For further information please read <a href="/page/client-agreement">Client Agreement</a>.</p>
     </div>
 {% endblock %}

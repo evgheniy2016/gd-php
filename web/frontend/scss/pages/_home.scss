@@ -14,7 +14,7 @@
 
         .background-image {
           width: 100%;
-          height: 350px;
+          height: 250px;
           background-position: center;
           background-size: cover;
         }
@@ -28,6 +28,7 @@
           display: flex;
           padding: $app-base-padding;
           background-color: rgba(0, 0, 0, .4);
+          color: white;
 
           @include box-sizing();
 
@@ -173,14 +174,22 @@
                 font-weight: bold;
                 margin-bottom: $app-base-padding;
               }
+
+              .about-us-item-content {
+                font-size: 16px;
+                line-height: 16px * 1.25;
+              }
             }
           }
         }
       }
 
       &.section-registration {
-        padding-top:    $app-base-padding * 4;
-        padding-bottom: $app-base-padding * 4;
+        padding-top:    $app-base-padding * 5;
+        padding-bottom: $app-base-padding * 3;
+        margin-bottom:  $app-base-padding * 3;
+        background-image: url('/assets/images/home_registration_background.png');
+        box-shadow: inset 0 0 $app-base-padding rgba(0, 0, 0, .3);
 
         @include box-sizing();
 
@@ -215,12 +224,28 @@
 
             .circle-image {
               text-align: center;
-              img {
-                width:  140px;
-                height: 140px;
-                border-radius: 100px;
-                overflow: hidden;
-                margin: auto;
+              width:  140px;
+              height: 140px;
+              border-radius: 100px;
+              overflow: hidden;
+              margin: auto;
+              border: 6px solid transparent;
+              background-size: cover;
+
+              &.circle-red {
+                border-color: #c6315e;
+              }
+
+              &.circle-yellow {
+                border-color: #fec722;
+              }
+
+              &.circle-blue {
+                border-color: #2a71cd;
+              }
+
+              &.circle-green {
+                border-color: #3bc97e;
               }
             }
 
@@ -237,7 +262,7 @@
               &::after {
                 content: "";
                 width: 100px;
-                height: 5px;
+                height: 4px;
                 background-color: red;
                 position: absolute;
                 bottom: -$app-base-padding;
@@ -282,6 +307,9 @@
       &.section-incredible-trading-rules {
         padding-top: $app-base-padding * 4;
         padding-bottom: $app-base-padding * 6;
+        background-image: url('/assets/images/home_incredible_trading.png');
+        background-size: cover;
+        box-shadow: inset 0 0 $app-base-padding rgba(0, 0, 0, .3);
 
         .section-title {
           font-size: 36px;
@@ -349,6 +377,7 @@
               color: white;
               padding: 10px;
               resize: none;
+              outline: none;
 
               @include box-sizing();
             }
@@ -365,6 +394,7 @@
       
       &.section-footer {
         padding: $app-base-padding;
+        background-color: #232b3d;
 
         @include box-sizing();
 
@@ -372,6 +402,15 @@
           text-align: center;
           font-size: 14px;
           line-height: 14px * 1.25;
+        }
+
+        a {
+          color: $app-blue-text-color;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
 
@@ -381,6 +420,7 @@
         color: white;
         text-align: center;
         width: 100%;
+        font-family: 'Impact', sans-serif;
 
         margin-top: $app-base-padding;
         margin-bottom: $app-base-padding;
