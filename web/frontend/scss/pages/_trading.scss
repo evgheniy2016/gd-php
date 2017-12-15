@@ -197,6 +197,7 @@ $terminal-exchanges-width: 380px;
         padding: $app-base-padding;
         margin-right: $app-base-padding;
         border-radius: 8px;
+        outline: none;
 
         @include box-sizing();
 

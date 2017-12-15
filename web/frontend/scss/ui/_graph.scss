@@ -1,0 +1,29 @@
+@import "../variables";
+@import "../mixins";
+
+.graph-container {
+  .area {
+    //fill: #00489A;
+    fill: url(#linear-gradient);
+    clip-path: url(#clip);
+  }
+
+  .zoom {
+    cursor: move;
+    fill: none;
+    pointer-events: all;
+  }
+
+  .axis--x {
+    color: white;
+  }
+
+  .axisWhite text{
+    fill: white;
+  }
+
+  .axisWhite line, .axisWhite path {
+    stroke: white;
+  }
+
+}
