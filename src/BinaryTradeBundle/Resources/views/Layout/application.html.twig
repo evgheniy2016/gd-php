@@ -10,7 +10,7 @@
         <div class="grid">
             <a href="/" class="logo"><img src="{{ asset('assets/images/logo.png') }}" alt="FreshForex" /></a>
             <ul class="header-links">
-                <li><a href="{{ url('homepage') }}" class="{% if app.request.attributes.get('_route') starts with 'trade' %}active{% endif %}">Торговля</a></li>
+                <li><a href="{{ url('trade') }}" class="{% if app.request.attributes.get('_route') starts with 'trade' %}active{% endif %}">Торговля</a></li>
                 <li><a href="{{ url('guide.show') }}" class="{% if app.request.attributes.get('_route') starts with 'guide' %}active{% endif %}">Инструкции</a></li>
             </ul>
             <div class="pull-right">

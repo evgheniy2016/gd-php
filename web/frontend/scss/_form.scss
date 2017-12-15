@@ -72,6 +72,8 @@
       background-color: #242c3e;
       border: none;
       outline: none;
+      border-radius: 3px;
+      box-shadow: 0 3px 16px rgba(0, 0, 0, .17);
 
       @include box-sizing();
     }
