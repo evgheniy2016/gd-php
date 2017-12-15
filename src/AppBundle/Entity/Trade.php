@@ -84,6 +84,12 @@ class Trade
     private $predefinedDirection;
 
     /**
+     * @var string
+     * @ORM\Column(name="asset", type="string", nullable=false)
+     */
+    private $asset;
+
+    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="trades")
@@ -278,6 +284,24 @@ class Trade
     }
 
     /**
+     * @return string
+     */
+    public function getAsset(): string
+    {
+        return $this->asset;
+    }
+
+    /**
+     * @param string $asset
+     * @return $this
+     */
+    public function setAsset($asset)
+    {
+        $this->asset = $asset;
+        return $this;
+    }
+
+    /**
      * @return User
      */
     public function getUser(): User
@@ -317,6 +341,17 @@ class Trade
         $direction = $this->direction;
 
         return "Created at ${createdAt}, expire at ${expireAt}, amount is ${amount} and direction is ${direction}";
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssetLabel(): string
+    {
+        $asset = explode(':', $this->asset)[1];
+        $asset = strtoupper($asset);
+        $asset = str_replace('-', '/', $asset);
+        return $asset;
     }
 
 }

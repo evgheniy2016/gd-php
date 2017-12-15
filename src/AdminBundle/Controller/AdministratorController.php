@@ -96,6 +96,7 @@ class AdministratorController extends Controller
             ->add('delete', SubmitType::class, [ 'attr' => [ 'class' => 'button button-danger' ] ]);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             if ($administrator->getPassword() !== null) {
                 $administrator->setUpdatedPassword($administrator->getPassword());

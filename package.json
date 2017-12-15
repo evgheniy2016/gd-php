@@ -21,7 +21,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "exchange-parser": "node exchange.js"
+    "exchange-parser": "node exchange.js",
+    "start": "node exchange.js"
   },
   "repository": {
     "type": "git",

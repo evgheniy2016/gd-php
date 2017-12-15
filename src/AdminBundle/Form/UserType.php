@@ -23,13 +23,20 @@ class UserType extends AbstractType
             ->add('username')
             ->add('password', PasswordType::class, [ 'required' => false ])
             ->add('email', EmailType::class)
+            ->add('first_name')
+            ->add('last_name')
+            ->add('phone')
+            ->add('country')
+            ->add('city')
+            ->add('address')
+            ->add('zip_code')
+            ->add('currency')
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Admin' => 'ROLE_ADMIN',
                     'User' => 'ROLE_USER',
                     'Editor' => "ROLE_EDITOR"
                 ],
-                'expanded' => true,
                 'multiple' => true
             ])
             ->add('promoCodes', CollectionType::class, [

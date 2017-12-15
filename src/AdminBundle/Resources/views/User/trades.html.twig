@@ -10,6 +10,7 @@
             <th width="120">direction</th>
             <th width="170">target direction</th>
             <th>created at</th>
+            <th width="100">asset</th>
             <th width="155">period(minutes)</th>
             <th width="150" class="pull-right">result</th>
             <th width="150" class="pull-right">amount</th>
@@ -19,7 +20,7 @@
         </thead>
         <tbody>
         {% for trade in trades %}
-        <tr class="highlight-row-as-error" {% spaceless %}{% if trade.gainings == 0 and trade.finished %}class="highlight-row-as-error"{% endif %}{% endspaceless %}>
+        <tr {% spaceless %}{% if trade.gainings == 0 and trade.finished %}class="highlight-row-as-error"{% endif %}{% endspaceless %}>
             <td>{{ trade.direction }}</td>
             <td>{% spaceless %}
                     {% if trade.predefinedDirection != null %}
@@ -29,6 +30,7 @@
                     {% endif %}
             {% endspaceless %}</td>
             <td>{{ trade.createdAtString }}</td>
+            <td>{{ trade.getAssetLabel() }}</td>
             <td>{{ trade.period }}</td>
             <td class="pull-right">{% spaceless %}
                     {% if trade.finished %}
@@ -44,11 +46,12 @@
             <td class="pull-right">{{ trade.amount }}</td>
             <td class="pull-right">{{ trade.gainings }}</td>
             <td class="pull-right set-trade-result-buttons no-paddings">{% spaceless %}
-                    {% if trade.finished == false %}
-                    <div class="trade-result-buttons-container">
-                        <a href="javascript:"><i class="material-icons">keyboard_arrow_up</i></a>
-                        <a href="javascript:"><i class="material-icons">keyboard_arrow_down</i></a>
-                    </div>
+                    {% if trade.finished == false and trade.predefinedDirection == null %}
+                    <form class="trade-result-buttons-container" method="post" action="{{ url('users.trades.predefined_direction', { id: user.id, tid: trade.id }) }}">
+                        <input type="hidden" name="predefined_direction" />
+                        <a href="javascript:" onclick="this.parentElement.firstChild.value = 'up'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_up</i></a>
+                        <a href="javascript:" onclick="this.parentElement.firstChild.value = 'down'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_down</i></a>
+                    </form>
                     {% endif %}
             {% endspaceless %}</td>
         </tr>

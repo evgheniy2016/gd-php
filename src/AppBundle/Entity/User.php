@@ -195,7 +195,7 @@ class User implements UserInterface
      * @param string $firstName
      * @return $this
      */
-    public function setFirstName(string $firstName)
+    public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
         return $this;
@@ -213,7 +213,7 @@ class User implements UserInterface
      * @param string $lastName
      * @return $this
      */
-    public function setLastName(string $lastName)
+    public function setLastName($lastName)
     {
         $this->lastName = $lastName;
         return $this;
@@ -231,7 +231,7 @@ class User implements UserInterface
      * @param string $country
      * @return $this
      */
-    public function setCountry(string $country)
+    public function setCountry($country)
     {
         $this->country = $country;
         return $this;
@@ -249,7 +249,7 @@ class User implements UserInterface
      * @param string $phone
      * @return $this
      */
-    public function setPhone(string $phone)
+    public function setPhone($phone)
     {
         $this->phone = $phone;
         return $this;
@@ -267,7 +267,7 @@ class User implements UserInterface
      * @param string $city
      * @return $this
      */
-    public function setCity(string $city)
+    public function setCity($city)
     {
         $this->city = $city;
         return $this;
@@ -285,7 +285,7 @@ class User implements UserInterface
      * @param string $address
      * @return $this
      */
-    public function setAddress(string $address)
+    public function setAddress($address)
     {
         $this->address = $address;
         return $this;
@@ -303,7 +303,7 @@ class User implements UserInterface
      * @param string $zipCode
      * @return $this
      */
-    public function setZipCode(string $zipCode)
+    public function setZipCode($zipCode)
     {
         $this->zipCode = $zipCode;
         return $this;
@@ -321,7 +321,7 @@ class User implements UserInterface
      * @param string $currency
      * @return $this
      */
-    public function setCurrency(string $currency)
+    public function setCurrency($currency)
     {
         $this->currency = $currency;
         return $this;

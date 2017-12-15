@@ -96,8 +96,8 @@ class UserController extends Controller
         $form = $this->createForm(UserType::class, $user)
             ->add('save', SubmitType::class, [ 'attr' => [ 'class' => 'button' ] ])
             ->remove('promoCodes');
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             if ($user->getPassword() !== null) {
@@ -191,6 +191,30 @@ class UserController extends Controller
             'user' => $user,
             'trades' => $pagination
         ]);
+    }
+
+    /**
+     * @Route("/{id}/trades/{tid}/direction", requirements={"id": "\d+", "tid": "\d+"}, name="users.trades.predefined_direction")
+     * @param Request $request
+     * @param $id
+     * @param $tid
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function setPredefinedDirectionAction(Request $request, int $id, int $tid)
+    {
+        $tradeRepository = $this->getDoctrine()->getRepository('AppBundle:Trade');
+        $trade = $tradeRepository->find($tid);
+        if ($trade->getUser()->getId() != $id) {
+            return $this->redirectToRoute('users.index');
+        }
+
+        $trade->setPredefinedDirection($request->get('predefined_direction'));
+        $doctrineManager = $this->getDoctrine()->getManager();
+        $doctrineManager->persist($trade);
+        $doctrineManager->flush();
+
+        $referer = $_SERVER['HTTP_REFERER'];
+        return $this->redirect($referer);
     }
 
 }
