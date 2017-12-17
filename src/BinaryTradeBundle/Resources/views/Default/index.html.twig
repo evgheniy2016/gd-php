@@ -394,4 +394,21 @@
     <div class="section section-footer">
         <p>Copyright 2017 FRESHFOREX | All Rights Reserved | FRESHFOREX The site HIGH RISK INVESTMENT WARNING: Trading Binary Options is highly speculative, carries a high level of risk and may not be suitable for all investors. You may sustain a loss of some or all of your invested capital, therefore, you should not speculate with capital that you cannot afford to lose. Please <a href="/page/risk-warning">click here</a> to read full risk warning. For further information please read <a href="/page/client-agreement">Client Agreement</a>.</p>
     </div>
+
+    <script src="http://localhost:5001/socket.io/socket.io.js"></script>
+    <script>
+        var client = io("localhost:5001");
+        client.emit('subscribe', 'pair:usd-btc');
+
+        client.on('message', function (message) {
+            console.log('new message', message);
+        });
+        client.on('foo', function (data) {
+            console.log(data);
+        });
+
+        client.on('asset-updated', function (asset) {
+            console.log('asset updated', asset);
+        });
+    </script>
 {% endblock %}
