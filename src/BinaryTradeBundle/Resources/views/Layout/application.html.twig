@@ -41,6 +41,12 @@
         {% block content %}<h1>404 - Not found</h1>{% endblock %}
     </div>
 </div>
+<script>
+    window.currentPage = '{{ app.request.attributes.get('_route') }}';
+</script>
+{% block js %}{% endblock %}
+<script src="http://localhost:5001/socket.io/socket.io.js"></script>
 <script src="{{ asset('dist/frontend.bundle.js') }}"></script>
+<script src="{{ asset('dist/frontendScripts.bundle.js') }}"></script>
 </body>
 </html>

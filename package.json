@@ -13,6 +13,8 @@
     "socket.io": "^2.0.4",
     "socket.io-client": "^2.0.3",
     "style-loader": "^0.18.2",
+    "ts-loader": "^3.2.0",
+    "typescript": "^2.6.2",
     "ws": "^3.2.0"
   },
   "devDependencies": {

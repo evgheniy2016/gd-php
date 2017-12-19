@@ -31,16 +31,24 @@ export class WebSocketServer {
                     this.websocketClients[socket.id].assets.push(asset);
                 }
             });
+
+            socket.on('replace-subscription', (asset) => {
+                this.websocketClients[socket.id].assets = [asset];
+            });
         });
     }
 
-    public onPriceChangedListener(active: string, price: number) {
+    public onPriceChangedListener(active: string, price: number, timestamp) {
         // console.log(this.websocketClients);
         for (let clientId in this.websocketClients) {
             const client = this.websocketClients[clientId];
 
-            if (client.assets.indexOf(active) !== -1) {
-                client.socket.emit('asset-updated', { active, price });
+            if (client.assets.indexOf('any') !== -1) {
+                client.socket.emit('asset-updated', { active, price, timestamp });
+            } else {
+                if (client.assets.indexOf(active) !== -1) {
+                    client.socket.emit('asset-updated', { active, price, timestamp });
+                }
             }
         }
     }

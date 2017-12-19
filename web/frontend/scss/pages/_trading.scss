@@ -96,6 +96,20 @@ $terminal-exchanges-width: 380px;
                 &.time-ends {
                   color: $app-red-color;
                 }
+
+                &[data-asset-value] {
+                  transition: 0.25s all;
+                }
+
+                &.price-down {
+                  background-color: rgba($app-red-color, .3);
+                  color: $app-red-color;
+                }
+
+                &.price-up {
+                  background-color: rgba($app-green-color, .3);
+                  color: $app-green-color;
+                }
               }
             }
           }

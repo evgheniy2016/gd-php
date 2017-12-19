@@ -1,0 +1,32 @@
+export class WebSocketClient {
+
+  private ioClient: any = null;
+
+  private host: string = 'localhost';
+
+  private port: number = 5001;
+
+  private static instance: WebSocketClient = null;
+
+  public constructor() {
+    WebSocketClient.instance = this;
+    this.socketIoLoaded();
+  }
+
+  private socketIoLoaded() {
+    this.ioClient = (window as any).io(`http://${this.host}:${this.port}`);
+  }
+
+  public static getInstance(): WebSocketClient {
+    return WebSocketClient.instance;
+  }
+
+  public on(event: string, callback: any) {
+    this.ioClient.on(event, callback);
+  }
+
+  public emit(event: string, data: any) {
+    this.ioClient.emit(event, data);
+  }
+
+}
