@@ -19,5 +19,9 @@
 .idea/
 node_modules/
 
-*.js
-*.js.map
+/web/**/*.js
+/web/**/*.js.map
+/exchange_parser/**/*.js.map
+/exchange_parser/**/*.js
+/exchange.js
+/exchange.js.map
