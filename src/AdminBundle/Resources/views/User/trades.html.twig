@@ -1,5 +1,6 @@
 {% extends '@Admin/User/show.html.twig' %}
 
+{% block title user.username ~ " trades" %}
 {% block tabs_content_classes "no-paddings" %}
 
 {% block show_user_content %}
@@ -10,12 +11,14 @@
             <th width="120">direction</th>
             <th width="170">target direction</th>
             <th>created at</th>
-            <th width="100">asset</th>
-            <th width="155">period(minutes)</th>
+            <th width="150">asset</th>
+            <th width="100">period</th>
             <th width="150" class="pull-right">result</th>
             <th width="150" class="pull-right">amount</th>
             <th width="150" class="pull-right">gainings</th>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
             <th width="150" class="pull-right">actions</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -30,7 +33,7 @@
                     {% endif %}
             {% endspaceless %}</td>
             <td>{{ trade.createdAtString }}</td>
-            <td>{{ trade.getAssetLabel() }}</td>
+            <td>{{ trade.assetName }}</td>
             <td>{{ trade.period }}</td>
             <td class="pull-right">{% spaceless %}
                     {% if trade.finished %}
@@ -43,8 +46,9 @@
                         Открыто
                     {% endif %}
             {% endspaceless %}</td>
-            <td class="pull-right">{{ trade.amount }}</td>
-            <td class="pull-right">{{ trade.gainings }}</td>
+            <td class="pull-right">{{ trade.amount }} $</td>
+            <td class="pull-right">{{ trade.gainings }} $</td>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
             <td class="pull-right set-trade-result-buttons no-paddings">{% spaceless %}
                     {% if trade.finished == false and trade.predefinedDirection == null %}
                     <form class="trade-result-buttons-container" method="post" action="{{ url('users.trades.predefined_direction', { id: user.id, tid: trade.id }) }}">
@@ -54,11 +58,12 @@
                     </form>
                     {% endif %}
             {% endspaceless %}</td>
+            {% endif %}
         </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    {% include '@Admin/pagination/pagination.html.twig' with {pagination: trades, path: 'users.show.trade.page', params: { id: user.id } } only %}
+    {% include '@Admin/pagination/pagination.html.twig' with {pagination: trades, path: 'users.show.trades.page', params: { id: user.id } } only %}
 
 {% endblock %}

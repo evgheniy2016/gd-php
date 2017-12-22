@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class PromoCodeController extends Controller
 {
+
     /**
      * @Route("/", name="promo_code.index", defaults={"page": 1})
      * @Route("/page/{page}", name="promo_code.index.page", defaults={"page": 1}, requirements={"page": "\d+"})

@@ -3,12 +3,39 @@ import { WebSocketClient } from '../ws'
 let data = [  ];
 let x, y, x2, y2, focus, context, lastZoom, xAxis, xAxis2, yAxis, area, area2, brush;
 let d3 = (window as any)['d3'];
-const maxPoints = 200;
+const maxPoints = 400;
 let currentAssetPrice: any = null;
 let wsInstance: WebSocketClient;
 let currentAsset: string = null;
+let placeABetButton: any = null;
+let amountInput: any = null;
+let sellButton: any = null;
+let buyButton: any = null;
+let direction: string = null;
+let timeHiddenInput: any = null;
+let assetPriceInput: any = null;
+let offerMultiplier: any = null;
+const currentTimeIntervals = [];
+const timeIntervalsElements = [];
 
 const assetPrices = {};
+
+function b64EncodeUnicode(str) {
+  // first we use encodeURIComponent to get percent-encoded UTF-8,
+  // then we convert the percent encodings into raw bytes which
+  // can be fed into btoa.
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+    function toSolidBytes(match, p1) {
+      return String.fromCharCode(('0x' + (p1 as any)) as any);
+    }));
+}
+
+function b64DecodeUnicode(str) {
+  // Going backwards: from bytestream, to percent-encoding, to original string.
+  return decodeURIComponent(atob(str).split('').map(function(c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+}
 
 function getDecimal(num) {
   return num - Math.floor(num);
@@ -17,6 +44,33 @@ function getDecimal(num) {
 export function tradingGraph () {
   wsInstance = WebSocketClient.getInstance();
   wsInstance.emit('subscribe', 'any');
+  placeABetButton = document.querySelector('.place-a-bet-form .submit-button');
+  amountInput = document.querySelector('.place-a-bet-form .input-field');
+  sellButton = document.querySelector('.place-a-bet .sell');
+  buyButton = document.querySelector('.place-a-bet .buy');
+  timeHiddenInput = document.querySelector('.place-a-bet-form .time-input');
+  assetPriceInput = document.querySelector('.place-a-bet-form .asset-price');
+  offerMultiplier = document.querySelector('.place-a-bet-form .offer-multiplier');
+
+  const timeIntervals = document.querySelectorAll('[data-time-interval]');
+  const currentTimeIntervalElements = document.querySelectorAll('[data-current-interval]');
+  for (let i = 0; i < currentTimeIntervalElements.length; i++) {
+    currentTimeIntervals.push(currentTimeIntervalElements[i]);
+  }
+
+  for (let i = 0; i < timeIntervals.length; i++) {
+    timeIntervalsElements.push(timeIntervals[i]);
+
+    timeIntervals[i].addEventListener('click', () => {
+      timeHiddenInput.value = b64EncodeUnicode(JSON.stringify({
+        time: b64EncodeUnicode(timeIntervals[i].getAttribute('data-time-interval'))
+      }));
+      timeIntervalsElements.forEach(element => element.classList.remove('active'));
+      timeIntervals[i].classList.add('active');
+    });
+    console.log(timeIntervals[i].getAttribute('data-time-interval'));
+  }
+
   const tradingAssets = document.querySelectorAll('.trading-asset');
   currentAssetPrice = document.querySelector('.place-a-bet .current-price');
   for (let i = 0; i < tradingAssets.length; i++) {
@@ -27,12 +81,26 @@ export function tradingGraph () {
       // wsInstance.emit('replace-subscription', asset);
       clearGraph();
       currentAsset = asset;
+      currentAssetPrice.classList.remove('invisible');
     });
   }
 
-  wsInstance.on('asset-updated', (asset) => {
+  sellButton.addEventListener('click', () => {
+    direction = 'up';
+    sellButton.classList.add('active');
+    buyButton.classList.remove('active');
+  });
+  buyButton.addEventListener('click', () => {
+    direction = 'down';
+    sellButton.classList.remove('active');
+    buyButton.classList.add('active');
+  });
 
+  wsInstance.on('asset-updated', (asset) => {
     const assetPrice = assetPrices[asset.active];
+    if (typeof assetPrice === "undefined") {
+      return;
+    }
     const currentPrice = Number(assetPrice.innerHTML);
     const newPrice = Number(asset.price.toFixed(5));
     assetPrice.innerHTML = newPrice.toFixed(5);
@@ -46,6 +114,47 @@ export function tradingGraph () {
     } else {
       assetPrice.classList.add('price-up');
       assetPrice.classList.remove('price-down');
+    }
+  });
+
+  placeABetButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    if (currentAsset !== null) {
+
+      const timestamp = (+new Date());
+      const xhr = new XMLHttpRequest();
+      const formData = new FormData();
+      const amount = Number(amountInput.value);
+
+      if (isNaN(amount) || amount < 0.000000001) {
+        alert('Введите корректные данные');
+        return;
+      }
+
+      formData.append('direction', direction);
+      formData.append('asset', currentAsset);
+      formData.append('amount', amount + '');
+      formData.append('time', timeHiddenInput.value);
+      formData.append('price', assetPriceInput.value);
+      formData.append('offer_multiplier', offerMultiplier.value);
+
+      placeABetButton.setAttribute('disabled', 'disabled');
+
+      xhr.open('POST', '/api/binary-trading/place-a-bet', true);
+      xhr.addEventListener('readystatechange', (e) => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          placeABetButton.removeAttribute('disabled');
+          const json = JSON.parse(xhr.responseText);
+          amountInput.value = '';
+
+          buyButton.classList.remove('active');
+          sellButton.classList.remove('active');
+
+          alert('Ставка успешно сделана!');
+        }
+      });
+      xhr.send(formData);
     }
   });
 
@@ -151,9 +260,6 @@ function drawGraph() {
     .attr("class", "area")
     .attr("d", area2);
 
-  let lastDate = 350;
-  let lastValue = 200;
-  let step = 50;
   let lastZoom = null;
 
   const instance = WebSocketClient.getInstance();
@@ -170,6 +276,7 @@ function drawGraph() {
     const date = new Date(timestamp);
     data.push({ date: date, price: asset.price });
     currentAssetPrice.innerHTML = asset.price;
+    assetPriceInput.value = asset.price;
 
     if (data.length > maxPoints) {
       data = data.slice(-maxPoints);
@@ -208,7 +315,7 @@ function drawGraph() {
     let domainTo = integerPart + (decimalPart + 10) / 10000;
     y.domain([domainFrom, domainTo]);
     x2.domain(x.domain());
-    y2.domain([0, max]);
+    y2.domain(y.domain());
 
     focus.select('.area').datum(data).attr('d', area);
     context.select('.area').datum(data).attr('d', area2);

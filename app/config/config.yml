@@ -4,13 +4,14 @@ imports:
     - { resource: services.yml }
     - { resource: "@AdminBundle/Resources/config/services.yml" }
     - { resource: "@BinaryTradeBundle/Resources/config/services.yml" }
+    - { resource: "@ApiBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
     pagination:
-      take: 15
+      take: 50
 
 framework:
     #esi: ~
@@ -44,6 +45,7 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         sidebarService: '@AdminBundle\Service\SidebarService'
+        tradingService: '@BinaryTradeBundle\Service\TradingService'
 
 # Doctrine Configuration
 doctrine:

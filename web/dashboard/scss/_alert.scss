@@ -12,6 +12,20 @@
     max-width: 450px;
   }
 
+  &.alert-one-line {
+    //padding: 0;
+    padding: $app-base-padding;
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: 3px;
+    box-shadow: 0 3px $app-base-padding / 2 rgba(0, 0, 0, .17);
+    font-size: 14px;
+    line-height: 14px * 1.25;
+
+    margin-top: $app-base-padding;
+
+    @include box-sizing();
+  }
+
   &[data-icon] {
     // 40px - icon size
     padding-left: $app-base-padding * 2 + 40px;

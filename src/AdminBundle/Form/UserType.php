@@ -14,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +36,9 @@ class UserType extends AbstractType
                 'choices' => [
                     'Admin' => 'ROLE_ADMIN',
                     'User' => 'ROLE_USER',
-                    'Editor' => "ROLE_EDITOR"
+                    'Editor' => "ROLE_EDITOR",
+                    'Super admin' => 'ROLE_SUPER_ADMIN',
+                    'Manager' => 'ROLE_MANAGER'
                 ],
                 'multiple' => true
             ])

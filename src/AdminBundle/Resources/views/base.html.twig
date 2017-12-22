@@ -5,6 +5,8 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=cyrillic" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ asset('dist/dashboard.css') }}" />
+
     {% block styles %}{% endblock %}
 </head>
 <body>
@@ -14,11 +16,16 @@
                 <a href="javascript:" class="item static-item uppercase bold">Dashboard</a>
             </div>
             <div class="app-sidebar">
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <a href="{{ path('administrators.index') }}" {% if sidebarService.getCurrentRoute starts with 'administrators' %}class="active"{% endif %} data-icon="supervisor_account">Администраторы</a>
+                {% endif %}
                 <a href="{{ path('users.index') }}" {% if sidebarService.getCurrentRoute starts with 'users' %}class="active"{% endif %} data-icon="person">Пользователи</a>
                 <a href="{{ path('bets.index') }}" {% if sidebarService.getCurrentRoute starts with 'bets' %}class="active"{% endif %} data-icon="attach_money">Ставки</a>
-                <a href="{{ path('pages.index') }}" {% if sidebarService.getCurrentRoute starts with 'pages' %}class="active"{% endif %} data-icon="insert_drive_file">Статические страницы</a>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <a href="{{ path('promo_code.index') }}" {% if sidebarService.getCurrentRoute starts with 'promo_code' %}class="active"{% endif %} data-icon="card_giftcard">Промокоды</a>
+                <a href="{{ path('assets.index') }}" {% if sidebarService.getCurrentRoute starts with 'assets' %}class="active"{% endif %} data-icon="euro_symbol">Активы</a>
+                <a href="{{ path('pages.index') }}" {% if sidebarService.getCurrentRoute starts with 'pages' %}class="active"{% endif %} data-icon="insert_drive_file">Статические страницы</a>
+                {% endif %}
             </div>
         </div>
         <div class="col app-content-wrapper">
@@ -29,6 +36,7 @@
                     </form>
                 </div>
                 <div class="pull-right">
+                    <a href="{{ path('homepage') }}" class="item">back&nbsp;to&nbsp;site</a>
                     <a href="{{ path('logout') }}" class="item">logout</a>
                     <a href="javascript:" class="item static-item no-background">{{ app.user.username }}</a>
                 </div>
@@ -48,8 +56,13 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('dist/dashboard.bundle.js') }}"></script>
 
+    <script>
+        window.currentPage = '{{ app.request.attributes.get('_route') }}';
+        window.apiKey = '{{ app.user.apiKey }}';
+    </script>
     {% block scripts %}{% endblock %}
+    <script src="http://192.168.1.102:5001/socket.io/socket.io.js"></script>
+    <script src="{{ asset('dist/dashboard.bundle.js') }}"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -126,9 +127,22 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="balance", type="decimal", precision=10, scale=0)
+     * @ORM\Column(name="balance", type="float")
      */
     private $balance = 0;
+
+    /**
+     * @var string
+     * @ORM\Column(name="balance_updated_at", type="string", length=16, nullable=true)
+     */
+    private $balanceUpdatedAt = "";
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="api_key", nullable=false, length=64)
+     */
+    private $apiKey = '';
 
     /**
      * @var Collection
@@ -136,6 +150,13 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Trade", mappedBy="user")
      */
     private $trades;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="user")
+     */
+    private $notes;
 
     /**
      * @var string
@@ -147,6 +168,7 @@ class User implements UserInterface
         $this->promoCodes = null;
         $this->balanceHistory = new ArrayCollection();
         $this->trades = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     /**
@@ -442,7 +464,7 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        // TODO: Implement getSalt() method.
+        return $this->id . '#' . $this->username . '#' . $this->email;
     }
 
     /**
@@ -497,6 +519,51 @@ class User implements UserInterface
     }
 
     /**
+     * @return string
+     */
+    public function getBalanceUpdatedAt()
+    {
+        return $this->balanceUpdatedAt;
+    }
+
+    /**
+     * @param string $balanceUpdatedAt
+     * @return $this
+     */
+    public function setBalanceUpdatedAt($balanceUpdatedAt)
+    {
+        $this->balanceUpdatedAt = $balanceUpdatedAt;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormattedBalance()
+    {
+        $date = Carbon::createFromTimestamp($this->balanceUpdatedAt);
+        return $date->format('d.m.Y H:i:s');
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiKey()
+    {
+        return $this->apiKey;
+    }
+
+    /**
+     * @param string $apiKey
+     * @return $this
+     */
+    public function setApiKey($apiKey)
+    {
+        $this->apiKey = $apiKey;
+        return $this;
+    }
+
+    /**
      * @return Collection
      */
     public function getTrades(): Collection
@@ -513,6 +580,22 @@ class User implements UserInterface
     }
 
     /**
+     * @return Collection
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param Collection $notes
+     */
+    public function setNotes(Collection $notes)
+    {
+        $this->notes = $notes;
+    }
+
+    /**
      * @return string
      */
     public function getUpdatedPassword(): string
@@ -526,6 +609,17 @@ class User implements UserInterface
     public function setUpdatedPassword(string $updatedPassword)
     {
         $this->updatedPassword = $updatedPassword;
+    }
+
+    public function generateApiKey()
+    {
+        $apiKey = [ $this->getPassword(), $this->getUsername(), time() ];
+        $apiKey = implode('', $apiKey);
+        $apiKey = str_shuffle($apiKey);
+        $apiKey = sha1($apiKey);
+        $apiKey = str_shuffle($apiKey);
+
+        $this->setApiKey($apiKey);
     }
 
     public function __toString()

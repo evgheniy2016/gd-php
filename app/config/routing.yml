@@ -1,3 +1,8 @@
+api:
+    resource: "@ApiBundle/Controller/"
+    type:     annotation
+    prefix:   /api
+
 binary_trade:
     resource: "@BinaryTradeBundle/Controller/"
     type:     annotation

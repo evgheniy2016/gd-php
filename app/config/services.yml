@@ -39,6 +39,9 @@ services:
     AdminBundle\Service\SidebarService:
         public: true
 
+    BinaryTradeBundle\Service\TradingService:
+        public: true
+
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:

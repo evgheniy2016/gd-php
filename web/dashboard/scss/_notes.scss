@@ -1,0 +1,15 @@
+@import "variables";
+@import "mixins";
+
+.note {
+  margin-top: $app-base-padding;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+
+  .note-footer {
+    margin-top: $app-base-padding / 2;
+  }
+}

@@ -16,7 +16,15 @@ class TradeRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->createQueryBuilder('trade')
             ->where('trade.user = :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $user)
+            ->orderBy('trade.id', 'desc');
+    }
+
+    public function findOpenedTrades()
+    {
+        return $this->createQueryBuilder('trade')
+            ->where('trade.finished = false')
+            ->orderBy('trade.id', 'desc');
     }
 
 }

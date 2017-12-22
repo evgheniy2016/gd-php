@@ -6,7 +6,8 @@
         "psr-4": {
             "AppBundle\\": "src/AppBundle",
             "AdminBundle\\": "src/AdminBundle",
-            "BinaryTradeBundle\\": "src/BinaryTradeBundle"
+            "BinaryTradeBundle\\": "src/BinaryTradeBundle",
+            "ApiBundle\\": "src/ApiBundle"
         },
         "classmap": [
             "app/AppKernel.php",

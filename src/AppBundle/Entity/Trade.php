@@ -37,28 +37,28 @@ class Trade
     /**
      * @var string
      *
-     * @ORM\Column(name="amount", type="decimal", precision=20, scale=0)
+     * @ORM\Column(name="amount", type="float")
      */
     private $amount;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Column(name="created_at", type="string")
      */
     private $createdAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expire_at", type="datetime")
+     * @ORM\Column(name="expire_at", type="string")
      */
     private $expireAt;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="period", type="decimal", precision=10, scale=0)
+     * @ORM\Column(name="period", type="string")
      */
     private $period;
 
@@ -88,6 +88,24 @@ class Trade
      * @ORM\Column(name="asset", type="string", nullable=false)
      */
     private $asset;
+
+    /**
+     * @var string
+     * @ORM\Column(name="asset_name", type="string", nullable=false)
+     */
+    private $assetName;
+
+    /**
+     * @var string
+     * @ORM\Column(name="asset_price", type="string", length=10, nullable=false)
+     */
+    private $assetPrice;
+
+    /**
+     * @var float
+     * @ORM\Column(name="offer_multiplier", type="float", nullable=false)
+     */
+    private $offerMultiplier;
 
     /**
      * @var User
@@ -159,7 +177,7 @@ class Trade
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param string $createdAt
      *
      * @return Trade
      */
@@ -167,19 +185,13 @@ class Trade
     {
         $this->createdAt = $createdAt;
 
-        if ($this->period !== null) {
-            $expireAt = Carbon::createFromTimestamp($this->createdAt->getTimestamp());
-            $expireAt->addMinutes($this->period);
-            $this->setExpireAt($expireAt);
-        }
-
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime
+     * @return string
      */
     public function getCreatedAt()
     {
@@ -189,7 +201,7 @@ class Trade
     /**
      * Set openedTo
      *
-     * @param \DateTime $expireAt
+     * @param string $expireAt
      *
      * @return Trade
      */
@@ -203,7 +215,7 @@ class Trade
     /**
      * Get openedTo
      *
-     * @return \DateTime
+     * @return string
      */
     public function getExpireAt()
     {
@@ -302,6 +314,60 @@ class Trade
     }
 
     /**
+     * @return string
+     */
+    public function getAssetName(): string
+    {
+        return $this->assetName;
+    }
+
+    /**
+     * @param string $assetName
+     * @return $this
+     */
+    public function setAssetName($assetName)
+    {
+        $this->assetName = $assetName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssetPrice()
+    {
+        return $this->assetPrice;
+    }
+
+    /**
+     * @param string $assetPrice
+     * @return $this
+     */
+    public function setAssetPrice($assetPrice)
+    {
+        $this->assetPrice = $assetPrice;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getOfferMultiplier()
+    {
+        return $this->offerMultiplier;
+    }
+
+    /**
+     * @param float $offerMultiplier
+     * @return $this
+     */
+    public function setOfferMultiplier($offerMultiplier)
+    {
+        $this->offerMultiplier = $offerMultiplier;
+        return $this;
+    }
+
+    /**
      * @return User
      */
     public function getUser(): User
@@ -322,7 +388,7 @@ class Trade
      */
     public function getCreatedAtString()
     {
-        return $this->getCreatedAt()->format('d.m.Y H:i:s');
+        return Carbon::createFromTimestamp((int)($this->createdAt))->format('d.m.Y H:i:s');
     }
 
     /**
@@ -330,7 +396,7 @@ class Trade
      */
     public function getExpireAtString()
     {
-        return $this->getCreatedAt()->format('d.m.Y H:i:s');
+        return Carbon::createFromTimestamp((int)($this->expireAt))->format('d.m.Y H:i:s');
     }
 
     public function __toString()
@@ -341,17 +407,6 @@ class Trade
         $direction = $this->direction;
 
         return "Created at ${createdAt}, expire at ${expireAt}, amount is ${amount} and direction is ${direction}";
-    }
-
-    /**
-     * @return string
-     */
-    public function getAssetLabel(): string
-    {
-        $asset = explode(':', $this->asset)[1];
-        $asset = strtoupper($asset);
-        $asset = str_replace('-', '/', $asset);
-        return $asset;
     }
 
 }

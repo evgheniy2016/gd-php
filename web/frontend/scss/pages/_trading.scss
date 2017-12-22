@@ -137,11 +137,19 @@ $terminal-exchanges-width: 380px;
             &.sell {
               background-color: #3bc97e;
               margin-right: $app-base-padding / 4;
+
+              &.active {
+                background-color: darken(#3bc97e, 10%);
+              }
             }
 
             &.buy {
               background-color: #c6315e;
               margin-left: $app-base-padding / 4;
+
+              &.active {
+                background-color: darken(#c6315e, 10%);
+              }
             }
           }
 
@@ -159,6 +167,10 @@ $terminal-exchanges-width: 380px;
             font-size: 12px;
 
             @include box-sizing();
+
+            &.invisible {
+              display: none;
+            }
           }
         }
 
@@ -181,6 +193,10 @@ $terminal-exchanges-width: 380px;
             border-radius: 3px;
             border: 2px solid #999999;
             text-align: right;
+            width: 60%;
+            flex-shrink: 0;
+            flex-grow: 0;
+            padding: $app-base-padding / 2;
 
             @include box-sizing();
           }

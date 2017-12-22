@@ -41,6 +41,8 @@ class AuthorizationController extends Controller
 
     /**
      * @param Request $request
+     * @return RedirectResponse
+     *
      * @Route("/registration", methods={"POST"}, name="registration_post")
      */
     public function registrationPostAction(Request $request)
@@ -81,6 +83,9 @@ class AuthorizationController extends Controller
         $user->setPhone($phone);
 
         $manager = $this->getDoctrine()->getManager();
+
+        $user->generateApiKey();
+
         $manager->persist($user);
         $manager->flush();
 

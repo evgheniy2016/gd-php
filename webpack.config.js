@@ -10,9 +10,14 @@ const extractSass = new ExtractTextPlugin({
 const config = {
     context: path.resolve(__dirname, 'web/'),
     entry: {
-        dashboard: './dashboard/scss/main.scss',
-        frontend: './frontend/scss/main.scss',
-        frontendScripts: './frontend/typescript/main.ts'
+        dashboard: [
+            './dashboard/scss/main.scss',
+            './dashboard/typescript/main.ts'
+        ],
+        frontend: [
+            './frontend/scss/main.scss',
+            './frontend/typescript/main.ts'
+        ]
     },
     resolve: {
         extensions: [ '.ts', '.tsx', '.js', '.scss' ]

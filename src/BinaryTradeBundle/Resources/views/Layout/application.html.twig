@@ -3,6 +3,7 @@
 <head>
     <title>{% block title %}{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&amp;subset=cyrillic-ext" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('dist/frontend.css') }}" />
 </head>
 <body>
 <div class="page-header">
@@ -16,7 +17,7 @@
             <div class="pull-right">
                 {% if is_granted('ROLE_USER') %}
                 <div class="wallet">
-                    <span>$ 2000.12</span><!--
+                    <span>{{ app.user.balance }} $</span><!--
                     --><a href="javascript:" class="refill">Пополнить счёт</a>
                 </div>
                 {% endif %}
@@ -43,10 +44,12 @@
 </div>
 <script>
     window.currentPage = '{{ app.request.attributes.get('_route') }}';
+    {% if is_granted('ROLE_USER') %}
+    window.apiKey = '{{ app.user.apiKey }}';
+    {% endif %}
 </script>
 {% block js %}{% endblock %}
-<script src="http://localhost:5001/socket.io/socket.io.js"></script>
+<script src="http://192.168.1.102:5001/socket.io/socket.io.js"></script>
 <script src="{{ asset('dist/frontend.bundle.js') }}"></script>
-<script src="{{ asset('dist/frontendScripts.bundle.js') }}"></script>
 </body>
 </html>

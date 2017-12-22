@@ -38,7 +38,7 @@ class AdministratorController extends Controller
     public function indexAction($page = 1)
     {
         $usersRepository = $this->getDoctrine()->getRepository('AppBundle:User');
-        $administrators = $usersRepository->findByRole('ROLE_ADMIN');
+        $administrators = $usersRepository->findByRole(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN']);
         $paginationAdapter = new DoctrineORMAdapter($administrators);
         $pagination = new Pagerfanta($paginationAdapter);
 
@@ -46,6 +46,8 @@ class AdministratorController extends Controller
 
         $pagination->setMaxPerPage($paginationTake);
         $pagination->setCurrentPage($page);
+
+        dump($pagination);
 
         return $this->render('@Admin/Administrator/index.html.twig', array(
             'administrators' => $pagination
@@ -66,6 +68,7 @@ class AdministratorController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $encodedPassword = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
             $user->setPassword($encodedPassword);
+            $user->generateApiKey();
 
             $this->getDoctrine()->getManager()->persist($user);
             $this->getDoctrine()->getManager()->flush();

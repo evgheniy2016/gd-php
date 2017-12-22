@@ -6,13 +6,20 @@
 {% block body %}
 
     <div class="tabs-container">
-        <div class="tabs-navigation-header">
-            <h3>{{ user.username }}<small class="new-line with-offset">{{ user.email }}</small></h3>
-        </div>
-        <div class="tabs-navigation">
-            <a href="{{ path('users.edit', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.edit' %}active{% endif %}">Infromation</a>
-            <a href="{{ path('users.show.trades', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.show.trades' %}active{% endif %}">Trades</a>
-            <a href="{{ path('users.show.balance', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.balance' %}active{% endif %}">Balance</a>
+        <div class="tabs-sticky">
+            <div class="tabs-navigation-header">
+                <h3>{{ user.username }}<small class="new-line with-offset">{{ user.email }}</small></h3>
+                {% for message in app.flashes('notice') %}
+                    <div class="alert alert-one-line">{{ message }}</div>
+                {% endfor %}
+            </div>
+            <div class="tabs-navigation">
+                <a href="{{ path('users.edit', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.edit' %}active{% endif %}">Infromation</a>
+                <a href="{{ path('users.show.trades', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.show.trades' %}active{% endif %}">Trades</a>
+                <a href="{{ path('users.show.balance', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.balance' %}active{% endif %}">Balance</a>
+                <a href="{{ path('users.show.give_a_bonus', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.give_a_bonus' %}active{% endif %}">Give a bonus</a>
+                <a href="{{ path('users.show.notes', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.notes' %}active{% endif %}">Notes</a>
+            </div>
         </div>
         <div class="tabs-content {% block tabs_content_classes %}{% endblock %}">
             {% block show_user_content %}

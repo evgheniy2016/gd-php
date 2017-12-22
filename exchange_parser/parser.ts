@@ -14,6 +14,12 @@ export class Parser {
 
     private lastValues: any = {};
 
+    private getAssetsUrl: string = 'http://localhost:8000/api/assets/list';
+
+    private assets: number[] = [];
+
+    private wsConnection: any = null;
+
     public constructor(private database: Database) {
         this.redisClient = redis.createClient();
     }
@@ -21,17 +27,9 @@ export class Parser {
     public start() {
         console.log('started parser');
 
-        this.createParserConnection();
+        request.get(this.getAssetsUrl, (error, response, body) => this.processAssetsList(body));
 
-        setInterval(() => {
-            const timestamp = (+ new Date());
-
-            for (let pid in this.lastValues) {
-                let value = this.lastValues[pid];
-                this.onPriceChanged
-                  .forEach(callback => callback.listener.call(callback.root, pid, value, timestamp));
-            }
-        }, 1000);
+        setInterval(() => this.updateAssets(), 5000);
     }
 
     private createParserConnection() {
@@ -43,6 +41,7 @@ export class Parser {
                 const ws = new WebSocket(this.wsUrl, {
                     perMessageDeflate: true
                 });
+                this.wsConnection = ws;
                 const listLimit = 70;
 
                 ws.onopen = () => {
@@ -57,10 +56,10 @@ export class Parser {
                 ws.onmessage = (message) => {
                     let data = message.data;
                     if (data === 'o') {
-                        for (let i = 1; i < 11; i++) {
-                            ws.send('["{\\"_event\\":\\"subscribe\\",\\"tzID\\":55,\\"message\\":\\"pid-' + i + ':\\"}"]');
+                        for (let asset of this.assets) {
+                            ws.send(`["{\\"_event\\":\\"subscribe\\",\\"tzID\\":55,\\"message\\":\\"pid-${asset}:\\"}"]`);
                         }
-                        ws.send('["{\\"_event\\":\\"subscribe\\",\\"tzID\\":55,\\"message\\":\\"pid-41:\\"}"]');
+                        // ws.send('["{\\"_event\\":\\"subscribe\\",\\"tzID\\":55,\\"message\\":\\"pid-41:\\"}"]');
                         // ws.send('["{\"_event\":\"UID\",\"UID\":0}"]');
                     } else {
                         // removing first symbol(in messages with data - 'a')
@@ -82,9 +81,9 @@ export class Parser {
                                 let messageBody = messageWrapper[1];
 
                                 const messageBodyParsed = JSON.parse(messageBody);
-                                const timestamp = (+ new Date());
                                 const pid = messageBodyParsed.pid;
                                 const price = messageBodyParsed.last_numeric;
+                                const timestamp = typeof messageBody.timestamp !== "undefined" ?  messageBody.timestamp : (+new Date);
 
                                 this.lastValues['pid-' + pid] = price;
 
@@ -108,6 +107,48 @@ export class Parser {
                 };
 
             }
+        });
+    }
+
+    private processAssetsList(body: any) {
+        const assetsResponse = JSON.parse(body);
+        if (typeof assetsResponse.response === "undefined") {
+            throw "Response is undefined";
+        }
+
+        const assets = assetsResponse.assets;
+        assets.forEach(asset => this.assets.push(asset));
+
+        this.createParserConnection();
+
+        setInterval(() => {
+            const timestamp = (+ new Date());
+
+            for (let pid in this.lastValues) {
+                let value = this.lastValues[pid];
+                this.onPriceChanged
+                  .forEach(callback => callback.listener.call(callback.root, pid, value, timestamp));
+            }
+        }, 1000);
+    }
+
+    private updateAssets() {
+        request.get(this.getAssetsUrl, (error, response, body) => {
+            const assetsResponse = JSON.parse(body);
+            if (typeof assetsResponse.response === "undefined") {
+                throw "Response is undefined";
+            }
+
+            const assets = assetsResponse.assets;
+            assets.forEach(asset => {
+                if (this.assets.indexOf(asset) === -1) {
+                    this.assets.push(asset);
+
+                    if (this.wsConnection !== null) {
+                        this.wsConnection.send(`["{\\"_event\\":\\"subscribe\\",\\"tzID\\":55,\\"message\\":\\"pid-${asset}:\\"}"]`);
+                    }
+                }
+            });
         });
     }
 

@@ -11,12 +11,22 @@ namespace AppBundle\Repository;
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
 
-    public function findByRole($role)
+    public function findByRole($roles)
     {
-        return $this->createQueryBuilder('u')
-            ->where('u.roles like :role')
-            ->orderBy('u.id', 'desc')
-            ->setParameter('role', "%{$role}%");
+        $query = $this->createQueryBuilder('u');
+
+        foreach ($roles as $key => $role) {
+            if ($key === 0) {
+                $query->where('u.roles like :role_' . $key);
+            } else {
+                $query->orWhere('u.roles like :role_' . $key);
+            }
+            $query->setParameter('role_' . $key, "%{$role}%");
+        }
+
+        $query->orderBy('u.id', 'desc');
+
+        return $query;
     }
 
     public function paginateByRole($role, $take, $page = 1)
@@ -28,6 +38,13 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return $this->findByRole($role)
             ->setFirstResult($take * ($page - 1))
             ->setMaxResults($take);
+    }
+
+    public function findByRoleAndPromoCode($roles, $promoCodes)
+    {
+        return $this->findByRole($roles)
+            ->andWhere('u.promoCode in(:codes)')
+            ->setParameter('codes', $promoCodes);
     }
 
 }

@@ -1,6 +1,6 @@
 {% extends "@Admin/base.html.twig" %}
 
-{% block title %}AdminBundle:User:index{% endblock %}
+{% block title "Users" %}
 
 {% block body %}
 
@@ -10,9 +10,11 @@
             <th width="75">id</th>
             <th width="300">username</th>
             <th>promocode</th>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
             <th class="pull-right contains-button">
                 <a href="{{ path('users.create') }}" class="button button-small">create</a>
             </th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -20,7 +22,7 @@
         <tr>
             <td>{{ user.id }}</td>
             <td><a href="{{ path('users.edit', { id: user.id }) }}">{{ user.username }}</a></td>
-            <td colspan="2">{{ user.promocode }}</td>
+            <td {% if is_granted('ROLE_SUPER_ADMIN') %} colspan="2" {% endif %}>{{ user.promocode }}</td>
         </tr>
         {% endfor %}
         </tbody>

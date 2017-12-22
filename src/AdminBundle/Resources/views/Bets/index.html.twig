@@ -1,7 +1,42 @@
 {% extends "@Admin/base.html.twig" %}
 
-{% block title %}AdminBundle:Bets:index{% endblock %}
+{% block title "Bets" %}
 
 {% block body %}
-<h1>Welcome to the Bets:index page</h1>
+<table class="table card table-response-on-hover">
+    <thead>
+    <tr>
+        <th width="150">amount</th>
+        <th width="80">direction</th>
+        <th width="150">created at</th>
+        <th width="100">period</th>
+        <th width="100">asset</th>
+        <th>username</th>
+        <th width="150">current balance</th>
+        <th width="80" class="pull-right">actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for bet in bets %}
+    <tr>
+        <td>{{ bet.amount }} $</td>
+        <td>{{ bet.direction }}</td>
+        <td>{{ bet.createdAtString }}</td>
+        <td>{{ bet.period }}</td>
+        <td>{{ bet.assetName }}</td>
+        <td>{{ bet.user.username }}</td>
+        <td>{{ bet.user.balance }}</td>
+        <td class="set-trade-result-buttons">{% spaceless %}
+                {% if bet.finished == false and bet.predefinedDirection == null %}
+                    <form class="trade-result-buttons-container" method="post" action="{{ url('users.trades.predefined_direction', { id: bet.user.id, tid: bet.id }) }}">
+                        <input type="hidden" name="predefined_direction" />
+                        <a href="javascript:" onclick="this.parentElement.firstChild.value = 'up'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_up</i></a>
+                        <a href="javascript:" onclick="this.parentElement.firstChild.value = 'down'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_down</i></a>
+                    </form>
+                {% endif %}
+            {% endspaceless %}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

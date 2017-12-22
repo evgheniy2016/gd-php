@@ -5,6 +5,29 @@
   width: 100%;
   background-color: $app-white-color;
 
+  &.table-response-on-hover {
+
+    overflow: hidden;
+
+    tbody tr {
+      transition: 0.1s box-shadow;
+
+      &:hover {
+        //box-shadow: 0 0 16px rgba(0, 0, 0, .15);
+
+        td {
+          border-top: 1px solid rgba(0, 0, 0, 0.3);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        }
+      }
+
+      td {
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+      }
+    }
+  }
+
   thead tr th {
     text-align: left;
     text-transform: uppercase;

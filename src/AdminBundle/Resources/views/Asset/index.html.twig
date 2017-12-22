@@ -1,0 +1,32 @@
+{% extends "@Admin/base.html.twig" %}
+
+{% block title "Assets" %}
+
+{% block body %}
+    <table class="table card">
+        <thead>
+        <tr>
+            <th width="100">Pid</th>
+            <th>Name</th>
+            <th width="150">Type</th>
+            <th width="150" class="pull-right"><a href="javascript:">create</a></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for asset in assets %}
+        <tr>
+            <td>{{ asset.pid }}</td>
+            <td>{{ asset.name }}</td>
+            <td>{{ asset.type }}</td>
+            <td class="pull-right">
+                <a href="javascript:">delete</a>
+                <a href="javascript:">edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% include '@Admin/pagination/pagination.html.twig' with { pagination: assets, path: 'assets.index.page' } only %}
+
+{% endblock %}

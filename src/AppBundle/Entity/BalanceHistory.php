@@ -39,7 +39,7 @@ class BalanceHistory
     /**
      * @var string
      *
-     * @ORM\Column(name="amount", type="decimal", precision=10, scale=0)
+     * @ORM\Column(name="amount", type="float")
      */
     private $amount;
 
@@ -89,7 +89,7 @@ class BalanceHistory
     /**
      * Set amount
      *
-     * @param string $amount
+     * @param float $amount
      *
      * @return BalanceHistory
      */
@@ -103,11 +103,30 @@ class BalanceHistory
     /**
      * Get amount
      *
-     * @return string
+     * @return float
      */
     public function getAmount()
     {
         return $this->amount;
     }
+
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
 }
 

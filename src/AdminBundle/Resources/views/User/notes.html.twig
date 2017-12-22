@@ -1,0 +1,25 @@
+{% extends '@Admin/User/show.html.twig' %}
+
+{% block title user.username ~ " - Notes" %}
+
+{% block show_user_content %}
+    <form action="{{ url('users.note.create', { id: user.id }) }}" method="post" class="form-note">
+        <div><textarea name="content" id="content"></textarea></div>
+        <div><input type="submit" value="Send" class="button" /></div>
+        <input type="hidden" name="key" value="{{ key }}" />
+    </form>
+
+    {% for note in notes %}
+    <div class="note">
+        <div class="note-content">{% spaceless %}
+            {% for line in note.getContentByLines %}
+            <p>{{ line }}</p>
+            {% endfor %}
+        {% endspaceless %}</div>
+        <div class="note-footer">
+            <a href="{{ url('users.note.delete', { id: user.id, noteId: note.id }) }}">delete</a>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
+

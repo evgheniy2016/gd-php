@@ -1,0 +1,31 @@
+@import "../variables";
+@import "../mixins";
+
+.form-note {
+
+  textarea {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    line-height: 14px * 1.25;
+    resize: vertical;
+    padding: $app-base-padding;
+    border: 1px solid rgba(0, 0, 0, .15);
+    width: 450px;
+    max-width: 450px;
+    min-width: 450px;
+
+    min-height: 150px;
+    height: 150px;
+
+    @include box-sizing();
+
+    &:focus {
+      border-color: rgba(0, 0, 0, .3);
+    }
+  }
+
+  .button {
+    margin-top: $app-base-padding / 4;
+  }
+
+}

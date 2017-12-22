@@ -4,6 +4,14 @@
 .tabs-container {
   width: 100%;
 
+  .tabs-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: #F7F7F7;
+    box-shadow: 0 3px $app-base-padding rgba(0, 0, 0, .15);
+  }
+
   .tabs-navigation-header {
     padding: $app-base-padding;
 
@@ -23,6 +31,7 @@
       position: relative;
       z-index: $app-base-z-index - 1;
       text-decoration: none;
+      outline: none;
 
       @include box-sizing();
 
@@ -32,6 +41,10 @@
         z-index: $app-base-z-index + 1;
         background-color: white;
         border-top: 2px solid $app-blue-color;
+      }
+
+      a {
+        outline: none;
       }
     }
   }
@@ -43,6 +56,7 @@
     position: relative;
     z-index: $app-base-z-index;
     border-radius: 3px;
+    box-shadow: 0 3px $app-base-padding rgba(0, 0, 0, .05);
 
     @include box-sizing();
 

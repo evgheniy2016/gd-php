@@ -23,11 +23,11 @@
                         <a href="javascript:" class="button active">Длинные</a>
                     </div>
                     <div class="exchange-filter grid">
-                        <a href="javascript:" class="button button-small">30 сек</a>
-                        <a href="javascript:" class="button button-small">60 сек</a>
-                        <a href="javascript:" class="button button-small active">2 мин</a>
-                        <a href="javascript:" class="button button-small">5 мин</a>
-                        <a href="javascript:" class="button button-small">10 мин</a>
+                        <a href="javascript:" data-time-interval="30s" class="button button-small active">30 сек</a>
+                        <a href="javascript:" data-time-interval="1m" class="button button-small">60 сек</a>
+                        <a href="javascript:" data-time-interval="2m" class="button button-small">2 мин</a>
+                        <a href="javascript:" data-time-interval="5m" class="button button-small">5 мин</a>
+                        <a href="javascript:" data-time-interval="10m" class="button button-small">10 мин</a>
                     </div>
                     <div class="exchanges-table-wrapper">
                         <table class="table exchanges-table">
@@ -40,20 +40,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for i in range(1, 10) %}
-                            <tr class="trading-asset" data-asset="pid-{{ i }}">
-                                <td>AUD/CAD (78%) {{ i }}</td>
-                                <td data-asset-value="pid-{{ i }}">-</td>
-                                <td>2 мин</td>
-                                <td {% if i % 2 == 0 %} class="time-ends" {% endif %}>1:30</td>
-                            </tr>
-                            {% endfor %}
-                            <tr class="trading-asset" data-asset="pid-41">
-                                <td>AUD/CAD (78%) 41</td>
-                                <td data-asset-value="pid-41"></td>
-                                <td>2 мин</td>
+                            {% for asset in assets %}
+                            <tr class="trading-asset" data-asset="pid-{{ asset.pid }}">
+                                <td>{{ asset.name }} (78%)</td>
+                                <td data-asset-value="pid-{{ asset.pid }}">-</td>
+                                <td><span data-current-date-interval></span> мин</td>
                                 <td>1:30</td>
                             </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -62,11 +56,14 @@
                     <div class="grid">
                         <a href="javascript:" class="sell">Sell</a>
                         <a href="javascript:" class="buy">Buy</a>
-                        <div class="current-price"></div>
+                        <div class="current-price invisible"></div>
                     </div>
                     <form method="post" class="grid place-a-bet-form">
-                        <input type="number" name="amount" class="input-field" />
+                        <input type="text" name="amount" class="input-field" />
                         <input type="submit" value="Торговать" class="submit-button" />
+                        <input type="hidden" name="time-input" class="time-input" value="{{ tradingService.encodeTime('30s') }}" />
+                        <input type="hidden" name="asset-price" class="asset-price" />
+                        <input type="hidden" name="offer-multiplier" class="offer-multiplier" value="1.78" />
                     </form>
                 </div>
             </div>
@@ -74,15 +71,20 @@
     </div>
     <div class="trading-additional-information">
         <div class="tabs grid">
-            <a href="javascript:">Открытые позиции</a>
-            <a href="javascript:">История</a>
-            <a href="javascript:">Операции</a>
-            <a href="javascript:">Депозит</a>
-            <a href="javascript:">Вывод</a>
-            <a href="javascript:" class="active">Мой счёт</a>
+            <a href="javascript:" data-tab="opened-bets">Открытые позиции</a>
+            <a href="javascript:" data-tab="history">История</a>
+            <a href="javascript:" data-tab="operations">Операции</a>
+            <a href="javascript:" data-tab="deposit">Депозит</a>
+            <a href="javascript:" data-tab="withdraw">Вывод</a>
+            <a href="javascript:" data-tab="my-account" class="active">Мой счёт</a>
         </div>
-        <div class="tabs-content">
-            <!-- empty -->
+        <div class="tabs-contents">
+            <div class="tab-content" data-tab-opened-bets>Bets</div>
+            <div class="tab-content" data-tab-history>History</div>
+            <div class="tab-content" data-tab-operations>Operations</div>
+            <div class="tab-content" data-tab-deposit>Deposit</div>
+            <div class="tab-content" data-tab-withdraw>Withdraw</div>
+            <div class="tab-content" data-tab-my-account>My account</div>
         </div>
     </div>
 {% endblock %}
