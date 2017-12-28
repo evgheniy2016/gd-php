@@ -11,7 +11,8 @@
             <th width="75">id</th>
             <th width="350">title</th>
             <th>slug</th>
-            <th width="100" class="pull-right"><a href="{{ path('pages.create') }}">create</a></th>
+            <th width="200">category</th>
+            <th width="100" class="pull-right"><a href="{{ path('pages.create') }}" class="button button-small">create</a></th>
         </tr>
         </thead>
         <tbody>
@@ -20,7 +21,11 @@
             <td>{{ page.id }}</td>
             <td>{{ page.title }}</td>
             <td>{{ page.slug }}</td>
-            <td class="pull-right"><a href="{{ path('pages.delete', { id: page.id }) }}">delete</a></td>
+            <td>{% if page.category is not null %}{{ page.category.name }}{% endif %}</td>
+            <td class="pull-right">
+                <a href="{{ path('pages.edit', { id: page.id }) }}">edit</a>
+                <a href="{{ path('pages.delete', { id: page.id }) }}">delete</a>
+            </td>
         </tr>
         {% endfor %}
         </tbody>

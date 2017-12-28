@@ -1,0 +1,26 @@
+<table class="ui-table">
+    <thead>
+    <tr>
+        <th width="175">Тип</th>
+        <th>Значение</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for record in records %}
+    <tr>
+        <td>{% spaceless %}
+            {% if record.type == 'income' %}
+                {{ 'app.balance_history.type.income' | trans }}
+            {% elseif record.type == 'outgoing' %}
+                {{ 'app.balance_history.type.outgoing' | trans }}
+            {% elseif record.type == 'bonus' %}
+                {{ 'app.balance_history.type.bonus' | trans }}
+            {% endif %}
+        {% endspaceless %}</td>
+        <td>{{ record.amount }} $</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% include '@Api/Trades/pagination.html.twig' with { pagination: records, path: 'api.trades.operations.page' } only %}

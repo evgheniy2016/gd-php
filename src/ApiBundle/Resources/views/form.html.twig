@@ -1,0 +1,18 @@
+{% block form_row %}
+    <div class="form-group">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block _appbundle_user_save_row %}
+    <div class="form-group content-center">
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block _appbundle_assetcharacteristic_send_row %}
+    <div class="form-group content-center">
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}

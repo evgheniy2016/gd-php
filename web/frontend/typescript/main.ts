@@ -7,3 +7,12 @@ const websocketClient = new WebSocketClient();
 if (typeof rules !== "undefined") {
   rules.forEach(rule => rule.action.call(window));
 }
+
+const balanceLabel = document.querySelector('#wallet-amount');
+if (balanceLabel !== null) {
+  balanceLabel.innerHTML = Number(balanceLabel.innerHTML.split(' ')[0]).toFixed(2) + ' $';
+
+  websocketClient.on('balance-updated', balance => {
+    balanceLabel.innerHTML = Number(balance).toFixed(2) + ' $';
+  });
+}

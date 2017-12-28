@@ -219,26 +219,51 @@ $terminal-exchanges-width: 380px;
   .trading-additional-information {
     margin-top: $app-base-padding * 2;
 
-    .tabs.grid {
-      a {
-        text-align: center;
-        text-decoration: none;
-        background-color: #232b3d;
-        padding: $app-base-padding;
-        margin-right: $app-base-padding;
-        border-radius: 8px;
-        outline: none;
+    .tabs {
+      .tabs-navigation {
+        &.grid {
+          a {
+            text-align: center;
+            text-decoration: none;
+            background-color: #232b3d;
+            padding: $app-base-padding;
+            margin-right: $app-base-padding;
+            border-radius: 8px;
+            outline: none;
 
-        @include box-sizing();
+            @include box-sizing();
 
-        &:last-child {
-          margin-right: 0;
+            &:last-child {
+              margin-right: 0;
+            }
+
+            &.active {
+              background-color: #7d8d9a;
+              color: #1f2739;
+              text-shadow: 0 0 $app-base-padding #1f2739;
+            }
+          }
         }
+      }
 
-        &.active {
-          background-color: #7d8d9a;
-          color: #1f2739;
-          text-shadow: 0 0 $app-base-padding #1f2739;
+      .tabs-contents {
+        margin-top: $app-base-padding * 2;
+
+        .tab-content {
+          display: none;
+
+          &.visible {
+            display: block;
+          }
+
+          .h1 {
+            font-size: 28px;
+            text-transform: uppercase;
+          }
+
+          .text-center {
+            text-align: center;
+          }
         }
       }
     }

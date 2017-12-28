@@ -1,0 +1,26 @@
+{% spaceless %}
+    <div class="pagination">
+    {% if params is not defined %}
+        {% set params = {} %}
+    {% endif %}
+
+    <a href="{% spaceless %}
+        {% if pagination.hasNextPage %}
+            {% set forwardParams = params|merge({ page: pagination.nextPage }) %}
+
+            {{ path(path, forwardParams) }}
+        {% else %}
+            javascript:
+        {% endif %}
+    {% endspaceless %}" class="pagination-item navigate-forward {% if pagination.hasNextPage == false %}disabled{% endif %}">следующие</a>
+    <a href="{% spaceless %}
+        {% if pagination.hasPreviousPage %}
+            {% set previousParams = params|merge({ page: pagination.previousPage }) %}
+            {{ path(path, previousParams) }}
+        {% else %}
+            javascript:
+        {% endif %}
+    {% endspaceless %}" class="pagination-item navigate-backward {% if pagination.hasPreviousPage == false %}disabled{% endif %}">предыдущие</a>
+
+    </div>
+{% endspaceless %}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}GoldenForex{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&amp;subset=cyrillic-ext" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('dist/frontend.css') }}" />
 </head>
@@ -17,7 +17,7 @@
             <div class="pull-right">
                 {% if is_granted('ROLE_USER') %}
                 <div class="wallet">
-                    <span>{{ app.user.balance }} $</span><!--
+                    <span id="wallet-amount">{{ app.user.balance }} $</span><!--
                     --><a href="javascript:" class="refill">Пополнить счёт</a>
                 </div>
                 {% endif %}

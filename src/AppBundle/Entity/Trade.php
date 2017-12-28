@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Carbon\Carbon;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -115,6 +116,18 @@ class Trade
      */
     private $user;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BalanceHistory", mappedBy="trade")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $balanceHistories;
+
+    public function __construct()
+    {
+        $this->balanceHistories = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -381,6 +394,24 @@ class Trade
     public function setUser(User $user)
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getBalanceHistories()
+    {
+        return $this->balanceHistories;
+    }
+
+    /**
+     * @param ArrayCollection $balanceHistories
+     * @return $this
+     */
+    public function setBalanceHistories($balanceHistories)
+    {
+        $this->balanceHistories = $balanceHistories;
+        return $this;
     }
 
     /**

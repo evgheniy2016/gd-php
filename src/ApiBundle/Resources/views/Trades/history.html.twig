@@ -1,0 +1,43 @@
+<table class="ui-table">
+    <thead>
+    <tr>
+        <th width="90">ID</th>
+        <th>Актив</th>
+        <th width="150" class="pull-right">Направление</th>
+        <th width="200" class="pull-right">Ставка</th>
+        <th width="200" class="pull-right">Выигрыш</th>
+        <th width="150" class="pull-right">Статус</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if trades.count == 0 %}
+    <tr class="no-hover-effect">
+        <td colspan="6">&nbsp;</td>
+    </tr>
+    {% endif %}
+    {% for trade in trades %}
+    <tr>
+        <td>{{ trade.id }}</td>
+        <td>{{ trade.assetName }}</td>
+        <td class="pull-right">{{ trade.direction | trans }}</td>
+        <td class="pull-right">{{ trade.amount }} $</td>
+        <td class="pull-right">{% spaceless %}
+            {% if trade.gainings > 0 %}
+                {{ trade.gainings }} $
+            {% else %}
+                0
+            {% endif %}
+        {% endspaceless %}</td>
+        <td class="pull-right">{% spaceless %}
+            {% if trade.finished %}
+                {{ 'app.trade.finished' | trans }}
+            {% else %}
+                {{ 'app.trade.opened' | trans }}
+            {% endif %}
+        {% endspaceless %}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% include '@Api/Trades/pagination.html.twig' with { pagination: trades, path: pagination_url } only %}

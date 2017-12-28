@@ -4,6 +4,8 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Form\AssetType;
 use AppBundle\Entity\Asset;
+use AppBundle\Entity\AssetCharacteristic;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,6 +52,7 @@ class AssetController extends Controller
     public function createAction(Request $request)
     {
         $asset = new Asset();
+
         $form = $this->createForm(AssetType::class, $asset);
         $form->add('save', SubmitType::class, [
             'attr' => [
@@ -59,8 +62,14 @@ class AssetController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->persist($asset);
-            $this->getDoctrine()->getManager()->flush();
+            $doctrineManager = $this->getDoctrine()->getManager();
+            foreach ($asset->getCharacteristics() as $characteristic) {
+                $characteristic->setAsset($asset);
+                $doctrineManager->persist($characteristic);
+            }
+
+            $doctrineManager->persist($asset);
+            $doctrineManager->flush();
 
             return $this->redirectToRoute('assets.index');
         }
@@ -71,23 +80,79 @@ class AssetController extends Controller
     }
 
     /**
-     * @Route("/edit")
+     * @Route("/{id}/edit", requirements={"id", "\d+"}, name="assets.edit")
+     * @param Request $request
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction()
+    public function editAction(Request $request, int $id)
     {
-        return $this->render('AdminBundle:Asset:edit.html.twig', array(
-            // ...
+        $assetsRepository = $this->getDoctrine()->getRepository('AppBundle:Asset');
+        $asset = $assetsRepository->find($id);
+
+        $form = $this->createForm(AssetType::class, $asset);
+        $form->add('save', SubmitType::class, [
+            'attr' => [
+                'class' => 'button'
+            ]
+        ]);
+
+        $originalCharacteristics = new ArrayCollection();
+        foreach ($asset->getCharacteristics() as $characteristic) {
+            $originalCharacteristics->add($characteristic);
+        }
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $doctrineManager = $this->getDoctrine()->getManager();
+
+            foreach ($originalCharacteristics as $characteristic) {
+                if ($asset->getCharacteristics()->contains($characteristic) === false) {
+                    $doctrineManager->remove($characteristic);
+                }
+            }
+
+            foreach ($asset->getCharacteristics() as $characteristic) {
+                if ($characteristic->getId() === null) {
+                    $characteristic->setAsset($asset);
+                    $doctrineManager->persist($characteristic);
+                }
+            }
+
+            $doctrineManager->persist($asset);
+            $doctrineManager->flush();
+
+            return $this->redirectToRoute('assets.edit', [ 'id' => $asset->getId() ]);
+        }
+
+        return $this->render('AdminBundle:Asset:create.html.twig', array(
+            'form' => $form->createView()
         ));
     }
 
     /**
-     * @Route("/delete")
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/{id}/delete", requirements={"id": "\d+"}, defaults={"id": 0}, name="assets.delete")
      */
-    public function deleteAction()
+    public function deleteAction(int $id)
     {
-        return $this->render('AdminBundle:Asset:delete.html.twig', array(
-            // ...
-        ));
+        if ($id < 1 || !$this->isGranted('ROLE_SUPER_ADMIN')) {
+            return $this->redirectToRoute('assets.index');
+        }
+
+        $assetsRepository = $this->getDoctrine()->getRepository('AppBundle:Asset');
+        $asset = $assetsRepository->find($id);
+
+        $doctrineManager = $this->getDoctrine()->getManager();
+        $doctrineManager->remove($asset);
+        $doctrineManager->flush();
+
+        $referer = $_SERVER['HTTP_REFERER'];
+        return $this->redirect($referer);
     }
 
 }

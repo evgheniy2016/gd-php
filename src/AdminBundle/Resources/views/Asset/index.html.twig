@@ -9,7 +9,7 @@
             <th width="100">Pid</th>
             <th>Name</th>
             <th width="150">Type</th>
-            <th width="150" class="pull-right"><a href="javascript:">create</a></th>
+            <th width="150" class="pull-right"><a href="{{ url('assets.create') }}" class="button button-small">create</a></th>
         </tr>
         </thead>
         <tbody>
@@ -19,8 +19,8 @@
             <td>{{ asset.name }}</td>
             <td>{{ asset.type }}</td>
             <td class="pull-right">
-                <a href="javascript:">delete</a>
-                <a href="javascript:">edit</a>
+                <a href="{{ url('assets.delete', { id: asset.id }) }}">delete</a>
+                <a href="{{ url('assets.edit', { id: asset.id }) }}">edit</a>
             </td>
         </tr>
         {% endfor %}

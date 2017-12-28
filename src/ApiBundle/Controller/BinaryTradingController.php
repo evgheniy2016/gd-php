@@ -4,6 +4,7 @@ namespace ApiBundle\Controller;
 
 use AppBundle\Entity\BalanceHistory;
 use AppBundle\Entity\Trade;
+use AppBundle\Entity\User;
 use BinaryTradeBundle\Service\TradingService;
 use Carbon\Carbon;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,8 +28,12 @@ class BinaryTradingController extends Controller
      * @Route("/place-a-bet", methods={"post"})
      * @return JsonResponse
      */
-    public function placeABetAction(Request $request, UserInterface $user)
+    public function placeABetAction(Request $request)
     {
+        $usersRepository = $this->getDoctrine()->getRepository('AppBundle:User');
+        /** @var User $user */
+        $user = $usersRepository->find($request->get('user_id'));
+
         $tradingService = new TradingService();
         $carbonTime = Carbon::now();
         $currentTimestamp = $carbonTime->getTimestamp();
@@ -77,6 +82,7 @@ class BinaryTradingController extends Controller
         $balanceHistoryItem->setAmount($amount);
         $balanceHistoryItem->setType('outgoing');
         $balanceHistoryItem->setUser($user);
+        $balanceHistoryItem->setTrade($trade);
 
         $doctrineManager->persist($user);
         $doctrineManager->persist($balanceHistoryItem);
@@ -90,7 +96,8 @@ class BinaryTradingController extends Controller
                 'asset' => $request->get('asset')
             ],
             'time' => $time,
-            'target_timestamp' => $targetTimestamp
+            'target_timestamp' => $targetTimestamp,
+            'balance' => $user->getBalance()
         ]);
     }
 

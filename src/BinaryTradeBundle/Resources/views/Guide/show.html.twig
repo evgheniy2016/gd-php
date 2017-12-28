@@ -1,6 +1,6 @@
 {% extends "BinaryTradeBundle:Layout:application.html.twig" %}
 
-{% block title %}Руководство трейдера{% endblock %}
+{% block title page.title ~ " - Руководство трейдера - " ~ parent() %}
 
 {% block pageClass "guide-page" %}
 
@@ -9,35 +9,23 @@
     <div class="grid guide-content">
         <div class="col guide-navigation">
             <div class="guide-navigation-wrapper">
-                <div class="guide-navigation-section">Заголовок</div>
-                <ul class="guide-navigation-links">
-                    <li><a href="javascript:">Подзаголовок</a></li>
-                    <li><a href="javascript:">Подзаголовок</a></li>
-                    <li><a href="javascript:">Подзаголовок</a></li>
-                    <li><a href="javascript:">Подзаголовок</a></li>
-                    <li><a href="javascript:">Подзаголовок</a></li>
-                </ul>
-                <div class="guide-navigation-section">Заголовок</div>
-                <ul class="guide-navigation-links">
-                    <li><a href="javascript:">Подзаголовок</a></li>
-                    <li><a href="javascript:">Подзаголовок</a></li>
-                    <li><a href="javascript:">Подзаголовок</a></li>
-                    <li><a href="javascript:">Подзаголовок</a></li>
-                    <li><a href="javascript:">Подзаголовок</a></li>
-                </ul>
+                {% for category in categories %}
+                <div class="guide-navigation-section">{{ category.name }}</div>
+                    {% if category.pages.count > 0 %}
+                    <ul class="guide-navigation-links">
+                    {% for page in category.pages %}
+                        <li><a href="{{ url('guide.show.page', { slug: page.slug }) }}">{{ page.title }}</a></li>
+                    {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
         <div class="col guide-page-content">
             <div class="guide-page-content-wrapper">
-                <div class="guide-title">Заголовок</div>
+                <div class="guide-title">{{ page.title }}</div>
                 <div class="guide-text">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto consectetur modi molestias. Asperiores ex molestias nostrum perspiciatis quia ratione, rem! Autem deleniti praesentium repellat veritatis! Adipisci doloribus exercitationem fugiat labore laudantium molestias ullam voluptatibus! Asperiores at deleniti dolore exercitationem, natus possimus quae quidem similique velit voluptate. Animi assumenda, blanditiis cum dicta ducimus eius eveniet iure necessitatibus possimus sapiente sit soluta ullam vitae? Cumque eaque fuga quaerat quia quibusdam rerum sint vero. Ab accusantium alias cupiditate eveniet libero maxime molestias mollitia quidem quisquam veritatis. Assumenda deleniti et illo laudantium odio repellendus sapiente voluptatibus! Amet earum libero molestias nisi numquam perspiciatis placeat.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto consectetur modi molestias. Asperiores ex molestias nostrum perspiciatis quia ratione, rem! Autem deleniti praesentium repellat veritatis! Adipisci doloribus exercitationem fugiat labore laudantium molestias ullam voluptatibus! Asperiores at deleniti dolore exercitationem, natus possimus quae quidem similique velit voluptate. Animi assumenda, blanditiis cum dicta ducimus eius eveniet iure necessitatibus possimus sapiente sit soluta ullam vitae? Cumque eaque fuga quaerat quia quibusdam rerum sint vero. Ab accusantium alias cupiditate eveniet libero maxime molestias mollitia quidem quisquam veritatis. Assumenda deleniti et illo laudantium odio repellendus sapiente voluptatibus! Amet earum libero molestias nisi numquam perspiciatis placeat.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto consectetur modi molestias. Asperiores ex molestias nostrum perspiciatis quia ratione, rem! Autem deleniti praesentium repellat veritatis! Adipisci doloribus exercitationem fugiat labore laudantium molestias ullam voluptatibus! Asperiores at deleniti dolore exercitationem, natus possimus quae quidem similique velit voluptate. Animi assumenda, blanditiis cum dicta ducimus eius eveniet iure necessitatibus possimus sapiente sit soluta ullam vitae? Cumque eaque fuga quaerat quia quibusdam rerum sint vero. Ab accusantium alias cupiditate eveniet libero maxime molestias mollitia quidem quisquam veritatis. Assumenda deleniti et illo laudantium odio repellendus sapiente voluptatibus! Amet earum libero molestias nisi numquam perspiciatis placeat.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto consectetur modi molestias. Asperiores ex molestias nostrum perspiciatis quia ratione, rem! Autem deleniti praesentium repellat veritatis! Adipisci doloribus exercitationem fugiat labore laudantium molestias ullam voluptatibus! Asperiores at deleniti dolore exercitationem, natus possimus quae quidem similique velit voluptate. Animi assumenda, blanditiis cum dicta ducimus eius eveniet iure necessitatibus possimus sapiente sit soluta ullam vitae? Cumque eaque fuga quaerat quia quibusdam rerum sint vero. Ab accusantium alias cupiditate eveniet libero maxime molestias mollitia quidem quisquam veritatis. Assumenda deleniti et illo laudantium odio repellendus sapiente voluptatibus! Amet earum libero molestias nisi numquam perspiciatis placeat.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto consectetur modi molestias. Asperiores ex molestias nostrum perspiciatis quia ratione, rem! Autem deleniti praesentium repellat veritatis! Adipisci doloribus exercitationem fugiat labore laudantium molestias ullam voluptatibus! Asperiores at deleniti dolore exercitationem, natus possimus quae quidem similique velit voluptate. Animi assumenda, blanditiis cum dicta ducimus eius eveniet iure necessitatibus possimus sapiente sit soluta ullam vitae? Cumque eaque fuga quaerat quia quibusdam rerum sint vero. Ab accusantium alias cupiditate eveniet libero maxime molestias mollitia quidem quisquam veritatis. Assumenda deleniti et illo laudantium odio repellendus sapiente voluptatibus! Amet earum libero molestias nisi numquam perspiciatis placeat.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto consectetur modi molestias. Asperiores ex molestias nostrum perspiciatis quia ratione, rem! Autem deleniti praesentium repellat veritatis! Adipisci doloribus exercitationem fugiat labore laudantium molestias ullam voluptatibus! Asperiores at deleniti dolore exercitationem, natus possimus quae quidem similique velit voluptate. Animi assumenda, blanditiis cum dicta ducimus eius eveniet iure necessitatibus possimus sapiente sit soluta ullam vitae? Cumque eaque fuga quaerat quia quibusdam rerum sint vero. Ab accusantium alias cupiditate eveniet libero maxime molestias mollitia quidem quisquam veritatis. Assumenda deleniti et illo laudantium odio repellendus sapiente voluptatibus! Amet earum libero molestias nisi numquam perspiciatis placeat.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto consectetur modi molestias. Asperiores ex molestias nostrum perspiciatis quia ratione, rem! Autem deleniti praesentium repellat veritatis! Adipisci doloribus exercitationem fugiat labore laudantium molestias ullam voluptatibus! Asperiores at deleniti dolore exercitationem, natus possimus quae quidem similique velit voluptate. Animi assumenda, blanditiis cum dicta ducimus eius eveniet iure necessitatibus possimus sapiente sit soluta ullam vitae? Cumque eaque fuga quaerat quia quibusdam rerum sint vero. Ab accusantium alias cupiditate eveniet libero maxime molestias mollitia quidem quisquam veritatis. Assumenda deleniti et illo laudantium odio repellendus sapiente voluptatibus! Amet earum libero molestias nisi numquam perspiciatis placeat.</p>
+                    {{ page.contentCompiled | raw }}
                 </div>
             </div>
         </div>

@@ -44,6 +44,14 @@ class BalanceHistory
     private $amount;
 
     /**
+     * @var Trade
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Trade", inversedBy="balanceHistories")
+     * @ORM\JoinColumn(name="trade_id", referencedColumnName="id", onDelete="cascade")
+     */
+    private $trade;
+
+    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="balanceHistory")
@@ -126,6 +134,24 @@ class BalanceHistory
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @return Trade
+     */
+    public function getTrade()
+    {
+        return $this->trade;
+    }
+
+    /**
+     * @param Trade $trade
+     * @return $this
+     */
+    public function setTrade($trade)
+    {
+        $this->trade = $trade;
+        return $this;
     }
 
 }

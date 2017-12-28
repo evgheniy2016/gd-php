@@ -42,6 +42,19 @@ class Page
      */
     private $content;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="content_compiled", type="text", nullable=false, unique=false)
+     */
+    private $contentCompiled;
+
+    /**
+     * @var PageCategory
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PageCategory", inversedBy="pages")
+     */
+    private $category;
 
     /**
      * Get id
@@ -104,7 +117,7 @@ class Page
     /**
      * Set content
      *
-     * @param string $content
+     * @param $content
      *
      * @return Page
      */
@@ -124,5 +137,42 @@ class Page
     {
         return $this->content;
     }
+
+    /**
+     * @return string
+     */
+    public function getContentCompiled()
+    {
+        return $this->contentCompiled;
+    }
+
+    /**
+     * @param string $contentCompiled
+     * @return $this
+     */
+    public function setContentCompiled($contentCompiled)
+    {
+        $this->contentCompiled = $contentCompiled;
+        return $this;
+    }
+
+    /**
+     * @return PageCategory
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param PageCategory $category
+     * @return $this
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+        return $this;
+    }
+
 }
 

@@ -1,0 +1,47 @@
+@import "variables";
+@import "mixins";
+
+.ui-table {
+  width: 100%;
+
+  thead tr th, tbody tr td {
+    padding: $app-base-padding;
+
+    @include box-sizing();
+
+    &.pull-right {
+      text-align: right;
+    }
+  }
+
+  thead {
+    tr {
+      th {
+        text-transform: uppercase;
+        color: $app-blue-text-color;
+        text-align: left;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+
+      &:not(.no-hover-effect) {
+        &:hover {
+          & > td {
+            &:first-child {
+              border-radius: 5px 0 0 5px;
+            }
+            &:last-child {
+              border-radius: 0 5px 5px 0;
+            }
+          }
+          td {
+            background-color: rgba(0, 0, 0, .5);
+          }
+        }
+      }
+    }
+  }
+}

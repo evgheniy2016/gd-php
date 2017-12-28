@@ -42,7 +42,6 @@ class PromoCode
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="promoCodes")
-     * )
      */
     private $author;
 

@@ -15,10 +15,7 @@
       &:hover {
         //box-shadow: 0 0 16px rgba(0, 0, 0, .15);
 
-        td {
-          border-top: 1px solid rgba(0, 0, 0, 0.3);
-          border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-        }
+        background-color: rgba(0, 0, 0, .025);
       }
 
       td {

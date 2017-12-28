@@ -1,0 +1,10 @@
+{% form_theme myAccountForm '@Api/form.html.twig' %}
+{% form_theme verificationFiles '@Api/form.html.twig' %}
+
+{% if saved %}
+    <div class="alert">Данные успешно обновлены!</div>
+{% endif %}
+
+{{ form(myAccountForm) }}
+<div style="height: 20px;"></div>
+{{ form(verificationFiles) }}

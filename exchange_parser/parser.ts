@@ -42,7 +42,6 @@ export class Parser {
                     perMessageDeflate: true
                 });
                 this.wsConnection = ws;
-                const listLimit = 70;
 
                 ws.onopen = () => {
                     console.log('Connected');
@@ -59,14 +58,20 @@ export class Parser {
                         for (let asset of this.assets) {
                             ws.send(`["{\\"_event\\":\\"subscribe\\",\\"tzID\\":55,\\"message\\":\\"pid-${asset}:\\"}"]`);
                         }
-                        // ws.send('["{\\"_event\\":\\"subscribe\\",\\"tzID\\":55,\\"message\\":\\"pid-41:\\"}"]');
-                        // ws.send('["{\"_event\":\"UID\",\"UID\":0}"]');
                     } else {
                         // removing first symbol(in messages with data - 'a')
                         let messageWrapper = data.substr(1);
                         // removing first and last bracket([ and ])
                         messageWrapper = messageWrapper.substr(1).substr(0, messageWrapper.length - 2);
-                        messageWrapper = JSON.parse(messageWrapper);
+                        try {
+                            messageWrapper = JSON.parse(messageWrapper);
+                        } catch (e) {
+                            console.error(`Can't parse message: ${messageWrapper}`);
+                            console.error(e);
+                            this.wsConnection.close();
+
+                            return;
+                        }
 
                         if (typeof messageWrapper === "string") {
                             messageWrapper = JSON.parse(messageWrapper);
@@ -110,6 +115,10 @@ export class Parser {
         });
     }
 
+    public currentAssetPrice(asset: string) {
+        return this.lastValues[asset];
+    }
+
     private processAssetsList(body: any) {
         const assetsResponse = JSON.parse(body);
         if (typeof assetsResponse.response === "undefined") {
@@ -134,7 +143,14 @@ export class Parser {
 
     private updateAssets() {
         request.get(this.getAssetsUrl, (error, response, body) => {
-            const assetsResponse = JSON.parse(body);
+            let assetsResponse = null;
+            try {
+                assetsResponse = JSON.parse(body);
+            } catch (e) {
+                console.log("Can't parse page content: " + body);
+                return;
+            }
+
             if (typeof assetsResponse.response === "undefined") {
                 throw "Response is undefined";
             }

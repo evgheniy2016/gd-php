@@ -1,6 +1,6 @@
 {% extends "@BinaryTrade/Layout/application.html.twig" %}
 
-{% block title "Hello world!" %}
+{% block title "Главная - " ~ parent() %}
 {% block pageClass "home-page" %}
 
 {% block content %}
@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="section section-about-us">
-        <div class="section-title">FRESHFOREX</div>
+        <div class="section-title">{{ 'app.name' | trans }}</div>
         <div class="section-content">
             <div class="grid about-us-grid">
                 <div class="col grid">

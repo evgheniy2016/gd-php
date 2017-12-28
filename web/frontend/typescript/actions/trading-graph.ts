@@ -117,14 +117,22 @@ export function tradingGraph () {
     }
   });
 
+  wsInstance.on('bet-placed', data => {
+    placeABetButton.removeAttribute('disabled');
+    amountInput.value = '';
+
+    buyButton.classList.remove('active');
+    sellButton.classList.remove('active');
+
+    alert('Ставка успешно сделана!');
+  });
+
   placeABetButton.addEventListener('click', (e) => {
     e.preventDefault();
 
     if (currentAsset !== null) {
 
       const timestamp = (+new Date());
-      const xhr = new XMLHttpRequest();
-      const formData = new FormData();
       const amount = Number(amountInput.value);
 
       if (isNaN(amount) || amount < 0.000000001) {
@@ -132,29 +140,15 @@ export function tradingGraph () {
         return;
       }
 
-      formData.append('direction', direction);
-      formData.append('asset', currentAsset);
-      formData.append('amount', amount + '');
-      formData.append('time', timeHiddenInput.value);
-      formData.append('price', assetPriceInput.value);
-      formData.append('offer_multiplier', offerMultiplier.value);
-
       placeABetButton.setAttribute('disabled', 'disabled');
 
-      xhr.open('POST', '/api/binary-trading/place-a-bet', true);
-      xhr.addEventListener('readystatechange', (e) => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          placeABetButton.removeAttribute('disabled');
-          const json = JSON.parse(xhr.responseText);
-          amountInput.value = '';
-
-          buyButton.classList.remove('active');
-          sellButton.classList.remove('active');
-
-          alert('Ставка успешно сделана!');
-        }
+      wsInstance.emit('place-a-bet', {
+        direction: direction,
+        asset: currentAsset,
+        amount: amount,
+        time: timeHiddenInput.value,
+        offer_multiplier: offerMultiplier.value
       });
-      xhr.send(formData);
     }
   });
 

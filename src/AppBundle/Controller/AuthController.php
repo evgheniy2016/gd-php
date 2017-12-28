@@ -14,7 +14,7 @@ class AuthController extends Controller
      */
     public function loginAction(Request $request, AuthenticationUtils $authenticationUtils)
     {
-        return $this->render('AppBundle:Login:login.html.twig', [
+        return $this->render('@BinaryTrade/Authorization/login.html.twig', [
             'errors' => $authenticationUtils->getLastAuthenticationError()
         ]);
     }

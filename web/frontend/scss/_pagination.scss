@@ -1,0 +1,34 @@
+@import "variables";
+@import "mixins";
+
+.pagination {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: $app-base-padding;
+
+  a {
+    padding: $app-base-padding / 4 * 3 $app-base-padding;
+    margin-left: $app-base-padding;
+    text-decoration: none;
+    border-radius: 5px;
+    outline: none;
+
+    @include user-select();
+    @include box-sizing();
+
+    &:not(.disabled) {
+      &:hover {
+        background-color: $app-blue-text-color;
+        color: $app-dark-color;
+      }
+    }
+    
+    &.disabled {
+      cursor: not-allowed;
+
+      &:hover {
+        color: $app-base-text-color;
+      }
+    }
+  }
+}

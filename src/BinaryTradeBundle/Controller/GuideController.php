@@ -8,15 +8,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class GuideController extends Controller
 {
     /**
-     * @Route("/guide/{id}", requirements={"id": "\d+"}, name="guide.show.page")
-     * @Route("/guide/", defaults={"id": 0}, name="guide.show")
-     * @param int $id
+     * @Route("/guide/{slug}", requirements={"id": "[a-z\-\_0-9A-Z]+"}, name="guide.show.page")
+     * @Route("/page/{slug}", requirements={"id": "[a-z\-\_0-9A-Z]+"}, name="page.show.page")
+     * @Route("/guide/", defaults={"slug": "about"}, name="guide.show")
+     * @param string $slug
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction($id)
+    public function showAction($slug)
     {
+        $categoriesRepository = $this->getDoctrine()->getRepository('AppBundle:PageCategory');
+        $pagesRepository = $this->getDoctrine()->getRepository('AppBundle:Page');
+        $categories = $categoriesRepository->findAll();
+        $page = $pagesRepository->findOneBy([ 'slug' => $slug ]);
+
         return $this->render('BinaryTradeBundle:Guide:show.html.twig', array(
-            'id' => $id
+            'categories' => $categories,
+            'page' => $page
         ));
     }
 

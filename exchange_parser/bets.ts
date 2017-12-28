@@ -45,8 +45,6 @@ export class Bets {
         let isSuccess = null;
         let gaining = null;
 
-        console.log('tst');
-
         if (result.predefined_direction !== null && result.predefined_direction.toString().length > 0) {
           const userDirection = result.direction;
           const predefinedDirection = result.predefined_direction;
@@ -75,13 +73,15 @@ export class Bets {
         let user_id = this.connection.escape(result.user_id);
         let type = this.connection.escape(isSuccess ? 'income' : 'outgoing');
         let amount = this.connection.escape(isSuccess ? gaining : result.amount);
+        let tradeId = this.connection.escape(result.id);
+
         this.connection.beginTransaction((err) => {
           if (err) throw err;
           this.connection.query(updateSql, (err) => {
             if (err) throw err;
 
             if (isSuccess) {
-              const insertBalanceHistory = `insert into \`balance_history\` (\`user_id\`, \`type\`, \`amount\`) values (${user_id}, ${type}, ${amount});`;
+              const insertBalanceHistory = `insert into \`balance_history\` (\`user_id\`, \`type\`, \`amount\`, \`trade_id\`) values (${user_id}, ${type}, ${amount}, ${tradeId});`;
               this.connection.query(insertBalanceHistory, (err) => {
                 if (err) throw err;
 

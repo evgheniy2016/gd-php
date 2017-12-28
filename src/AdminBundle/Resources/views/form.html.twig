@@ -80,7 +80,7 @@
 {% endblock %}
 
 {% block form_row %}
-    <div class="form-group" {%- if choices is defined and multiple -%}data-label-position="top"{%- endif -%}>
+    <div class="form-group {% if attr.class is defined %}{{ attr.class | e }}{% endif %}" {%- if choices is defined and multiple or name == 'content' -%}data-label-position="top"{%- endif -%} data-row-id="{{ id }}">
         <div class="label">{{ form_label(form) }}</div>
         <div class="input-wrapper">
             <div class="input-container" {% if required %} data-required="data-required" {% endif %}>{{ form_widget(form) }}</div>
@@ -95,11 +95,34 @@
     </div>
 {% endblock %}
 
-{% block markdown_row %}
-    {{ form_widget(form) }}
+{% block collection_row %}
+    <div class="form-group" data-label-position="top">
+        <div class="label has-top-offset">{{ form_label(form) }}</div>
+        <div class="input-wrapper">
+            <div class="input-container" {% if required %} data-required="data-required" {% endif %}>{{ form_widget(form) }}</div>
+        </div>
+    </div>
 {% endblock %}
 
-{% block markdown_widget %}
+{% block collection_widget %}
+    <div class="collection-container" data-prototype="{{ form_widget(form.vars.prototype)|e }}">
+        {{ form(form) }}
+        <div class="collection-container-footer">
+            <a href="javascript:" data-add-collection-item>Add</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block _appbundle_asset_characteristics_entry_row %}
+    <div class="collection-item" data-item-id="{{ value.id }}">
+        {{ form_widget(form) }}
+        <div class="collection-item-footer">
+            <a href="javascript:" data-delete-collection-item data-id="{{ value.id }}">delete</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block _appbundle_page_content_widget %}
     {{ form_widget(form) }}
     <script>
         window.addEventListener('load', function () {
@@ -107,7 +130,7 @@
                 spellChecker: false
             });
             simplemde.codemirror.on('change', function () {
-                document.querySelector('#{{ id }}_markdown').value = this.simplemde.value();
+                document.querySelector('[data-row-id="{{ id }}"] textarea').value = this.simplemde.value();
             }.bind({
                 simplemde: simplemde
             }));

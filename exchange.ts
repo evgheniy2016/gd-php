@@ -16,6 +16,8 @@ const bets: Bets = new Bets();
 parser.onPriceChanged.push({ listener: websocketServer.onPriceChangedListener, root: websocketServer });
 parser.onPriceChanged.push({ listener: bets.onAssetUpdated, root: bets });
 
+websocketServer.parser = parser;
+
 setTimeout(() => websocketServer.start(), 1);
 setTimeout(() => parser.start(), 1);
 setTimeout(() => bets.start(), 1);

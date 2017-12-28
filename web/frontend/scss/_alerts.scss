@@ -1,0 +1,13 @@
+@import "variables";
+@import "mixins";
+
+.alert {
+  padding: $app-base-padding;
+  border-radius: 3px;
+  margin-bottom: $app-base-padding;
+
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
+
+  @include box-sizing();
+}

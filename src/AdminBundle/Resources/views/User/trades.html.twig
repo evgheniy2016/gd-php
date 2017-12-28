@@ -17,7 +17,7 @@
             <th width="150" class="pull-right">amount</th>
             <th width="150" class="pull-right">gainings</th>
             {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <th width="150" class="pull-right">actions</th>
+            <th width="110" class="pull-right">actions</th>
             {% endif %}
         </tr>
         </thead>
@@ -50,13 +50,14 @@
             <td class="pull-right">{{ trade.gainings }} $</td>
             {% if is_granted('ROLE_SUPER_ADMIN') %}
             <td class="pull-right set-trade-result-buttons no-paddings">{% spaceless %}
+                <form class="trade-result-buttons-container" method="post" action="{{ url('users.trades.predefined_direction', { id: user.id, tid: trade.id }) }}">
+                    <input type="hidden" name="predefined_direction" />
+                    <a href="{{ url('bets.delete', { id: trade.id }) }}"><i class="material-icons">delete_forever</i></a>
                     {% if trade.finished == false and trade.predefinedDirection == null %}
-                    <form class="trade-result-buttons-container" method="post" action="{{ url('users.trades.predefined_direction', { id: user.id, tid: trade.id }) }}">
-                        <input type="hidden" name="predefined_direction" />
-                        <a href="javascript:" onclick="this.parentElement.firstChild.value = 'up'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_up</i></a>
-                        <a href="javascript:" onclick="this.parentElement.firstChild.value = 'down'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_down</i></a>
-                    </form>
+                    <a href="javascript:" onclick="this.parentElement.firstChild.value = 'up'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_up</i></a>
+                    <a href="javascript:" onclick="this.parentElement.firstChild.value = 'down'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_down</i></a>
                     {% endif %}
+                </form>
             {% endspaceless %}</td>
             {% endif %}
         </tr>

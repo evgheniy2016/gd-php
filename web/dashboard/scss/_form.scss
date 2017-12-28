@@ -26,6 +26,13 @@ form.form {
     &[data-label-position="top"] {
       align-items: flex-start;
 
+      & > .label {
+
+        &.has-top-offset {
+          margin-top: $app-base-padding - 2px;
+        }
+      }
+
       .input-wrapper {
         .input-container {
           &[data-required] {
@@ -184,16 +191,14 @@ form.form {
   }
 
   .markdown-row {
-    & > .form-group {
-      align-items: flex-start;
+    align-items: flex-start;
 
-      & > .label {
-        margin-top: $app-base-padding;
-      }
+    & > .label {
+      margin-top: $app-base-padding;
+    }
 
-      .CodeMirror {
-        height: 400px;
-      }
+    .CodeMirror {
+      height: 400px;
     }
   }
 

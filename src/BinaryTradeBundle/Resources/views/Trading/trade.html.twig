@@ -1,6 +1,6 @@
 {% extends "BinaryTradeBundle:Layout:application.html.twig" %}
 
-{% block title "Trading" %}
+{% block title "Торговля - " ~ parent() %}
 {% block pageClass "trading-page" %}
 
 {% block content %}
@@ -63,6 +63,7 @@
                         <input type="submit" value="Торговать" class="submit-button" />
                         <input type="hidden" name="time-input" class="time-input" value="{{ tradingService.encodeTime('30s') }}" />
                         <input type="hidden" name="asset-price" class="asset-price" />
+                        <input type="hidden" name="asset-id" class="asset-id" />
                         <input type="hidden" name="offer-multiplier" class="offer-multiplier" value="1.78" />
                     </form>
                 </div>
@@ -70,25 +71,27 @@
         </div>
     </div>
     <div class="trading-additional-information">
-        <div class="tabs grid">
-            <a href="javascript:" data-tab="opened-bets">Открытые позиции</a>
-            <a href="javascript:" data-tab="history">История</a>
-            <a href="javascript:" data-tab="operations">Операции</a>
-            <a href="javascript:" data-tab="deposit">Депозит</a>
-            <a href="javascript:" data-tab="withdraw">Вывод</a>
-            <a href="javascript:" data-tab="my-account" class="active">Мой счёт</a>
-        </div>
-        <div class="tabs-contents">
-            <div class="tab-content" data-tab-opened-bets>Bets</div>
-            <div class="tab-content" data-tab-history>History</div>
-            <div class="tab-content" data-tab-operations>Operations</div>
-            <div class="tab-content" data-tab-deposit>Deposit</div>
-            <div class="tab-content" data-tab-withdraw>Withdraw</div>
-            <div class="tab-content" data-tab-my-account>My account</div>
+        <div class="tabs" data-tabs-container>
+            <div class="tabs-navigation grid">
+                <a href="javascript:" data-page="/api/trades/positions" data-tab="opened-bets">Открытые позиции</a>
+                <a href="javascript:" data-page="/api/trades/history" data-tab="history">История</a>
+                <a href="javascript:" data-page="/api/trades/operations" data-tab="operations">Операции</a>
+                <a href="javascript:" data-page="/api/trades/deposit" data-tab="deposit">Депозит</a>
+                <a href="javascript:" data-page="/api/trades/withdraw" data-tab="withdraw">Вывод</a>
+                <a href="javascript:" data-page="/api/trades/my-account" data-tab="my-account">Мой счёт</a>
+            </div>
+            <div class="tabs-contents">
+                <div class="tab-content" data-tab="opened-bets">Bets</div>
+                <div class="tab-content" data-tab="history">History</div>
+                <div class="tab-content" data-tab="operations">Operations</div>
+                <div class="tab-content" data-tab="deposit">Deposit</div>
+                <div class="tab-content" data-tab="withdraw">Withdraw</div>
+                <div class="tab-content" data-tab="my-account">My account</div>
+            </div>
         </div>
     </div>
 {% endblock %}
 
 {% block js %}
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="//d3js.org/d3.v4.min.js"></script>
 {% endblock %}

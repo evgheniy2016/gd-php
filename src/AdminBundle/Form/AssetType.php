@@ -2,8 +2,10 @@
 
 namespace AdminBundle\Form;
 
+use AppBundle\Form\AssetCharacteristicType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,6 +27,11 @@ class AssetType extends AbstractType
                 'Index' => 'index',
                 'Stock' => 'stock'
             ]
+        ])->add('characteristics', CollectionType::class, [
+            'entry_type' => AssetCharacteristicType::class,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'required' => false
         ]);
     }
     

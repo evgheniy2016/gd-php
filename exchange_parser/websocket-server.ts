@@ -1,5 +1,7 @@
 import * as io from 'socket.io'
 import {MySQLDatabase} from "./mysql_database";
+import {Parser} from "./parser";
+import * as request from 'request'
 
 export class WebSocketServer {
 
@@ -12,6 +14,10 @@ export class WebSocketServer {
     private mysqlDatabase: MySQLDatabase = MySQLDatabase.getInstance();
 
     private mysqlConnection: any = null;
+
+    private placeABetUrl: string = 'http://localhost:8000/api/binary-trading/place-a-bet';
+
+    public parser: Parser = null;
 
     public constructor() {  }
 
@@ -74,6 +80,25 @@ export class WebSocketServer {
                             this.userIdAndSocketIdAssociation[result.id].push(socket.id);
                             this.websocketClients[socket.id].user_id = result.id;
                         }
+                    });
+                });
+
+                socket.on('place-a-bet', data => {
+                    data.price = this.parser.currentAssetPrice(data.asset);
+                    data.user_id = this.websocketClients[socket.id].user_id;
+                    request.post(this.placeABetUrl, {
+                        form: data
+                    }, (err, response, body) => {
+                        if (err) throw err;
+
+                        const json = JSON.parse(body);
+                        const balance = json.balance;
+
+                        const clientIds = this.userIdAndSocketIdAssociation[data.user_id]
+                          .map(id => this.websocketClients[id])
+                          .forEach(client => client.socket.emit('balance-updated', balance));
+
+                        socket.emit('bet-placed', json);
                     });
                 });
 

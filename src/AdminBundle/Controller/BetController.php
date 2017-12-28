@@ -37,4 +37,28 @@ class BetController extends Controller
         ));
     }
 
+    /**
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/delete", requirements={"id": "\d+"}, defaults={"id": 0}, name="bets.delete")
+     */
+    public function deleteTradeAction(int $id)
+    {
+        $referer = $_SERVER['HTTP_REFERER'];
+
+        if ($id <= 0 || !$this->isGranted('ROLE_SUPER_ADMIN')) {
+            return $this->redirect($referer);
+        }
+
+        $tradesRepository = $this->getDoctrine()->getRepository('AppBundle:Trade');
+        $trade = $tradesRepository->find($id);
+
+        $doctrineManager = $this->getDoctrine()->getManager();
+        $doctrineManager->remove($trade);
+        $doctrineManager->flush();
+
+        return $this->redirect($referer);
+    }
+
 }

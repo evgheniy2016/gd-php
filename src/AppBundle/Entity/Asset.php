@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +44,18 @@ class Asset
      */
     private $type;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssetCharacteristic", mappedBy="asset")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $characteristics;
+
+    public function __construct()
+    {
+        $this->characteristics = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -123,6 +137,34 @@ class Asset
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCharacteristics(): Collection
+    {
+        return $this->characteristics;
+    }
+
+    /**
+     * @param ArrayCollection $characteristics
+     * @return $this
+     */
+    public function setCharacteristics($characteristics)
+    {
+        $this->characteristics = $characteristics ?? new ArrayCollection();
+        return $this;
+    }
+
+    public function removeCharacteristic(AssetCharacteristic $assetCharacteristic)
+    {
+        $this->characteristics->removeElement($assetCharacteristic);
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
 }
