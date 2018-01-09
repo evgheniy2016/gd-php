@@ -2,3 +2,8 @@ services:
 #    binary_trade.example:
 #        class: BinaryTradeBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+    BinaryTradeBundle\EventSubscriber\SessionSubscriber:
+        arguments: [ "@logger", "@security.token_storage", "@session", "@doctrine" ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller }
+            - { name: kernel.event_listener, event: security.authentication.success }

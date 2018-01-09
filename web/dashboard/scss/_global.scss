@@ -29,3 +29,7 @@ a {
 .offset-left{
   margin-left: $app-base-padding;
 }
+
+.small-offset-top {
+  margin-top: $app-base-padding / 2;
+}

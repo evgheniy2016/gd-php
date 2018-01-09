@@ -12,6 +12,7 @@
                 {% for message in app.flashes('notice') %}
                     <div class="alert alert-one-line">{{ message }}</div>
                 {% endfor %}
+                <div class="user-status small-offset-top">{% if is_online %}Online{% else %}Offline{% endif %}</div>
             </div>
             <div class="tabs-navigation">
                 <a href="{{ path('users.edit', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.edit' %}active{% endif %}">Infromation</a>
@@ -19,6 +20,7 @@
                 <a href="{{ path('users.show.balance', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.balance' %}active{% endif %}">Balance</a>
                 <a href="{{ path('users.show.give_a_bonus', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.give_a_bonus' %}active{% endif %}">Give a bonus</a>
                 <a href="{{ path('users.show.notes', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.notes' %}active{% endif %}">Notes</a>
+                <a href="{{ path('users.show.sessions.page', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.sessions' %}active{% endif %}">Sessions</a>
             </div>
         </div>
         <div class="tabs-content {% block tabs_content_classes %}{% endblock %}">

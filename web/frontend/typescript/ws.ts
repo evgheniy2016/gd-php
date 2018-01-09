@@ -2,7 +2,7 @@ export class WebSocketClient {
 
   private ioClient: any = null;
 
-  private host: string = '192.168.1.102';
+  private host: string = '127.0.0.1';
 
   private port: number = 5001;
 

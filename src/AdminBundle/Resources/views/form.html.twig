@@ -105,7 +105,7 @@
 {% endblock %}
 
 {% block collection_widget %}
-    <div class="collection-container" data-prototype="{{ form_widget(form.vars.prototype)|e }}">
+    <div class="collection-container" {% if form.vars.prototype is defined %} data-prototype="{{ form_widget(form.vars.prototype)|e }}" {% endif %}>
         {{ form(form) }}
         <div class="collection-container-footer">
             <a href="javascript:" data-add-collection-item>Add</a>
