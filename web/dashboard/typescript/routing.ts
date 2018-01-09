@@ -3,8 +3,9 @@ import {assetEditForm} from "./actions/asset-edit-form";
 
 export default {
 
-  'users.edit':[ { action: userTradings } ],
+  'users.edit': [ { action: userTradings } ],
   'assets.edit': [ {action: assetEditForm } ],
-  'assets.create': [ {action: assetEditForm} ]
+  'assets.create': [ {action: assetEditForm} ],
+  'administrators.edit': [ {action: assetEditForm} ]
 
 };

@@ -92,7 +92,7 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             if (!$this->isGranted('ROLE_SUPER_ADMIN')) {
-                return $this->redirectToRoute('users.show', [ 'id' => $id ]);
+                return $this->redirectToRoute('users.index');
             }
 
             $user->generateApiKey();

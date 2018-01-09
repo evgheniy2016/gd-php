@@ -54,7 +54,7 @@ class PromoCodeController extends Controller
         $promoCode = new PromoCode();
         $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
         $form = $this->createForm(PromoCodeType::class, $promoCode, [
-                'choices' => $userRepository->findByRole('ROLE_ADMIN')->getQuery()->getResult()
+                'choices' => $userRepository->findByRole(['ROLE_ADMIN', 'ROLE_MANAGER'])->getQuery()->getResult()
             ])
             ->add('save', SubmitType::class);
 
