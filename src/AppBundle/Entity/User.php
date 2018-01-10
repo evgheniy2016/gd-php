@@ -113,6 +113,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PromoCode", inversedBy="users")
+     * @ORM\JoinColumn(name="promo_code_id", referencedColumnName="id", onDelete="cascade")
      */
     private $promoCode;
 

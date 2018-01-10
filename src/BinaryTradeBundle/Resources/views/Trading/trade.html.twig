@@ -41,7 +41,7 @@
                             </thead>
                             <tbody>
                             {% for asset in assets %}
-                            <tr class="trading-asset" data-asset="pid-{{ asset.pid }}">
+                            <tr class="trading-asset" data-asset="pid-{{ asset.pid }}" data-time-intervals="{{ asset.timeIntervals }}">
                                 <td>{{ asset.name }} (78%)</td>
                                 <td data-asset-value="pid-{{ asset.pid }}">-</td>
                                 <td><span data-current-date-interval></span> мин</td>

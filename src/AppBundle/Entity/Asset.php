@@ -45,6 +45,20 @@ class Asset
     private $type;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="trade_from", type="string", length=6)
+     */
+    private $tradeFrom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="trade_until", type="string", length=6)
+     */
+    private $tradeUntil;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssetCharacteristic", mappedBy="asset")
@@ -140,6 +154,42 @@ class Asset
     }
 
     /**
+     * @return string
+     */
+    public function getTradeFrom()
+    {
+        return $this->tradeFrom;
+    }
+
+    /**
+     * @param $tradeFrom
+     * @return Asset
+     */
+    public function setTradeFrom($tradeFrom)
+    {
+        $this->tradeFrom = $tradeFrom;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTradeUntil()
+    {
+        return $this->tradeUntil;
+    }
+
+    /**
+     * @param \DateTime $tradeUntil
+     * @return Asset
+     */
+    public function setTradeUntil($tradeUntil)
+    {
+        $this->tradeUntil = $tradeUntil;
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getCharacteristics(): Collection
@@ -160,6 +210,17 @@ class Asset
     public function removeCharacteristic(AssetCharacteristic $assetCharacteristic)
     {
         $this->characteristics->removeElement($assetCharacteristic);
+    }
+
+    public function getTimeIntervals()
+    {
+        $intervals = $this->getCharacteristics()
+            ->map(function (AssetCharacteristic $item) {
+                return $item->getTime();
+            })->getValues();
+        array_unshift($intervals, 0);
+        array_push($intervals, 0);
+        return implode(';', $intervals);
     }
 
     public function __toString()

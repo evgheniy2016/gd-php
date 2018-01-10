@@ -42,6 +42,7 @@ class PromoCode
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="promoCodes")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", onDelete="cascade")
      */
     private $author;
 

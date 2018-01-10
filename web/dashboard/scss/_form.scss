@@ -4,8 +4,8 @@
 form.form {
   padding: $app-base-padding;
   width: 100%;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, .17);
-  background-color: white;
+  //box-shadow: 0 3px 6px rgba(0, 0, 0, .17);
+  //background-color: white;
   border-radius: 3px;
   max-width: $app-form-max-width;
 
@@ -76,8 +76,28 @@ form.form {
     .input-wrapper {
       width: 100%;
 
-      .buttons-list {
-        margin-top: $app-base-padding;
+      &.buttons-list {
+        #appbundle_user_save_and_delete {
+          display: flex;
+
+          & > div {
+            margin-right: $app-base-padding / 2;
+          }
+        }
+      }
+
+      &.collection-list {
+        .collection-container {
+          #appbundle_user_promoCodes {
+            & > div {
+              margin-bottom: $app-base-padding / 2;
+
+              &:last-of-type {
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
       }
 
       .input-container {

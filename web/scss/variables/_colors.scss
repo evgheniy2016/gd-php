@@ -1,14 +1,19 @@
-$app-blue-color: #44A4FF;
+//$app-blue-color: #44A4FF;
+//$app-red-color: #e74c3c;
+//$app-red-darken-color: #c0392b;
+//$app-orange-color: #f39c12;
+
+$app-blue-color: #167df0;
 $app-blue-darken-color: darken($app-blue-color, 5%);
 //$app-gray-color: rgba(0, 0, 0, .7);
 $app-gray-color: rgba(0, 0, 0, .7);
 
-$app-red-color: #e74c3c;
-$app-red-darken-color: #c0392b;
+$app-red-color: #ff3860;
+$app-red-darken-color: darken($app-red-color, 10%);
 
 $app-white-color: white;
 $app-black-color: rgba(0, 0, 0, .7);
 
 $app-green-color: #27ae60;
-$app-orange-color: #f39c12;
+$app-orange-color: darken(#ffdd57, 22%);
 $app-pomegranate-color: #c0392b;

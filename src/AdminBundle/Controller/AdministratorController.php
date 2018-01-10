@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Form\SaveAndDeleteType;
 use AppBundle\Entity\PromoCode;
 use AppBundle\Entity\User;
 use AdminBundle\Form\UserType;
@@ -94,9 +95,11 @@ class AdministratorController extends Controller
         $administrator = $userRepository->find($id);
         $currentPassword = $administrator->getPassword();
 
+        $administrator->save_and_delete = null;
+
+
         $form = $this->createForm(UserType::class, $administrator)
-            ->add('save', SubmitType::class, [ 'attr' => [ 'class' => 'button' ] ])
-            ->add('delete', SubmitType::class, [ 'attr' => [ 'class' => 'button button-danger' ] ]);
+            ->add('save_and_delete', SaveAndDeleteType::class);
 
         $form->handleRequest($request);
 

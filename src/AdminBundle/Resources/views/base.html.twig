@@ -13,7 +13,7 @@
     <div class="grid app-page-wrapper">
         <div class="col app-sidebar-wrapper">
             <div class="app-header">
-                <a href="javascript:" class="item static-item uppercase bold">Dashboard</a>
+                <a href="{{ url('admin.default') }}" class="item static-item uppercase bold">Dashboard</a>
             </div>
             <div class="app-sidebar">
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
@@ -31,9 +31,7 @@
         <div class="col app-content-wrapper">
             <div class="app-header no-left-padding">
                 <div class="search-block">
-                    <form action="#">
-                        <input type="text" class="global-search-field" placeholder="Enter something" />
-                    </form>
+                    <!-- empty -->
                 </div>
                 <div class="pull-right">
                     <a href="{{ path('homepage') }}" class="item">back&nbsp;to&nbsp;site</a>

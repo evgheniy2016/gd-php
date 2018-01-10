@@ -52,6 +52,7 @@ export function tradingGraph () {
   assetPriceInput = document.querySelector('.place-a-bet-form .asset-price');
   offerMultiplier = document.querySelector('.place-a-bet-form .offer-multiplier');
 
+  const tradingAssets = document.querySelectorAll('.trading-asset');
   const timeIntervals = document.querySelectorAll('[data-time-interval]');
   const currentTimeIntervalElements = document.querySelectorAll('[data-current-interval]');
   for (let i = 0; i < currentTimeIntervalElements.length; i++) {
@@ -62,16 +63,26 @@ export function tradingGraph () {
     timeIntervalsElements.push(timeIntervals[i]);
 
     timeIntervals[i].addEventListener('click', () => {
+      const selectedTimeInterval = timeIntervals[i].getAttribute('data-time-interval');
       timeHiddenInput.value = b64EncodeUnicode(JSON.stringify({
-        time: b64EncodeUnicode(timeIntervals[i].getAttribute('data-time-interval'))
+        time: b64EncodeUnicode(selectedTimeInterval)
       }));
       timeIntervalsElements.forEach(element => element.classList.remove('active'));
       timeIntervals[i].classList.add('active');
+
+      for (let i = 0; i < tradingAssets.length; i++) {
+        const tradingAssetTimeIntervals = tradingAssets[i].getAttribute('data-time-intervals');
+        console.log(tradingAssetTimeIntervals, selectedTimeInterval);
+        if (tradingAssetTimeIntervals.indexOf(';' + selectedTimeInterval + ';') === -1) {
+          tradingAssets[i].classList.add('hidden');
+        } else {
+          tradingAssets[i].classList.remove('hidden');
+        }
+      }
     });
     console.log(timeIntervals[i].getAttribute('data-time-interval'));
   }
 
-  const tradingAssets = document.querySelectorAll('.trading-asset');
   currentAssetPrice = document.querySelector('.place-a-bet .current-price');
   for (let i = 0; i < tradingAssets.length; i++) {
     assetPrices[tradingAssets[i].getAttribute('data-asset')] = tradingAssets[i].querySelector('[data-asset-value]');

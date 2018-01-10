@@ -58,7 +58,8 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
-            'test' => null
+            'test' => null,
+            'compound' => true
         ));
     }
 

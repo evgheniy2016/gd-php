@@ -43,18 +43,30 @@ class UserController extends Controller
      *
      * @throws \Exception
      */
-    public function indexAction($page = 1)
+    public function indexAction($page = 1, Request $request)
     {
         $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
         /** @var User $currentUser */
         $currentUser = $this->getUser();
 
         $users = null;
+        $filterByPromoCode = false;
+
+        $promoCode = $request->get('promo', null);
+        if ($promoCode !== null) {
+            $filterByPromoCode = true;
+            $promoCodeRepository = $this->getDoctrine()->getRepository('AppBundle:PromoCode');
+            $promoCode = $promoCodeRepository->findOneBy([ 'code' => $promoCode ]);
+        }
 
         if (in_array('ROLE_MANAGER', $currentUser->getRoles())) {
-            $users = $userRepository->findByRoleAndPromoCode(['ROLE_USER'], $currentUser->getPromoCodes());
+            $users = $userRepository->findByRoleAndPromoCode(['ROLE_USER'], $filterByPromoCode ? [ $promoCode ] : $currentUser->getPromoCodes());
         } else if (in_array('ROLE_SUPER_ADMIN', $currentUser->getRoles())) {
-            $users = $userRepository->findByRole(['ROLE_USER', 'ROLE_ADMIN']);
+            if ($promoCode !== null && $filterByPromoCode) {
+                $users = $userRepository->findByRoleAndPromoCode(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'], [ $promoCode ]);
+            } else {
+                $users = $userRepository->findByRole(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER']);
+            }
         } else {
             throw new \Exception("You not allowed to view this data");
         }
@@ -67,8 +79,15 @@ class UserController extends Controller
         $pagination->setMaxPerPage($paginationTake);
         $pagination->setCurrentPage($page);
 
+        $promoArray = [];
+        if ($filterByPromoCode) {
+            $promoArray = [ 'promo' => $request->get('promo') ];
+        }
+
         return $this->render('AdminBundle:User:index.html.twig', [
-            'users' => $pagination
+            'users' => $pagination,
+            'filter_by_promo_code' => $filterByPromoCode,
+            'params' => $promoArray
         ]);
     }
 
@@ -94,7 +113,7 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             if (!$this->isGranted('ROLE_SUPER_ADMIN')) {
-                return $this->redirectToRoute('users.show', [ 'id' => $id ]);
+                return $this->redirectToRoute('users.index');
             }
 
             $user->generateApiKey();
