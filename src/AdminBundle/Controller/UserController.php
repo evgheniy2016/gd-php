@@ -12,6 +12,8 @@ use AppBundle\Entity\Note;
 use AppBundle\Entity\Trade;
 use AppBundle\Entity\User;
 use Carbon\Carbon;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -171,10 +173,12 @@ class UserController extends Controller
             return $this->redirectToRoute('users.index');
         }
 
-        return $this->render('@Admin/User/edit.html.twig', [
+        $viewVariables = [
             'edit_form' => $form->createView(),
             'user' => $user
-        ]);
+        ];
+        $viewVariables = array_merge($viewVariables, $this->generalActions($user));
+        return $this->render('@Admin/User/edit.html.twig', $viewVariables);
     }
 
     /**
@@ -187,9 +191,11 @@ class UserController extends Controller
         $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
         $user = $userRepository->find($id);
 
-        return $this->render('@Admin/User/show.html.twig', [
+        $viewData = [
             'user' => $user
-        ]);
+        ];
+        $viewData = array_merge($viewData, $this->generalActions($user));
+        return $this->render('@Admin/User/show.html.twig', $viewData);
     }
 
     /**
@@ -215,11 +221,13 @@ class UserController extends Controller
         $pagination->setMaxPerPage($paginationTake);
         $pagination->setCurrentPage($page);
 
-        return $this->render('@Admin/User/balance.html.twig', [
+        $viewVariables = [
             'user' => $user,
             'history' => $pagination,
             'currency' => BalanceHistory::$CURRENCY_LABEL
-        ]);
+        ];
+        $viewVariables = array_merge($viewVariables, $this->generalActions($user));
+        return $this->render('@Admin/User/balance.html.twig', $viewVariables);
     }
 
     /**
@@ -245,10 +253,12 @@ class UserController extends Controller
         $pagination->setMaxPerPage($paginationTake);
         $pagination->setCurrentPage($page);
 
-        return $this->render('@Admin/User/trades.html.twig', [
+        $viewVariables = [
             'user' => $user,
             'trades' => $pagination
-        ]);
+        ];
+        $viewVariables = array_merge($viewVariables, $this->generalActions($user));
+        return $this->render('@Admin/User/trades.html.twig', $viewVariables);
     }
 
     /**
@@ -288,10 +298,12 @@ class UserController extends Controller
             $this->addFlash('notice', 'app.bonus.created');
         }
 
-        return $this->render('@Admin/User/give_a_bonus.html.twig', [
+        $viewVariables = [
             'user' => $user,
             'form' => $form->createView()
-        ]);
+        ];
+        $viewVariables = array_merge($viewVariables, $this->generalActions($user));
+        return $this->render('@Admin/User/give_a_bonus.html.twig', $viewVariables);
     }
 
     /**
@@ -313,11 +325,45 @@ class UserController extends Controller
             'salt' => $currentUser->getSalt()
         ]));
 
-        return $this->render('@Admin/User/notes.html.twig', [
+        $viewVariables = [
             'user' => $user,
             'key' => $key,
             'notes' => $notes
-        ]);
+        ];
+        $viewVariables = array_merge($viewVariables, $this->generalActions($user));
+        return $this->render('@Admin/User/notes.html.twig', $viewVariables);
+    }
+
+    /**
+     * @param int $id
+     * @param int $page
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/{id}/sessions/{page}", defaults={"page": 1}, requirements={"page": "\d+"}, name="users.show.sessions.page")
+     */
+    public function sessionsAction(int $id, int $page)
+    {
+        $usersRepository = $this->getDoctrine()->getRepository('AppBundle:User');
+        $sessionsRepository = $this->getDoctrine()->getRepository('AppBundle:Session');
+        $user = $usersRepository->find($id);
+        $sessions = $sessionsRepository->getClosedUserSessions($user);
+
+        $paginationAdapter = new DoctrineORMAdapter($sessions);
+        $pagination = new Pagerfanta($paginationAdapter);
+
+        $paginationTake = $this->getParameter('pagination')['take'];
+
+        $pagination->setMaxPerPage($paginationTake);
+        $pagination->setCurrentPage($page);
+
+        $viewVariables = [
+            'user' => $user,
+            'sessions' => $pagination
+        ];
+        $viewVariables = array_merge($viewVariables, $this->generalActions($user));
+
+        return $this->render('@Admin/User/sessions.html.twig', $viewVariables);
     }
 
     /**
@@ -406,6 +452,23 @@ class UserController extends Controller
 
         $referer = $_SERVER['HTTP_REFERER'];
         return $this->redirect($referer);
+    }
+
+    private function generalActions(User $user): array {
+        $sessionsRepository = $this->getDoctrine()->getRepository('AppBundle:Session');
+        $isOnline = true;
+        try {
+            $activeSession = $sessionsRepository->hasLastActiveUserSession($user)->getQuery()->getSingleScalarResult();
+            $isOnline = (int) $activeSession > 0;
+        } catch (NoResultException $e) {
+            $isOnline = false;
+        } catch (NonUniqueResultException $e) {
+            $isOnline = false;
+        }
+
+        return [
+            'is_online' => $isOnline
+        ];
     }
 
 }

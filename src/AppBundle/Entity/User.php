@@ -160,6 +160,13 @@ class User implements UserInterface
     private $notes;
 
     /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Session", mappedBy="user")
+     */
+    private $sessions;
+
+    /**
      * @var string
      */
     private $updatedPassword = null;
@@ -170,6 +177,7 @@ class User implements UserInterface
         $this->balanceHistory = new ArrayCollection();
         $this->trades = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->sessions = new ArrayCollection();
     }
 
     /**
@@ -610,6 +618,24 @@ class User implements UserInterface
     public function setUpdatedPassword(string $updatedPassword)
     {
         $this->updatedPassword = $updatedPassword;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
+    }
+
+    /**
+     * @param Collection $sessions
+     * @return User
+     */
+    public function setSessions(Collection $sessions)
+    {
+        $this->sessions = $sessions;
+        return $this;
     }
 
     public function generateApiKey()

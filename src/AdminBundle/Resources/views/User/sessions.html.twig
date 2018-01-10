@@ -1,0 +1,30 @@
+{% extends '@Admin/User/show.html.twig' %}
+
+{% block title "Сессии - " ~ parent() %}
+
+{% block show_user_content %}
+<table class="table">
+    <thead>
+    <tr>
+        <th width="100">id</th>
+        <th width="175">created at</th>
+        <th width="175">finished at</th>
+        <th>duration</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for session in sessions %}
+    <tr>
+        <td>{{ session.id }}</td>
+        <td>{{ session.createdAt.format('d.m.Y H:i:s') }}</td>
+        <td>{{ session.updatedAt.format('d.m.Y H:i:s') }}</td>
+        <td>{{ session.duration.format('%H:%I:%S') }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% include '@Admin/pagination/pagination.html.twig' with {pagination: sessions, path: 'users.show.sessions.page', params: { id: user.id } } only %}
+
+{% endblock %}
+

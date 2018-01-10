@@ -21,7 +21,7 @@ export class Parser {
     private wsConnection: any = null;
 
     public constructor(private database: Database) {
-        this.redisClient = redis.createClient();
+        // this.redisClient = redis.createClient();
     }
 
     public start() {
@@ -92,7 +92,7 @@ export class Parser {
 
                                 this.lastValues['pid-' + pid] = price;
 
-                                this.redisClient.set('pid-' + pid, price);
+                                // this.redisClient.set('pid-' + pid, price);
                                 this.onPriceChanged
                                   .forEach(callback => callback.listener.call(callback.root, 'pid-' + pid, price, timestamp));
                             } else {

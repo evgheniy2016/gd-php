@@ -15,7 +15,7 @@ export class MySQLDatabase {
       host: "localhost",
       user: "root",
       password: "password",
-      database: "binarytrade_dev"
+      database: "symfony"
     });
 
     this.connection.connect(err => {

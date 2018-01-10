@@ -105,8 +105,7 @@
 {% endblock %}
 
 {% block collection_widget %}
-    <div class="collection-container" {% if prototype is defined %} data-prototype="{{ form_widget(form.vars.prototype)|e }}" {% endif %}>
-        {% if value.count > 0 %}
+    <div class="collection-container" {% if form.vars.prototype is defined %} data-prototype="{{ form_widget(form.vars.prototype)|e }}" {% endif %}>
         {{ form(form) }}
         {% endif %}
         {% if prototype is defined %}
