@@ -1,6 +1,9 @@
 <?php
 
 namespace AppBundle\Repository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use PHPUnit\Runner\Exception;
 
 /**
  * UserRepository
@@ -45,6 +48,18 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return $this->findByRole($roles)
             ->andWhere('u.promoCode in(:codes)')
             ->setParameter('codes', $promoCodes);
+    }
+
+    public function getTotalCount()
+    {
+        try {
+            return $this->createQueryBuilder('user')
+                ->select('count(user.id)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (\Exception $e) {
+            return 0;
+        }
     }
 
 }

@@ -46,9 +46,7 @@ class UserType extends AbstractType
                 'entry_type' => TextType::class,
                 'entry_options' => [
                     'disabled' => true
-                ],
-                'allow_add' => true,
-                'allow_delete' => true
+                ]
             ])
             ->add('promoCode');
     }
@@ -60,7 +58,8 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
-            'test' => null
+            'test' => null,
+            'compound' => true
         ));
     }
 

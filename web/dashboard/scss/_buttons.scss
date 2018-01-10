@@ -4,40 +4,38 @@
 .button {
   display: inline-block;
 
-  padding: $app-base-padding * 0.75 $app-base-padding;
+  padding: $app-base-padding * 0.75 $app-base-padding * 1.25;
   text-decoration: none;
   color: white;
   border-radius: 3px;
   background-color: $app-blue-color;
-  transition: 0.2s box-shadow, 0.2s background-color;
+  transition: 0.2s box-shadow, 0.2s background;
   border: none;
   outline: none;
+  font-weight: bold;
 
   cursor: pointer;
-
   text-transform: none;
 
-  @include linear-gradient(lighten($app-blue-color, 5%), darken($app-blue-color, 10%));
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+
+  @include linear-gradient(lighten($app-blue-color, 0%), darken($app-blue-color, 10%));
   @include user-select();
   @include box-sizing();
 
   &:hover {
     box-shadow: 0 3px 6px rgba(0, 0, 0, .1);
-    background-color: lighten($app-blue-darken-color, 5%);
     color: $app-white-color;
+
+    @include linear-gradient(darken($app-blue-color, 0%), darken($app-blue-color, 15%));
   }
 
   &.button-danger {
-    //@include linear-gradient(lighten($app-red-color, 5%), darken($app-red-color, 5%));
 
-    background: #e52d27;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to top, #b31217, #e52d27);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to top, #b31217, #e52d27); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+    @include linear-gradient($app-red-color, darken($app-red-darken-color, 10%));
 
     &:hover {
-      @include linear-gradient(lighten($app-red-darken-color, 5%), darken($app-red-color, 5%));
-      //background-color: ;
+      @include linear-gradient(darken($app-red-color, 5%), darken($app-red-darken-color, 15%));
     }
   }
 

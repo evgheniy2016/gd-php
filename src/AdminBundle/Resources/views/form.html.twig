@@ -105,11 +105,15 @@
 {% endblock %}
 
 {% block collection_widget %}
-    <div class="collection-container" data-prototype="{{ form_widget(form.vars.prototype)|e }}">
+    <div class="collection-container" {% if prototype is defined %} data-prototype="{{ form_widget(form.vars.prototype)|e }}" {% endif %}>
+        {% if value.count > 0 %}
         {{ form(form) }}
+        {% endif %}
+        {% if prototype is defined %}
         <div class="collection-container-footer">
             <a href="javascript:" data-add-collection-item>Add</a>
         </div>
+        {% endif %}
     </div>
 {% endblock %}
 
@@ -120,6 +124,19 @@
             <a href="javascript:" data-delete-collection-item data-id="{{ value.id }}">delete</a>
         </div>
     </div>
+{% endblock %}
+
+{% block _appbundle_user_promoCodes_row %}
+    <div class="form-group" data-label-position="top">
+        <div class="label">{{ form_label(form) }}</div>
+        <div class="input-wrapper collection-list">
+            {{ form_widget(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block _appbundle_user_promoCodes_entry_row %}
+    <div><a href="{{ url('users.index', { promo: value.code }) }}">{{ value.code }}</a></div>
 {% endblock %}
 
 {% block _appbundle_page_content_widget %}
@@ -150,6 +167,15 @@
         </div>
     </div>
 {%- endblock choice_widget_expanded -%}
+
+{%- block _appbundle_user_save_and_delete_row -%}
+    <div class="form-group">
+        <div class="label"></div>
+        <div class="input-wrapper buttons-list">
+            {{- form_widget(form) -}}
+        </div>
+    </div>
+{%- endblock -%}
 
 {% block form_error %}
     {% spaceless %}

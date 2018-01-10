@@ -3,5 +3,6 @@
 {% block title "Index" %}
 
 {% block body %}
-    <h1>Hello world</h1>
+    <h1>Users<small class="new-line">Registered users: {{ users_count }}</small></h1>
+    <h1 class="offset-top">Trades<small class="new-line">Opened trades: <a href="{{ url('bets.index') }}">{{ opened_trades_count }}</a></small></h1>
 {% endblock %}

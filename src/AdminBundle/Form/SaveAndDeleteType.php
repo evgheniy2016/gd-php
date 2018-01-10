@@ -2,7 +2,9 @@
 
 namespace AdminBundle\Form;
 
+use AppBundle\Entity\Trade;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,18 +16,16 @@ class SaveAndDeleteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username');
+            ->add('save', SubmitType::class, [ 'attr' => [ 'class' => 'button' ] ])
+            ->add('delete', SubmitType::class, [ 'attr' => [ 'class' => 'button button-danger' ] ]);
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'auto_initialize' => [  ],
-            'compound' => true
-        ));
+        $resolver->setDefaults([]);
     }
 
     /**
@@ -33,12 +33,7 @@ class SaveAndDeleteType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_trade';
-    }
-
-    public function getParent()
-    {
-        return null;
+        return 'appbundle_save_and_delete';
     }
 
 

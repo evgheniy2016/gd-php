@@ -35,12 +35,13 @@
 
       @include box-sizing();
 
-      border-top: 2px solid transparent;
-
       &.active {
-        z-index: $app-base-z-index + 1;
-        background-color: white;
-        border-top: 2px solid $app-blue-color;
+        //background-color: white;
+        //border-top: 2px solid $app-blue-color;
+        color: $app-white-color;
+        border-radius: 3px 3px 0 0;
+
+        @include linear-gradient(lighten($app-blue-color, 0%), darken($app-blue-darken-color, 5%));
       }
 
       a {

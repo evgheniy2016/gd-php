@@ -85,6 +85,10 @@ $terminal-exchanges-width: 380px;
                 }
               }
 
+              &.hidden {
+                display: none;
+              }
+
               td {
                 padding: $app-base-padding / 2 $app-base-padding;
                 font-size: 12px;

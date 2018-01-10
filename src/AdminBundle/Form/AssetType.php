@@ -27,12 +27,15 @@ class AssetType extends AbstractType
                 'Index' => 'index',
                 'Stock' => 'stock'
             ]
-        ])->add('characteristics', CollectionType::class, [
-            'entry_type' => AssetCharacteristicType::class,
-            'allow_add' => true,
-            'allow_delete' => true,
-            'required' => false
-        ]);
+        ])
+            ->add('tradeFrom', null, [ 'attr' => [ 'placeholder' => 'чч:мм' ] ])
+            ->add('tradeUntil', null, [ 'attr' => [ 'placeholder' => 'чч:мм' ] ])
+            ->add('characteristics', CollectionType::class, [
+                'entry_type' => AssetCharacteristicType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'required' => false
+            ]);
     }
     
     /**

@@ -4,6 +4,7 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Form\PageType;
 use AppBundle\Entity\Page;
+use Cocur\Slugify\Slugify;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Parsedown;
@@ -61,7 +62,13 @@ class PageController extends Controller
             $markdownContent = $page->getContent();
             $markdownParser = new Parsedown();
 
-            $page->setContent($markdownContent);
+            $slug = $page->getSlug();
+            if (empty($slug) || strlen($slug) < 2) {
+                $slugify = new Slugify();
+                $slug = $slugify->slugify($page->getTitle());
+                $page->setSlug($slug);
+            }
+
             $page->setContentCompiled($markdownParser->parse($markdownContent));
 
             $doctrineManager = $this->getDoctrine()->getManager();
@@ -102,6 +109,13 @@ class PageController extends Controller
             $markdownParser = new Parsedown();
 
             $page->setContentCompiled($markdownParser->parse($markdownContent));
+
+            $slug = $page->getSlug();
+            if (empty($slug) || strlen($slug) < 2) {
+                $slugify = new Slugify();
+                $slug = $slugify->slugify($page->getTitle());
+                $page->setSlug($slug);
+            }
 
             $doctrineManager = $this->getDoctrine()->getManager();
 

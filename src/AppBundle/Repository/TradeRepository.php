@@ -37,4 +37,16 @@ class TradeRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('finished', 0);
     }
 
+    public function getTotalCount()
+    {
+        try {
+            return $this->findOpenedTrades()
+                ->select('count(trade.id)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
+
 }
