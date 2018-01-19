@@ -8,11 +8,11 @@
         <thead>
         <tr>
             <th width="75">id</th>
-            <th width="300">username</th>
-            <th>promocode</th>
+            <th width="300">Имя пользователя</th>
+            <th>Промокод</th>
             {% if is_granted('ROLE_SUPER_ADMIN') %}
             <th class="pull-right contains-button">
-                <a href="{{ path('users.create') }}" class="button button-small">create</a>
+                <a href="{{ path('users.create') }}" class="button button-small">создать</a>
             </th>
             {% endif %}
         </tr>

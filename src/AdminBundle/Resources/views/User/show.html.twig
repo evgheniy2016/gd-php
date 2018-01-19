@@ -15,12 +15,12 @@
                 <div class="user-status small-offset-top">{% if is_online %}Online{% else %}Offline{% endif %}</div>
             </div>
             <div class="tabs-navigation">
-                <a href="{{ path('users.edit', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.edit' %}active{% endif %}">Infromation</a>
-                <a href="{{ path('users.show.trades', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.show.trades' %}active{% endif %}">Trades</a>
-                <a href="{{ path('users.show.balance', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.balance' %}active{% endif %}">Balance</a>
-                <a href="{{ path('users.show.give_a_bonus', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.give_a_bonus' %}active{% endif %}">Give a bonus</a>
-                <a href="{{ path('users.show.notes', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.notes' %}active{% endif %}">Notes</a>
-                <a href="{{ path('users.show.sessions.page', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.sessions' %}active{% endif %}">Sessions</a>
+                <a href="{{ path('users.edit', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.edit' %}active{% endif %}">Информация</a>
+                <a href="{{ path('users.show.trades', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.show.trades' %}active{% endif %}">Ставки</a>
+                <a href="{{ path('users.show.balance', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.balance' %}active{% endif %}">Баланс</a>
+                <a href="{{ path('users.show.give_a_bonus', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.give_a_bonus' %}active{% endif %}">Бонусные средства</a>
+                <a href="{{ path('users.show.notes', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.notes' %}active{% endif %}">Заметки</a>
+                <a href="{{ path('users.show.sessions.page', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.sessions' %}active{% endif %}">Сессии</a>
             </div>
         </div>
         <div class="tabs-content {% block tabs_content_classes %}{% endblock %}">

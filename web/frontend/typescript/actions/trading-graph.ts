@@ -17,6 +17,14 @@ let assetPriceInput: any = null;
 let offerMultiplier: any = null;
 const currentTimeIntervals = [];
 const timeIntervalsElements = [];
+let exchangeFilterTabShort = null;
+let exchangeFilterTabLong = null;
+let exchangeFilterTabShortContent = null;
+let exchangeFilterTabLongContent = null;
+let currentTimeIntervalAssetElements = null;
+let graphContext = null;
+let zoom = null;
+let svgInstance = null;
 
 const assetPrices = {};
 
@@ -41,6 +49,14 @@ function getDecimal(num) {
   return num - Math.floor(num);
 }
 
+function getTimeIntervalForHuman(interval) {
+  interval = interval.replace('s', ' сек');
+  interval = interval.replace('m', ' мин');
+  interval = interval.replace('d', ' дней');
+  interval = interval.replace('M', ' мес');
+  return interval;
+}
+
 export function tradingGraph () {
   wsInstance = WebSocketClient.getInstance();
   wsInstance.emit('subscribe', 'any');
@@ -51,6 +67,11 @@ export function tradingGraph () {
   timeHiddenInput = document.querySelector('.place-a-bet-form .time-input');
   assetPriceInput = document.querySelector('.place-a-bet-form .asset-price');
   offerMultiplier = document.querySelector('.place-a-bet-form .offer-multiplier');
+  exchangeFilterTabShort = document.querySelector('.exchange-filter-tab[data-type="short"]');
+  exchangeFilterTabLong = document.querySelector('.exchange-filter-tab[data-type="long"]');
+  exchangeFilterTabShortContent = document.querySelector('.exchange-filter-short');
+  exchangeFilterTabLongContent = document.querySelector('.exchange-filter-long');
+  currentTimeIntervalAssetElements = document.querySelectorAll('[data-current-date-interval]');
 
   const tradingAssets = document.querySelectorAll('.trading-asset');
   const timeIntervals = document.querySelectorAll('[data-time-interval]');
@@ -70,9 +91,12 @@ export function tradingGraph () {
       timeIntervalsElements.forEach(element => element.classList.remove('active'));
       timeIntervals[i].classList.add('active');
 
+      for (let j = 0; j < currentTimeIntervalAssetElements.length; j++) {
+        currentTimeIntervalAssetElements[j].innerHTML = getTimeIntervalForHuman(selectedTimeInterval);
+      }
+
       for (let i = 0; i < tradingAssets.length; i++) {
         const tradingAssetTimeIntervals = tradingAssets[i].getAttribute('data-time-intervals');
-        console.log(tradingAssetTimeIntervals, selectedTimeInterval);
         if (tradingAssetTimeIntervals.indexOf(';' + selectedTimeInterval + ';') === -1) {
           tradingAssets[i].classList.add('hidden');
         } else {
@@ -80,8 +104,27 @@ export function tradingGraph () {
         }
       }
     });
-    console.log(timeIntervals[i].getAttribute('data-time-interval'));
   }
+
+  if (timeIntervals.length > 0) {
+    (timeIntervals[0] as any).click();
+  }
+
+  exchangeFilterTabShort.addEventListener('click', () => {
+    exchangeFilterTabLong.classList.remove('active');
+    exchangeFilterTabShort.classList.add('active');
+
+    exchangeFilterTabShortContent.classList.remove('hidden');
+    exchangeFilterTabLongContent.classList.add('hidden');
+  });
+
+  exchangeFilterTabLong.addEventListener('click', () => {
+    exchangeFilterTabShort.classList.remove('active');
+    exchangeFilterTabLong.classList.add('active');
+
+    exchangeFilterTabLongContent.classList.remove('hidden');
+    exchangeFilterTabShortContent.classList.add('hidden');
+  });
 
   currentAssetPrice = document.querySelector('.place-a-bet .current-price');
   for (let i = 0; i < tradingAssets.length; i++) {
@@ -134,8 +177,13 @@ export function tradingGraph () {
 
     buyButton.classList.remove('active');
     sellButton.classList.remove('active');
+    direction = null;
 
-    alert('Ставка успешно сделана!');
+    if (data.response === 'error') {
+      alert(data.message);
+    } else {
+      alert('Ставка успешно сделана!');
+    }
   });
 
   placeABetButton.addEventListener('click', (e) => {
@@ -166,26 +214,23 @@ export function tradingGraph () {
   drawGraph();
 }
 
+let i = 0;
+
 function clearGraph() {
   data = [];
 
-  x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.price; }) + 5]);
-  x2.domain(x.domain());
-  y2.domain(y.domain());
-
-  focus.select('.area').datum(data).attr('d', area);
-  context.select('.area').datum(data).attr('d', area2);
-
-  focus.select('.axis--y').call(yAxis);
-  focus.select('.axis--x').call(xAxis);
-
-  if (lastZoom !== null && typeof lastZoom !== "undefined") {
-    x.domain(lastZoom.rescaleX(x2).domain());
-    focus.select(".area").attr("d", area);
-    focus.select(".axis--x").call(xAxis);
-    context.select(".brush").call(brush.move, x.range().map(lastZoom.invertX, lastZoom));
+  if (svgInstance !== null) {
+    const container = document.querySelector('.graph-container');
+    const prototype = container.getAttribute('data-prototype');
+    container.innerHTML = prototype;
   }
+
+  drawGraph();
+
+}
+
+function appendZero(number: any) {
+  return ('0' + (number)).substr(-2);
 }
 
 function drawGraph() {
@@ -194,14 +239,17 @@ function drawGraph() {
     margin2 = {top: 430, right: 20, bottom: 30, left: 40},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
-    height2 = +svg.attr("height") - margin2.top - margin2.bottom;
+    height2 = +svg.attr("height") - margin2.top - margin2.bottom,
+    bisectDate = d3.bisector(function(d) { return d.date; }).left;
+
+  svgInstance = svg;
 
   x = d3.scaleTime().range([0, width]);
   x2 = d3.scaleTime().range([0, width]);
   y = d3.scaleLinear().range([height, 0]);
   y2 = d3.scaleLinear().range([height2, 0]);
 
-  xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat('%X'));
+  xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M:%S'));
   xAxis2 = d3.axisBottom(x2);
   yAxis = d3.axisLeft(y);
 
@@ -209,7 +257,7 @@ function drawGraph() {
     .extent([[0, 0], [width, height2]])
     .on("brush end", brushed);
 
-  let zoom = d3.zoom()
+  zoom = d3.zoom()
     .scaleExtent([1, Infinity])
     .translateExtent([[0, 0], [width, height]])
     .extent([[0, 0], [width, height]])
@@ -246,6 +294,23 @@ function drawGraph() {
   x2.domain(x.domain());
   y2.domain(y.domain());
 
+  let circle = svg.append('circle')
+    .attr('r', 6)
+    .attr('class', 'circle')
+    .attr('display', 'none');
+
+  let verticalLine = svg.append('line')
+    .attr('x1', margin.left)
+    .attr('y1', margin.top)
+    .attr('x2', margin.left)
+    .attr('y2', height + margin.top)
+    .attr('class', 'line')
+    .attr('display', 'none');
+
+  let tooltip = svg.append('text')
+    .attr('class', 'tooltip')
+    .attr('display', 'none');
+
   focus.append("path")
     .datum(data)
     .attr("class", "area")
@@ -265,12 +330,11 @@ function drawGraph() {
     .attr("class", "area")
     .attr("d", area2);
 
-  let lastZoom = null;
+
+  lastZoom = null;
 
   const instance = WebSocketClient.getInstance();
   instance.emit('subscribe', 'pair:usd-btc');
-
-  // const parseDate = d3.time.format("%d-%b-%y").parse;
 
   instance.on('asset-updated', (asset) => {
     if (asset.active !== currentAsset) {
@@ -297,42 +361,52 @@ function drawGraph() {
       });
     }
 
-    let max = dataInSelectedRange[0].price;
-    let min = dataInSelectedRange[0].price;
+    const uniquePrices = dataInSelectedRange
+      .map(item => item.price)
+      .filter((item, index, self) => self.indexOf(item) == index);
+    const uniquePricesAll = data.map(item => item.price)
+      .filter((item, index, self) => self.indexOf(item) === index);
 
-    for (let i = 1; i < dataInSelectedRange.length; i++) {
-      if (dataInSelectedRange[i].price > max) {
-        max = dataInSelectedRange[i].price;
+    let max = Math.max(...uniquePrices);
+    let min = Math.min(...uniquePrices);
+    let absoluteMin = Math.min(...uniquePricesAll);
+    let absoluteMax = Math.max(...uniquePricesAll);
+
+    if (max !== -Infinity && min !== Infinity) {
+      let decimalPart = getDecimal(max) * 10000;
+      let integerPart = Math.floor(max);
+
+      let minDecimalPart = getDecimal(min) * 10000;
+      let minIntegerPart = Math.floor(min);
+
+      let minAbsoluteDecimalPart = getDecimal(absoluteMin) * 10000;
+      let minAbsoluteIntegerPart = Math.floor(absoluteMin);
+
+      let maxAbsoluteDecimalPart = getDecimal(absoluteMax) * 10000;
+      let maxAbsoluteIntegerPart = Math.floor(absoluteMax);
+
+      let domainFrom = minIntegerPart + (minDecimalPart - 10) / 10000;
+      let domainTo = integerPart + (decimalPart + 10) / 10000;
+
+      let domainFromAbsolute = minAbsoluteIntegerPart + (minAbsoluteDecimalPart - 10) / 10000;
+      let domainToAbsolute = maxAbsoluteIntegerPart + (maxAbsoluteDecimalPart + 10) / 10000;
+
+      y.domain([domainFrom, domainTo]);
+      x2.domain(x.domain());
+      y2.domain([domainFromAbsolute, domainToAbsolute]);
+
+      focus.select('.area').datum(data).attr('d', area);
+      context.select('.area').datum(data).attr('d', area2);
+
+      focus.select('.axis--y').call(yAxis);
+      focus.select('.axis--x').call(xAxis);
+
+      if (lastZoom !== null) {
+        x.domain(lastZoom.rescaleX(x2).domain());
+        focus.select(".area").attr("d", area);
+        focus.select(".axis--x").call(xAxis);
+        context.select(".brush").call(brush.move, x.range().map(lastZoom.invertX, lastZoom));
       }
-      if (dataInSelectedRange[i].price < min) {
-        min = dataInSelectedRange[i].price;
-      }
-    }
-
-
-    let decimalPart = getDecimal(max) * 10000;
-    let integerPart = Math.floor(max);
-
-    let minDecimalPart = getDecimal(min) * 10000;
-    let minIntegerPart = Math.floor(min);
-
-    let domainFrom = minIntegerPart + (minDecimalPart - 10) / 10000;
-    let domainTo = integerPart + (decimalPart + 10) / 10000;
-    y.domain([domainFrom, domainTo]);
-    x2.domain(x.domain());
-    y2.domain(y.domain());
-
-    focus.select('.area').datum(data).attr('d', area);
-    context.select('.area').datum(data).attr('d', area2);
-
-    focus.select('.axis--y').call(yAxis);
-    focus.select('.axis--x').call(xAxis);
-
-    if (lastZoom !== null) {
-      x.domain(lastZoom.rescaleX(x2).domain());
-      focus.select(".area").attr("d", area);
-      focus.select(".axis--x").call(xAxis);
-      context.select(".brush").call(brush.move, x.range().map(lastZoom.invertX, lastZoom));
     }
   });
 
@@ -341,15 +415,67 @@ function drawGraph() {
     .attr("transform", "translate(0," + height2 + ")")
     .call(xAxis2);
 
-  context.append("g")
+  graphContext = context.append("g")
     .attr("class", "brush")
     .call(brush)
     .call(brush.move, x.range());
+
+  (window as any).graphContext = graphContext;
+  (window as any).brush = brush;
 
   svg.append("rect")
     .attr("class", "zoom")
     .attr("width", width)
     .attr("height", height)
+    .on('mousemove', function() {
+      let x0 = x.invert(d3.mouse(this)[0]);
+      let i = bisectDate(data, x0, 1);
+      let d0 = data[i - 1];
+      let d1 = data[i];
+      if (typeof d0 === "undefined" || typeof d1 === "undefined") {
+        return;
+      }
+
+      let d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+      const date = d.date;
+      const year = date.getFullYear();
+      const month = appendZero(date.getMonth() + 1);
+      const day = appendZero(date.getDate());
+      const hour = appendZero(date.getHours());
+      const minute = appendZero(date.getMinutes());
+      const seconds = appendZero(date.getSeconds());
+      const dateString = `${day}.${month}.${year} ${hour}:${minute}:${seconds}`;
+
+      let tooltipX = x(d.date);
+      let tooltipPresumptiveWidth = 140;
+
+      if (tooltipX + tooltipPresumptiveWidth >= width) {
+        tooltipX -= tooltipPresumptiveWidth;
+      }
+
+      circle
+        .attr('display', null)
+        .attr('transform', `translate(${x(d.date) + margin.left}, ${y(d.price) + margin.top})`);
+
+      verticalLine
+        .attr('display', null)
+        .attr('transform', `translate(${x(d.date)}, 0)`);
+
+      tooltip
+        .attr('display', null)
+        .text(dateString)
+        .attr('transform', `translate(${tooltipX + margin.left * 1.25}, ${y(d.price) + margin.top * 1.2})`);
+
+      tooltip.append('tspan')
+        .text(d.price)
+        .attr('dy', '14px')
+        .attr('x', 0);
+    })
+    .on('mouseleave', () => {
+      circle.attr('display', 'none');
+      tooltip.attr('display', 'none');
+      verticalLine.attr('display', 'none');
+    })
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .call(zoom);
 
@@ -367,42 +493,12 @@ function drawGraph() {
   function zoomed() {
     if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
 
-    console.log('zoomed');
-
     let t = d3.event.transform;
     x.domain(t.rescaleX(x2).domain());
     focus.select(".area").attr("d", area);
     focus.select(".axis--x").call(xAxis);
     context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
     lastZoom = t;
-
-    let dataInSelectedRange = data;
-    if (lastZoom !== null) {
-      const zoomDomain = lastZoom.rescaleX(x2).domain();
-      dataInSelectedRange = dataInSelectedRange.filter(item => {
-        return item.date >= zoomDomain[0] && item.date <= zoomDomain[1]
-      });
-    }
-
-    let max = dataInSelectedRange[0].price;
-    let min = dataInSelectedRange[0].price;
-
-    for (let i = 1; i < dataInSelectedRange.length; i++) {
-      if (dataInSelectedRange[i].price > max) {
-        max = dataInSelectedRange[i].price;
-      }
-      if (dataInSelectedRange[i].price < max) {
-        min = dataInSelectedRange[i].price;
-      }
-    }
-
-
-    let decimalPart = getDecimal(max) * 10000;
-    let integerPart = Math.floor(max);
-
-    let domainFrom = integerPart + (decimalPart - 10) / 10000;
-    let domainTo = integerPart + (decimalPart + 10) / 10000;
-    // y.domain([domainFrom, domainTo]);
   }
 
   function type(d) {

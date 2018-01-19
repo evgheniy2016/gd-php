@@ -6,14 +6,16 @@
 <table class="table card table-response-on-hover">
     <thead>
     <tr>
-        <th width="150">amount</th>
-        <th width="80">direction</th>
-        <th width="150">created at</th>
-        <th width="100">period</th>
-        <th width="100">asset</th>
-        <th>username</th>
-        <th width="150">current balance</th>
-        <th width="110" class="pull-right">actions</th>
+        <th width="150">ставка</th>
+        <th width="80">направление</th>
+        <th width="150">дата создания</th>
+        <th width="100">период</th>
+        <th width="100">актив</th>
+        <th>имя пользователя</th>
+        <th width="150">текущий баланс</th>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <th width="110" class="pull-right">действия</th>
+        {% endif %}
     </tr>
     </thead>
     <tbody>
@@ -26,18 +28,18 @@
         <td>{{ bet.assetName }}</td>
         <td>{{ bet.user.username }}</td>
         <td>{{ bet.user.balance }}</td>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
         <td class="set-trade-result-buttons">{% spaceless %}
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    <form class="trade-result-buttons-container" method="post" action="{{ url('users.trades.predefined_direction', { id: bet.user.id, tid: bet.id }) }}">
-                        <input type="hidden" name="predefined_direction" />
-                        <a href="{{ url('bets.delete', { id: bet.id }) }}"><i class="material-icons">delete_forever</i></a>
-                        {% if bet.finished == false and bet.predefinedDirection == null %}
-                        <a href="javascript:" onclick="this.parentElement.firstChild.value = 'up'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_up</i></a>
-                        <a href="javascript:" onclick="this.parentElement.firstChild.value = 'down'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_down</i></a>
-                        {% endif %}
-                    </form>
+            <form class="trade-result-buttons-container" method="post" action="{{ url('users.trades.predefined_direction', { id: bet.user.id, tid: bet.id }) }}">
+                <input type="hidden" name="predefined_direction" />
+                <a href="{{ url('bets.delete', { id: bet.id }) }}"><i class="material-icons">delete_forever</i></a>
+                {% if bet.finished == false and bet.predefinedDirection == null %}
+                <a href="javascript:" onclick="this.parentElement.firstChild.value = 'up'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_up</i></a>
+                <a href="javascript:" onclick="this.parentElement.firstChild.value = 'down'; this.parentElement.submit();"><i class="material-icons">keyboard_arrow_down</i></a>
                 {% endif %}
+            </form>
             {% endspaceless %}</td>
+        {% endif %}
     </tr>
     {% endfor %}
     </tbody>

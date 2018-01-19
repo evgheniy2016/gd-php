@@ -6,7 +6,7 @@
 {% block content %}
     <div class="trading-terminal">
         <div class="grid">
-            <div class="col graph-container">
+            <div class="col graph-container" data-prototype="&lt;svg width=&quot;960&quot; height=&quot;500&quot;&gt;&lt;defs&gt;&lt;linearGradient id=&quot;linear-gradient&quot; x1=&quot;0&quot; x2=&quot;0&quot; y1=&quot;0&quot; y2=&quot;1&quot;&gt;&lt;stop offset=&quot;0%&quot; stop-color=&quot;#3594e6&quot;/&gt;&lt;stop offset=&quot;100%&quot; stop-color=&quot;#171e2e&quot;/&gt;&lt;/linearGradient&gt;&lt;/defs&gt;&lt;/svg&gt;">
                 <svg width="960" height="500">
                     <defs>
                         <linearGradient id="linear-gradient" x1="0" x2="0" y1="0" y2="1">
@@ -19,15 +19,22 @@
             <div class="col exchanges-container">
                 <div class="exchanges-table-with-filters-container">
                     <div class="exchange-filter grid">
-                        <a href="javascript:" class="button">Короткие</a>
-                        <a href="javascript:" class="button active">Длинные</a>
+                        <a href="javascript:" data-type="short" class="exchange-filter-tab button active">Короткие</a>
+                        <a href="javascript:" data-type="long"  class="exchange-filter-tab button">Длинные</a>
                     </div>
-                    <div class="exchange-filter grid">
+                    <div class="exchange-filter grid exchange-filter-short">
                         <a href="javascript:" data-time-interval="30s" class="button button-small active">30 сек</a>
                         <a href="javascript:" data-time-interval="1m" class="button button-small">60 сек</a>
                         <a href="javascript:" data-time-interval="2m" class="button button-small">2 мин</a>
                         <a href="javascript:" data-time-interval="5m" class="button button-small">5 мин</a>
                         <a href="javascript:" data-time-interval="10m" class="button button-small">10 мин</a>
+                    </div>
+                    <div class="exchange-filter grid exchange-filter-long hidden">
+                        <a href="javascript:" data-time-interval="3d" class="button button-small active">3 дня</a>
+                        <a href="javascript:" data-time-interval="7d" class="button button-small">7 дней</a>
+                        <a href="javascript:" data-time-interval="1M" class="button button-small">1 мес</a>
+                        <a href="javascript:" data-time-interval="3M" class="button button-small">3 мес</a>
+                        <a href="javascript:" data-time-interval="6M" class="button button-small">6 мес</a>
                     </div>
                     <div class="exchanges-table-wrapper">
                         <table class="table exchanges-table">
@@ -35,17 +42,15 @@
                             <tr>
                                 <th width="110">Актив</th>
                                 <th width="60">Цена</th>
-                                <th>Тип</th>
-                                <th>Время</th>
+                                <th class="pull-right">Тип</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for asset in assets %}
                             <tr class="trading-asset" data-asset="pid-{{ asset.pid }}" data-time-intervals="{{ asset.timeIntervals }}">
-                                <td>{{ asset.name }} (78%)</td>
+                                <td>{{ asset.name }}</td>
                                 <td data-asset-value="pid-{{ asset.pid }}">-</td>
-                                <td><span data-current-date-interval></span> мин</td>
-                                <td>1:30</td>
+                                <td class="pull-right"><span data-current-date-interval></span></td>
                             </tr>
                             {% endfor %}
                             </tbody>

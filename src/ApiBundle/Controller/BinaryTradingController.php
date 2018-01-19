@@ -53,7 +53,16 @@ class BinaryTradingController extends Controller
         if ($currentBalance <= 0) {
             return new JsonResponse([
                 'response' => 'error',
-                'message' => 'Insufficient money on account'
+                'message' => 'Недостаточно средств на счету'
+            ]);
+        }
+
+        $direction = $request->get('direction');
+
+        if (!in_array($direction, [ 'up', 'down' ])) {
+            return new JsonResponse([
+                'response' => 'error',
+                'message' => 'Укажите тип ставки'
             ]);
         }
 
@@ -66,7 +75,7 @@ class BinaryTradingController extends Controller
         $trade->setCreatedAt($currentTimestamp . '');
         $trade->setExpireAt($targetTimestamp . '');
         $trade->setAmount($amount);
-        $trade->setDirection($request->get('direction'));
+        $trade->setDirection($direction);
         $trade->setAsset($request->get('asset'));
         $trade->setFinished(false);
         $trade->setGainings(0);
@@ -91,7 +100,7 @@ class BinaryTradingController extends Controller
         return new JsonResponse([
             'currentTimestamp' => $currentTimestamp,
             'request' => [
-                'direction' => $request->get('direction'),
+                'direction' => $direction,
                 'amount' => $request->get('amount'),
                 'asset' => $request->get('asset')
             ],
@@ -133,7 +142,8 @@ class BinaryTradingController extends Controller
             $this->getDoctrine()->getManager()->persist($user);
             $this->getDoctrine()->getManager()->flush();
             return new JsonResponse([
-                'response' => 'success'
+                'response' => 'success',
+                'balance' => $currentBalance
             ]);
         }
 

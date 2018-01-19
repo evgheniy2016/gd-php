@@ -15,4 +15,9 @@ if (balanceLabel !== null) {
   websocketClient.on('balance-updated', balance => {
     balanceLabel.innerHTML = Number(balance).toFixed(2) + ' $';
   });
+
+  websocketClient.on('bet-win', data => {
+    balanceLabel.innerHTML = Number(data.balance).toFixed(2) + ' $';
+  });
+
 }

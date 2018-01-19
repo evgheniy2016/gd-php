@@ -1,6 +1,7 @@
 import * as mysql from 'mysql'
 import * as request from 'request'
 import {MySQLDatabase} from "./mysql_database";
+import {WebSocketServer} from "./websocket-server";
 
 export class Bets {
 
@@ -11,6 +12,8 @@ export class Bets {
   private updateBalanceUrl: string = 'http://localhost:8000/api/binary-trading/update-balance';
 
   private mysqlDatabase: MySQLDatabase = MySQLDatabase.getInstance();
+
+  private webSocketServer: WebSocketServer = null;
 
   public start() {
     console.log('started bets processing');
@@ -88,10 +91,19 @@ export class Bets {
                 this.connection.commit((err) => {
                   if (err) return this.connection.rollback(() => { throw err; });
 
-                  request({
-                    url: this.updateBalanceUrl,
-                    headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                    body: `uid=${user_id}`
+                  request.post(this.updateBalanceUrl, {
+                    form: {
+                      uid: user_id
+                    }
+                  }, (err, response, body) => {
+                    if (err) {
+                      console.log(err);
+                      return;
+                    }
+                    const json = JSON.parse(body);
+                    this.webSocketServer.sendByUserId(user_id, 'bet-win', {
+                      balance: json.balance
+                    });
                   });
                 });
               });
@@ -104,6 +116,10 @@ export class Bets {
         });
       });
     });
+  }
+
+  public setWebSocketServer(webSocketServer: WebSocketServer) {
+    this.webSocketServer = webSocketServer;
   }
 
 }

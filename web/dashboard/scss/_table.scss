@@ -57,6 +57,19 @@
 
   tbody tr td {
     border-bottom: 1px solid rgba(0, 0, 0, .03);
+
+    &.links-list {
+      display: flex;
+      flex-direction: row-reverse;
+
+      & > a {
+        margin-right: $app-base-padding / 4 * 3;
+
+        &:first-of-type {
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   tbody tr {

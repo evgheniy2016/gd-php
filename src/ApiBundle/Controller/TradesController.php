@@ -66,10 +66,8 @@ class TradesController extends Controller
     public function historyAction(UserInterface $user, int $page = 1)
     {
         $tradesRepository = $this->getDoctrine()->getRepository('AppBundle:Trade');
-        $usersRepository = $this->getDoctrine()->getRepository('AppBundle:User');
-        $users = $usersRepository->find(1);
 
-        $trades = $tradesRepository->findForUser($users);
+        $trades = $tradesRepository->findForUser($user);
 
         $paginationAdapter = new DoctrineORMAdapter($trades);
         $pagination = new Pagerfanta($paginationAdapter);

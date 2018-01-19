@@ -8,10 +8,10 @@
         <thead>
         <tr>
             <th width="75">id</th>
-            <th width="250">promocode</th>
-            <th>administrator</th>
-            <th width="100">users</th>
-            <th class="pull-right contains-button" width="100"><a href="{{ path('promo_code.create') }}" class="button button-small">create</a></th>
+            <th width="250">Промокод</th>
+            <th>Администратор</th>
+            <th width="175">Пользователей</th>
+            <th class="pull-right contains-button" width="100"><a href="{{ path('promo_code.create') }}" class="button button-small">создать</a></th>
         </tr>
         </thead>
         <tbody>
@@ -21,8 +21,8 @@
             <td>{{ promocode.code }}</td>
             <td><a href="{{ path('administrators.edit', { id: promocode.author.id }) }}">{{ promocode.author.username }}</a></td>
             <td>{{ promocode.users.count }}</td>
-            <td class="pull-right">
-                <a href="{{ path('promo_code.delete', { id: promocode.id }) }}">delete</a>
+            <td class="pull-right links-list">
+                <a href="{{ path('promo_code.delete', { id: promocode.id }) }}">удалить</a>
             </td>
         </tr>
         {% endfor %}

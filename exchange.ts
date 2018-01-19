@@ -13,6 +13,8 @@ const parser: Parser = new Parser(database);
 const websocketServer: WebSocketServer = new WebSocketServer();
 const bets: Bets = new Bets();
 
+bets.setWebSocketServer(websocketServer);
+
 parser.onPriceChanged.push({ listener: websocketServer.onPriceChangedListener, root: websocketServer });
 parser.onPriceChanged.push({ listener: bets.onAssetUpdated, root: bets });
 

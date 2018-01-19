@@ -9,10 +9,10 @@
         <thead>
         <tr>
             <th width="75">id</th>
-            <th width="350">title</th>
-            <th>slug</th>
-            <th width="200">category</th>
-            <th width="100" class="pull-right contains-button"><a href="{{ path('pages.create') }}" class="button button-small">create</a></th>
+            <th width="350">Заголовок</th>
+            <th>Адрес</th>
+            <th width="200">Категория</th>
+            <th width="250" class="pull-right contains-button"><a href="{{ path('pages.create') }}" class="button button-small">создать</a></th>
         </tr>
         </thead>
         <tbody>
@@ -22,9 +22,9 @@
             <td>{{ page.title }}</td>
             <td>{{ page.slug }}</td>
             <td>{% if page.category is not null %}{{ page.category.name }}{% endif %}</td>
-            <td class="pull-right">
-                <a href="{{ path('pages.edit', { id: page.id }) }}">edit</a>
-                <a href="{{ path('pages.delete', { id: page.id }) }}">delete</a>
+            <td class="pull-right links-list">
+                <a href="{{ path('pages.delete', { id: page.id }) }}">удалить</a>
+                <a href="{{ path('pages.edit', { id: page.id }) }}">редактировать</a>
             </td>
         </tr>
         {% endfor %}

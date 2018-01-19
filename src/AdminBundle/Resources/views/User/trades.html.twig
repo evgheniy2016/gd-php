@@ -8,16 +8,16 @@
     <table class="table">
         <thead>
         <tr>
-            <th width="120">direction</th>
-            <th width="170">target direction</th>
-            <th>created at</th>
-            <th width="150">asset</th>
-            <th width="100">period</th>
-            <th width="150" class="pull-right">result</th>
-            <th width="150" class="pull-right">amount</th>
-            <th width="150" class="pull-right">gainings</th>
+            <th width="120">направление</th>
+            <th width="170">направление(адм.)</th>
+            <th>дата создания</th>
+            <th width="150">актив</th>
+            <th width="100">период</th>
+            <th width="150" class="pull-right">результат</th>
+            <th width="150" class="pull-right">ставка</th>
+            <th width="150" class="pull-right">выигращ</th>
             {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <th width="110" class="pull-right">actions</th>
+            <th width="110" class="pull-right">действия</th>
             {% endif %}
         </tr>
         </thead>

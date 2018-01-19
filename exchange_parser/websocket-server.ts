@@ -109,6 +109,14 @@ export class WebSocketServer {
         });
     }
 
+    public sendByUserId(userId: number, key: string, data: any) {
+        const sockets = this.userIdAndSocketIdAssociation[userId];
+        if (typeof sockets !== "undefined") {
+            sockets.map(id => this.websocketClients[id])
+              .forEach(client => client.socket.emit(key, data));
+        }
+    }
+
     public onPriceChangedListener(active: string, price: number, timestamp) {
         for (let clientId in this.websocketClients) {
             const client = this.websocketClients[clientId];

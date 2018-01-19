@@ -4,6 +4,27 @@
 $terminal-graph-width: 770px;
 $terminal-exchanges-width: 380px;
 
+.graph-container {
+  svg {
+    .circle {
+      fill: rgba(white, .9);
+    }
+
+    .line {
+      stroke: rgba(white, .7);
+    }
+
+    .tooltip {
+      fill: white;
+      font-size: 12px;
+      text-shadow: 0 0 $app-base-padding / 2 black;
+
+      padding: 5px;
+      border: 1px solid black;
+    }
+  }
+}
+
 .trading-page {
   .trading-terminal {
     .graph-container {
@@ -33,6 +54,10 @@ $terminal-exchanges-width: 380px;
         margin-bottom: $app-base-padding;
 
         @include box-sizing();
+        
+        &.hidden {
+          display: none;
+        }
 
         a {
           &.button {
@@ -74,6 +99,10 @@ $terminal-exchanges-width: 380px;
                 font-size: 12px;
 
                 padding: $app-base-padding / 2 $app-base-padding;
+
+                &.pull-right {
+                  text-align: right;
+                }
               }
             }
           }
@@ -94,7 +123,11 @@ $terminal-exchanges-width: 380px;
                 font-size: 12px;
 
                 &:last-of-type {
-                  font-weight: bold;
+                  //font-weight: bold;
+                }
+
+                &.pull-right {
+                  text-align: right;
                 }
 
                 &.time-ends {
@@ -135,15 +168,21 @@ $terminal-exchanges-width: 380px;
             color: #1e2537;
             margin: $app-base-padding;
             font-size: 20px;
+            transition: 0.1s transform, 0.1s opacity;
 
             @include box-sizing();
+
+            &:not(.active) {
+              transform: scale(0.9);
+              opacity: 0.5;
+            }
 
             &.sell {
               background-color: #3bc97e;
               margin-right: $app-base-padding / 4;
 
-              &.active {
-                background-color: darken(#3bc97e, 10%);
+              &:not(.active) {
+                background-color: darken(#3bc97e, 15%);
               }
             }
 
@@ -151,8 +190,8 @@ $terminal-exchanges-width: 380px;
               background-color: #c6315e;
               margin-left: $app-base-padding / 4;
 
-              &.active {
-                background-color: darken(#c6315e, 10%);
+              &:not(.active) {
+                background-color: darken(#c6315e, 15%);
               }
             }
           }
