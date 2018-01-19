@@ -47,7 +47,7 @@
                             </thead>
                             <tbody>
                             {% for asset in assets %}
-                            <tr class="trading-asset" data-asset="pid-{{ asset.pid }}" data-time-intervals="{{ asset.timeIntervals }}">
+                            <tr class="trading-asset" data-asset-name="{{ asset.name }}" data-asset="pid-{{ asset.pid }}" data-time-intervals="{{ asset.timeIntervals }}" {% for characteristic in asset.characteristics %}data-{{ characteristic.time }}="{{ characteristic.time }}" {% endfor %}>
                                 <td>{{ asset.name }}</td>
                                 <td data-asset-value="pid-{{ asset.pid }}">-</td>
                                 <td class="pull-right"><span data-current-date-interval></span></td>
@@ -57,6 +57,7 @@
                         </table>
                     </div>
                 </div>
+                {% if is_granted('ROLE_USER') %}
                 <div class="place-a-bet">
                     <div class="grid">
                         <a href="javascript:" class="sell">Sell</a>
@@ -72,10 +73,12 @@
                         <input type="hidden" name="offer-multiplier" class="offer-multiplier" value="1.78" />
                     </form>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
     <div class="trading-additional-information">
+        {% if is_granted('ROLE_USER') %}
         <div class="tabs" data-tabs-container>
             <div class="tabs-navigation grid">
                 <a href="javascript:" data-page="/api/trades/positions" data-tab="opened-bets">Открытые позиции</a>
@@ -94,6 +97,7 @@
                 <div class="tab-content" data-tab="my-account">My account</div>
             </div>
         </div>
+        {% endif %}
     </div>
 {% endblock %}
 

@@ -158,7 +158,7 @@ export class WebSocketServer {
             return;
         }
 
-        this.mysqlConnection.query('select `user_id`, `predefined_direction`, `expire_at`, `asset_price`, `asset` from `trade` where `finished` = 0 and `predefined_direction` is not null and LENGTH(`predefined_direction`) > 0;', (err, results) => {
+        this.mysqlConnection.query('select `user_id`, `predefined_direction`, `expire_at`, `asset_price`, `asset_pid` from `trade` where `finished` = 0 and `predefined_direction` is not null and LENGTH(`predefined_direction`) > 0;', (err, results) => {
             if (err) throw err;
 
             for (let clientId in this.websocketClients) {
@@ -172,7 +172,7 @@ export class WebSocketServer {
                     const direction = item.predefined_direction;
                     const expireAt = item.expire_at;
                     const price = item.asset_price;
-                    const asset = item.asset;
+                    const asset = item.asset_pid;
 
                     if (typeof this.userIdAndSocketIdAssociation[userId] !== "undefined") {
                         this.userIdAndSocketIdAssociation[userId]

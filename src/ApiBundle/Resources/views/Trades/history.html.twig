@@ -18,7 +18,7 @@
     {% for trade in trades %}
     <tr>
         <td>{{ trade.id }}</td>
-        <td>{{ trade.assetName }}</td>
+        <td>{{ trade.assetCharacteristic.asset.name }}</td>
         <td class="pull-right">{{ trade.direction | trans }}</td>
         <td class="pull-right">{{ trade.amount }} $</td>
         <td class="pull-right">{% spaceless %}

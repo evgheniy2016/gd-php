@@ -26,8 +26,8 @@
                     <li>Здравствуйте, <span class="text-blue">{{ app.user.firstName }} {{ app.user.lastName }}</span></li>
                     {% if is_granted('ROLE_ADMIN') %}
                         <li><a href="/admin">Админпанель</a></li>
-                        <li><a href="{{ url('logout') }}">Выйти</a></li>
                     {% endif %}
+                    <li><a href="{{ url('logout') }}">Выйти</a></li>
                     {% else %}
                     <li><a href="{{ url('registration') }}" class="{% if app.request.attributes.get('_route') starts with 'authorization.registration' %}active{% endif %}">Регистрация</a></li>
                     <li><a href="{{ url('login') }}" class="{% if app.request.attributes.get('_route') starts with 'authorization.login' %}active{% endif %}">Авторизация</a></li>

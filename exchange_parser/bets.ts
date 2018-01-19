@@ -11,6 +11,8 @@ export class Bets {
 
   private updateBalanceUrl: string = 'http://localhost:8000/api/binary-trading/update-balance';
 
+  private markAsFinishedUrl: string = 'http://localhost:8000/api/binary-trading/mark-as-finished';
+
   private mysqlDatabase: MySQLDatabase = MySQLDatabase.getInstance();
 
   private webSocketServer: WebSocketServer = null;
@@ -53,7 +55,7 @@ export class Bets {
           const predefinedDirection = result.predefined_direction;
           isSuccess = userDirection === predefinedDirection;
         } else {
-          price = this.assetsPrices[result.asset].filter(item => {
+          price = this.assetsPrices[result.asset_pid].filter(item => {
             return item.timestamp == result.expire_at || item.timestamp == result.expire_at - 1 || item.timestamp == result.expire_at - 2
           }).sort((a, b) => b - a)[0];
           if (price === null) {
@@ -70,48 +72,20 @@ export class Bets {
           isSuccess = (isDown && result.direction === 'down') || (isUp && result.direction === 'up');
         }
 
-        gaining = isSuccess ? Number(result.amount) * Number(result.offer_multiplier) : 0;
+        request.post(this.markAsFinishedUrl, {
+          form: {
+            isSuccess: isSuccess,
+            tradeId: result.id
+          }
+        }, (err, response, body) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
 
-        const updateSql = `update \`trade\` set finished = 1, gainings = ${mysql.escape(gaining)} where \`id\` = ${result.id};`;
-        let user_id = this.connection.escape(result.user_id);
-        let type = this.connection.escape(isSuccess ? 'income' : 'outgoing');
-        let amount = this.connection.escape(isSuccess ? gaining : result.amount);
-        let tradeId = this.connection.escape(result.id);
-
-        this.connection.beginTransaction((err) => {
-          if (err) throw err;
-          this.connection.query(updateSql, (err) => {
-            if (err) throw err;
-
-            if (isSuccess) {
-              const insertBalanceHistory = `insert into \`balance_history\` (\`user_id\`, \`type\`, \`amount\`, \`trade_id\`) values (${user_id}, ${type}, ${amount}, ${tradeId});`;
-              this.connection.query(insertBalanceHistory, (err) => {
-                if (err) throw err;
-
-                this.connection.commit((err) => {
-                  if (err) return this.connection.rollback(() => { throw err; });
-
-                  request.post(this.updateBalanceUrl, {
-                    form: {
-                      uid: user_id
-                    }
-                  }, (err, response, body) => {
-                    if (err) {
-                      console.log(err);
-                      return;
-                    }
-                    const json = JSON.parse(body);
-                    this.webSocketServer.sendByUserId(user_id, 'bet-win', {
-                      balance: json.balance
-                    });
-                  });
-                });
-              });
-            } else {
-              this.connection.commit((err) => {
-                if (err) return this.connection.rollback(() => { throw err; });
-              });
-            }
+          const json = JSON.parse(body);
+          this.webSocketServer.sendByUserId(result.user_id, 'bet-win', {
+            balance: json.balance
           });
         });
       });

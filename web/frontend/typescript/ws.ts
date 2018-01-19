@@ -10,6 +10,7 @@ export class WebSocketClient {
 
   public constructor() {
     WebSocketClient.instance = this;
+    (window as any)['ws'] = this;
     this.socketIoLoaded();
   }
 

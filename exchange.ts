@@ -1,6 +1,3 @@
-import * as WebSocket from 'ws'
-import * as redis from 'redis'
-import * as request from 'request'
 import { Parser } from './exchange_parser/parser'
 import { RedisDatabase } from "./exchange_parser/redis-database";
 import { WebSocketServer } from "./exchange_parser/websocket-server"

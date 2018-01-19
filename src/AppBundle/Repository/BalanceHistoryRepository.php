@@ -31,4 +31,12 @@ class BalanceHistoryRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy('balance_history.id', 'desc');
     }
 
+    public function findUnprocessedForUser(User $user)
+    {
+        return $this->createQueryBuilder('balance_history')
+            ->where('balance_history.user = :user')
+            ->andWhere('balance_history.processed = false')
+            ->setParameter('user', $user);
+    }
+
 }

@@ -44,6 +44,13 @@ class BalanceHistory
     private $amount;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_processed", type="boolean")
+     */
+    private $processed = false;
+
+    /**
      * @var Trade
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Trade", inversedBy="balanceHistories")

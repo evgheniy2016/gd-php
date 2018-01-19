@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +35,13 @@ class AssetCharacteristic
      * @ORM\Column(name="multiplier", type="float")
      */
     private $multiplier;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Trade", mappedBy="assetCharacteristic")
+     */
+    private $trades;
 
     /**
      * @var Asset

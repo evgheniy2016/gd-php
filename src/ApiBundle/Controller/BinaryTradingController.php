@@ -31,17 +31,26 @@ class BinaryTradingController extends Controller
     public function placeABetAction(Request $request)
     {
         $usersRepository = $this->getDoctrine()->getRepository('AppBundle:User');
+        $assetsRepository = $this->getDoctrine()->getRepository('AppBundle:Asset');
+        $assetCharacteristicRepository = $this->getDoctrine()->getRepository('AppBundle:AssetCharacteristic');
         /** @var User $user */
         $user = $usersRepository->find($request->get('user_id'));
 
         $tradingService = new TradingService();
         $carbonTime = Carbon::now();
         $currentTimestamp = $carbonTime->getTimestamp();
-        $time = $request->get('time');
-        $time = base64_decode($time);
-        $time = json_decode($time);
-        $time = $time->time;
-        $time = base64_decode($time);
+        try {
+            $time = $request->get('time');
+            $time = base64_decode($time);
+            $time = json_decode($time);
+            $time = $time->time;
+            $time = base64_decode($time);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'response' => 'error',
+                'message' => 'Ошибка обработки интервала ставки'
+            ]);
+        }
 
         $tradingService->addToTime($carbonTime, $time);
         $targetTimestamp = $carbonTime->getTimestamp();
@@ -66,6 +75,21 @@ class BinaryTradingController extends Controller
             ]);
         }
 
+        $assetPid = $request->get('asset');
+        $assetPid = str_replace('pid-', '', $assetPid);
+        $asset = $assetsRepository->findOneBy([ 'pid' => $assetPid ]);
+        $characteristic = $assetCharacteristicRepository->findOneBy([
+            'asset' => $asset,
+            'time' => $time
+        ]);
+
+        if ($characteristic === null) {
+            return new JsonResponse([
+                'response' => 'error',
+                'message' => 'Ошибка при обработке запроса'
+            ]);
+        }
+
         $user->setBalance($currentBalance);
         $user->setBalanceUpdatedAt(Carbon::now()->getTimestamp());
 
@@ -76,13 +100,12 @@ class BinaryTradingController extends Controller
         $trade->setExpireAt($targetTimestamp . '');
         $trade->setAmount($amount);
         $trade->setDirection($direction);
-        $trade->setAsset($request->get('asset'));
         $trade->setFinished(false);
         $trade->setGainings(0);
         $trade->setPredefinedDirection('');
-        $trade->setAssetName('USD-BTC');
         $trade->setAssetPrice($request->get('price'));
-        $trade->setOfferMultiplier((float)($request->get('offer_multiplier')));
+        $trade->setAssetPid('pid-' . $asset->getPid());
+        $trade->setAssetCharacteristic($characteristic);
 
         $doctrineManager = $this->getDoctrine()->getManager();
         $doctrineManager->persist($trade);
@@ -148,6 +171,52 @@ class BinaryTradingController extends Controller
         }
 
         throw new NotFoundHttpException("Page not found");
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * @Route("/mark-as-finished", name="mark_as_finished")
+     */
+    public function markAsFinished(Request $request)
+    {
+        $tradesRepository = $this->getDoctrine()->getRepository('AppBundle:Trade');
+        $tradeId = (int) $request->get('tradeId');
+        $isSuccess = $request->get('isSuccess') === 'true';
+        $doctrineManager = $this->getDoctrine()->getManager();
+
+        $trade = $tradesRepository->find($tradeId);
+        $trade->setFinished(true);
+        $multiplier = $trade->getAssetCharacteristic()->getMultiplier();
+        $amount = $trade->getAmount();
+        /** @var User $user */
+        $user = $trade->getUser();
+        if ($isSuccess) {
+            $amount *= $multiplier;
+            $trade->setGainings($amount);
+
+            $balanceHistory = new BalanceHistory();
+            $balanceHistory->setTrade($trade);
+            $balanceHistory->setAmount($amount);
+            $balanceHistory->setType('income');
+            $balanceHistory->setUser($user);
+
+            $doctrineManager->persist($balanceHistory);
+
+            $currentBalance = (float)($user->getBalance());
+            $currentBalance += $amount;
+            $user->setBalance($currentBalance);
+            $doctrineManager->persist($user);
+        }
+
+        $doctrineManager->persist($trade);
+        $doctrineManager->flush();
+
+        return new JsonResponse([
+            'response' => 'success',
+            'balance' => $user->getBalance()
+        ]);
     }
 
 }

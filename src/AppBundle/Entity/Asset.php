@@ -218,8 +218,6 @@ class Asset
             ->map(function (AssetCharacteristic $item) {
                 return $item->getTime();
             })->getValues();
-        array_unshift($intervals, 0);
-        array_push($intervals, 0);
         return implode(';', $intervals);
     }
 

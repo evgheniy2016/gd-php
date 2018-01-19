@@ -25,6 +25,11 @@ let currentTimeIntervalAssetElements = null;
 let graphContext = null;
 let zoom = null;
 let svgInstance = null;
+let currentTimeInterval: string;
+let currentAssetName: string = "";
+let lastMouseCoordinates: number[] = [];
+let bisectDate: any = null;
+let circle, width, margin, verticalLine, tooltip, isMouseEntered = false;
 
 const assetPrices = {};
 
@@ -47,6 +52,63 @@ function b64DecodeUnicode(str) {
 
 function getDecimal(num) {
   return num - Math.floor(num);
+}
+
+function onMouseMove(isExternal: boolean = false) {
+  if (!isMouseEntered) {
+    return;
+  }
+
+  const mouseCoordinates = !isExternal ? d3.mouse(this)[0] : lastMouseCoordinates;
+
+  if (!isExternal) {
+    lastMouseCoordinates = mouseCoordinates;
+  }
+
+  let x0 = x.invert(mouseCoordinates);
+  let i = bisectDate(data, x0, 1);
+  let d0 = data[i - 1];
+  let d1 = data[i];
+  if (typeof d0 === "undefined" || typeof d1 === "undefined") {
+    return;
+  }
+
+  let d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+  const date = d.date;
+  const year = date.getFullYear();
+  const month = appendZero(date.getMonth() + 1);
+  const day = appendZero(date.getDate());
+  const hour = appendZero(date.getHours());
+  const minute = appendZero(date.getMinutes());
+  const seconds = appendZero(date.getSeconds());
+  const dateString = `${day}.${month}.${year} ${hour}:${minute}:${seconds}`;
+
+  let tooltipX = x(d.date);
+  let tooltipPresumptiveWidth = 140;
+
+  console.log(width);
+
+  if (tooltipX + tooltipPresumptiveWidth >= width) {
+    tooltipX -= tooltipPresumptiveWidth;
+  }
+
+  circle
+    .attr('display', null)
+    .attr('transform', `translate(${x(d.date) + margin.left}, ${y(d.price) + margin.top})`);
+
+  verticalLine
+    .attr('display', null)
+    .attr('transform', `translate(${x(d.date)}, 0)`);
+
+  tooltip
+    .attr('display', null)
+    .text(dateString)
+    .attr('transform', `translate(${tooltipX + margin.left * 1.25}, ${y(d.price) + margin.top * 1.2})`);
+
+  tooltip.append('tspan')
+    .text(d.price)
+    .attr('dy', '14px')
+    .attr('x', 0);
 }
 
 function getTimeIntervalForHuman(interval) {
@@ -85,9 +147,11 @@ export function tradingGraph () {
 
     timeIntervals[i].addEventListener('click', () => {
       const selectedTimeInterval = timeIntervals[i].getAttribute('data-time-interval');
-      timeHiddenInput.value = b64EncodeUnicode(JSON.stringify({
-        time: b64EncodeUnicode(selectedTimeInterval)
-      }));
+      if (timeHiddenInput !== null) {
+        timeHiddenInput.value = b64EncodeUnicode(JSON.stringify({
+          time: b64EncodeUnicode(selectedTimeInterval)
+        }));
+      }
       timeIntervalsElements.forEach(element => element.classList.remove('active'));
       timeIntervals[i].classList.add('active');
 
@@ -95,9 +159,11 @@ export function tradingGraph () {
         currentTimeIntervalAssetElements[j].innerHTML = getTimeIntervalForHuman(selectedTimeInterval);
       }
 
+      currentTimeInterval = selectedTimeInterval;
+
       for (let i = 0; i < tradingAssets.length; i++) {
-        const tradingAssetTimeIntervals = tradingAssets[i].getAttribute('data-time-intervals');
-        if (tradingAssetTimeIntervals.indexOf(';' + selectedTimeInterval + ';') === -1) {
+        const hasTime = tradingAssets[i].hasAttribute('data-' + selectedTimeInterval) && tradingAssets[i].getAttribute('data-'+selectedTimeInterval) === selectedTimeInterval;
+        if (!hasTime) {
           tradingAssets[i].classList.add('hidden');
         } else {
           tradingAssets[i].classList.remove('hidden');
@@ -132,23 +198,38 @@ export function tradingGraph () {
     tradingAssets[i].addEventListener('click', (e) => {
       const target = tradingAssets[i];
       const asset = target.getAttribute('data-asset');
+      const assetName = target.getAttribute('data-asset-name');
       // wsInstance.emit('replace-subscription', asset);
-      clearGraph();
       currentAsset = asset;
-      currentAssetPrice.classList.remove('invisible');
+      if (currentAssetPrice !== null) {
+        currentAssetPrice.classList.remove('invisible');
+      }
+      currentAssetName = assetName;
+
+      for (let j = 0; j < tradingAssets.length; j++) {
+        tradingAssets[j].classList.remove('highlight');
+      }
+
+      target.classList.add('highlight');
+
+      clearGraph();
     });
   }
 
-  sellButton.addEventListener('click', () => {
-    direction = 'up';
-    sellButton.classList.add('active');
-    buyButton.classList.remove('active');
-  });
-  buyButton.addEventListener('click', () => {
-    direction = 'down';
-    sellButton.classList.remove('active');
-    buyButton.classList.add('active');
-  });
+  if (sellButton !== null) {
+    sellButton.addEventListener('click', () => {
+      direction = 'up';
+      sellButton.classList.add('active');
+      buyButton.classList.remove('active');
+    });
+  }
+  if (buyButton !== null) {
+    buyButton.addEventListener('click', () => {
+      direction = 'down';
+      sellButton.classList.remove('active');
+      buyButton.classList.add('active');
+    });
+  }
 
   wsInstance.on('asset-updated', (asset) => {
     const assetPrice = assetPrices[asset.active];
@@ -171,47 +252,58 @@ export function tradingGraph () {
     }
   });
 
-  wsInstance.on('bet-placed', data => {
-    placeABetButton.removeAttribute('disabled');
-    amountInput.value = '';
+  if (placeABetButton !== null) {
+    wsInstance.on('bet-placed', data => {
+      placeABetButton.removeAttribute('disabled');
+      amountInput.value = '';
 
-    buyButton.classList.remove('active');
-    sellButton.classList.remove('active');
-    direction = null;
+      buyButton.classList.remove('active');
+      sellButton.classList.remove('active');
+      direction = null;
 
-    if (data.response === 'error') {
-      alert(data.message);
-    } else {
-      alert('Ставка успешно сделана!');
-    }
-  });
-
-  placeABetButton.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    if (currentAsset !== null) {
-
-      const timestamp = (+new Date());
-      const amount = Number(amountInput.value);
-
-      if (isNaN(amount) || amount < 0.000000001) {
-        alert('Введите корректные данные');
-        return;
+      if (data.response === 'error') {
+        alert(data.message);
+      } else {
+        alert('Ставка успешно сделана!');
       }
+    });
 
-      placeABetButton.setAttribute('disabled', 'disabled');
+    placeABetButton.addEventListener('click', (e) => {
+      e.preventDefault();
 
-      wsInstance.emit('place-a-bet', {
-        direction: direction,
-        asset: currentAsset,
-        amount: amount,
-        time: timeHiddenInput.value,
-        offer_multiplier: offerMultiplier.value
-      });
-    }
-  });
+      if (currentAsset !== null) {
+
+        const timestamp = (+new Date());
+        const amount = Number(amountInput.value);
+
+        if (isNaN(amount) || amount < 0.000000001) {
+          alert('Введите корректные данные');
+          return;
+        }
+
+        placeABetButton.setAttribute('disabled', 'disabled');
+
+        const placeABetData = {
+          direction: direction,
+          asset: currentAsset,
+          amount: amount,
+          time: timeHiddenInput.value
+        };
+
+        wsInstance.emit('place-a-bet', placeABetData);
+      }
+    });
+  }
 
   drawGraph();
+
+  // Initial graph subscription
+  const firstTimeInterval = '30s';
+  const firstAsset = document.querySelectorAll(`[data-${firstTimeInterval}="${firstTimeInterval}"]`);
+  if (firstAsset.length > 0) {
+    (firstAsset[0] as any).click();
+  }
+
 }
 
 let i = 0;
@@ -234,13 +326,16 @@ function appendZero(number: any) {
 }
 
 function drawGraph() {
+  margin = {top: 25, right: 20, bottom: 110, left: 40};
+
   let svg = d3.select("svg"),
-    margin = {top: 20, right: 20, bottom: 110, left: 40},
     margin2 = {top: 430, right: 20, bottom: 30, left: 40},
-    width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
-    height2 = +svg.attr("height") - margin2.top - margin2.bottom,
-    bisectDate = d3.bisector(function(d) { return d.date; }).left;
+    height2 = +svg.attr("height") - margin2.top - margin2.bottom;
+
+
+  width = +svg.attr("width") - margin.left - margin.right;
+  bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
   svgInstance = svg;
 
@@ -289,17 +384,29 @@ function drawGraph() {
     .attr("class", "context")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
+  svg.append('text')
+    .text(getTimeIntervalForHuman(currentTimeInterval) + ' - ' + currentAssetName)
+    .attr("font-size", "20px")
+    .attr("fill", "#3594e6")
+    .attr('x', function(d, i) {
+      const labelWidth = this.getComputedTextLength();
+
+      return width / 2 - labelWidth / 2 + margin.left;
+    })
+    .attr('y', 16)
+    .attr('width', 150);
+
   x.domain(d3.extent(data, function(d) { return d.date; }));
   y.domain([0, d3.min(data, function(d) { return d.price; })]);
   x2.domain(x.domain());
   y2.domain(y.domain());
 
-  let circle = svg.append('circle')
+  circle = svg.append('circle')
     .attr('r', 6)
     .attr('class', 'circle')
     .attr('display', 'none');
 
-  let verticalLine = svg.append('line')
+  verticalLine = svg.append('line')
     .attr('x1', margin.left)
     .attr('y1', margin.top)
     .attr('x2', margin.left)
@@ -307,7 +414,7 @@ function drawGraph() {
     .attr('class', 'line')
     .attr('display', 'none');
 
-  let tooltip = svg.append('text')
+  tooltip = svg.append('text')
     .attr('class', 'tooltip')
     .attr('display', 'none');
 
@@ -344,8 +451,10 @@ function drawGraph() {
     const timestamp = asset.timestamp;
     const date = new Date(timestamp);
     data.push({ date: date, price: asset.price });
-    currentAssetPrice.innerHTML = asset.price;
-    assetPriceInput.value = asset.price;
+    if (currentAssetPrice !== null) {
+      currentAssetPrice.innerHTML = asset.price;
+      assetPriceInput.value = asset.price;
+    }
 
     if (data.length > maxPoints) {
       data = data.slice(-maxPoints);
@@ -408,6 +517,11 @@ function drawGraph() {
         context.select(".brush").call(brush.move, x.range().map(lastZoom.invertX, lastZoom));
       }
     }
+
+    if (isMouseEntered) {
+      onMouseMove(true);
+    }
+
   });
 
   context.append("g")
@@ -420,64 +534,23 @@ function drawGraph() {
     .call(brush)
     .call(brush.move, x.range());
 
-  (window as any).graphContext = graphContext;
-  (window as any).brush = brush;
-
-  svg.append("rect")
+  let a = svg.append("rect")
     .attr("class", "zoom")
     .attr("width", width)
     .attr("height", height)
-    .on('mousemove', function() {
-      let x0 = x.invert(d3.mouse(this)[0]);
-      let i = bisectDate(data, x0, 1);
-      let d0 = data[i - 1];
-      let d1 = data[i];
-      if (typeof d0 === "undefined" || typeof d1 === "undefined") {
-        return;
-      }
-
-      let d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-      const date = d.date;
-      const year = date.getFullYear();
-      const month = appendZero(date.getMonth() + 1);
-      const day = appendZero(date.getDate());
-      const hour = appendZero(date.getHours());
-      const minute = appendZero(date.getMinutes());
-      const seconds = appendZero(date.getSeconds());
-      const dateString = `${day}.${month}.${year} ${hour}:${minute}:${seconds}`;
-
-      let tooltipX = x(d.date);
-      let tooltipPresumptiveWidth = 140;
-
-      if (tooltipX + tooltipPresumptiveWidth >= width) {
-        tooltipX -= tooltipPresumptiveWidth;
-      }
-
-      circle
-        .attr('display', null)
-        .attr('transform', `translate(${x(d.date) + margin.left}, ${y(d.price) + margin.top})`);
-
-      verticalLine
-        .attr('display', null)
-        .attr('transform', `translate(${x(d.date)}, 0)`);
-
-      tooltip
-        .attr('display', null)
-        .text(dateString)
-        .attr('transform', `translate(${tooltipX + margin.left * 1.25}, ${y(d.price) + margin.top * 1.2})`);
-
-      tooltip.append('tspan')
-        .text(d.price)
-        .attr('dy', '14px')
-        .attr('x', 0);
-    })
+    .on('mousemove', onMouseMove)
+    .on('mouseenter', () => isMouseEntered = true)
     .on('mouseleave', () => {
       circle.attr('display', 'none');
       tooltip.attr('display', 'none');
       verticalLine.attr('display', 'none');
+      isMouseEntered = false;
     })
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .call(zoom);
+
+  (window as any)['rect'] = a;
+
 
   function brushed() {
     if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom

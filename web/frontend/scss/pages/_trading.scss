@@ -118,9 +118,20 @@ $terminal-exchanges-width: 380px;
                 display: none;
               }
 
+              &.highlight {
+                td {
+                  background-color: rgba($app-blue-color, .25);
+
+                  color: rgba(white, .8);
+                  text-shadow: 0 1px 1px rgba(black, .25);
+                }
+              }
+
               td {
                 padding: $app-base-padding / 2 $app-base-padding;
                 font-size: 12px;
+                cursor: default;
+                transition: 0.25s color;
 
                 &:last-of-type {
                   //font-weight: bold;
@@ -132,10 +143,6 @@ $terminal-exchanges-width: 380px;
 
                 &.time-ends {
                   color: $app-red-color;
-                }
-
-                &[data-asset-value] {
-                  transition: 0.25s all;
                 }
 
                 &.price-down {

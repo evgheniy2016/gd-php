@@ -120,26 +120,29 @@ export class Parser {
     }
 
     private processAssetsList(body: any) {
-        const assetsResponse = JSON.parse(body);
-        if (typeof assetsResponse.response === "undefined") {
+        try {
+          const assetsResponse = JSON.parse(body);
+          if (typeof assetsResponse.response === "undefined") {
             throw "Response is undefined";
-        }
+          }
 
-        const assets = assetsResponse.assets;
-        assets.forEach(asset => this.assets.push(asset));
+          const assets = assetsResponse.assets;
+          assets.forEach(asset => this.assets.push(asset));
 
-        this.createParserConnection();
+          this.createParserConnection();
 
-        setInterval(() => {
+          setInterval(() => {
             const timestamp = (+ new Date());
 
             for (let pid in this.lastValues) {
-                let value = this.lastValues[pid];
-                this.onPriceChanged
-                  .forEach(callback => callback.listener.call(callback.root, pid, value, timestamp));
+              let value = this.lastValues[pid];
+              this.onPriceChanged
+                .forEach(callback => callback.listener.call(callback.root, pid, value, timestamp));
             }
-        }, 1000);
-    }
+          }, 1000);
+        } catch (e) {
+            console.log(e.message);
+        }}
 
     private updateAssets() {
         request.get(this.getAssetsUrl, (error, response, body) => {

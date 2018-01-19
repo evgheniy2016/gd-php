@@ -86,15 +86,9 @@ class Trade
 
     /**
      * @var string
-     * @ORM\Column(name="asset", type="string", nullable=false)
+     * @ORM\Column(name="asset_pid", type="string", nullable=false)
      */
-    private $asset;
-
-    /**
-     * @var string
-     * @ORM\Column(name="asset_name", type="string", nullable=false)
-     */
-    private $assetName;
+    private $assetPid;
 
     /**
      * @var string
@@ -103,18 +97,20 @@ class Trade
     private $assetPrice;
 
     /**
-     * @var float
-     * @ORM\Column(name="offer_multiplier", type="float", nullable=false)
-     */
-    private $offerMultiplier;
-
-    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="trades")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="cascade")
      */
     private $user;
+
+    /**
+     * @var AssetCharacteristic
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AssetCharacteristic", inversedBy="trades")
+     * @ORM\JoinColumn(name="asset_characteristic_id", referencedColumnName="id", onDelete="cascade")
+     */
+    private $assetCharacteristic;
 
     /**
      * @var ArrayCollection
@@ -127,6 +123,7 @@ class Trade
     public function __construct()
     {
         $this->balanceHistories = new ArrayCollection();
+        $this->assetCharacteristic = new AssetCharacteristic();
     }
 
     /**
@@ -311,36 +308,18 @@ class Trade
     /**
      * @return string
      */
-    public function getAsset(): string
+    public function getAssetPid(): string
     {
-        return $this->asset;
+        return $this->assetPid;
     }
 
     /**
-     * @param string $asset
+     * @param string $assetPid
      * @return $this
      */
-    public function setAsset($asset)
+    public function setAssetPid($assetPid)
     {
-        $this->asset = $asset;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAssetName(): string
-    {
-        return $this->assetName;
-    }
-
-    /**
-     * @param string $assetName
-     * @return $this
-     */
-    public function setAssetName($assetName)
-    {
-        $this->assetName = $assetName;
+        $this->assetPid = $assetPid;
         return $this;
     }
 
@@ -359,24 +338,6 @@ class Trade
     public function setAssetPrice($assetPrice)
     {
         $this->assetPrice = $assetPrice;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getOfferMultiplier()
-    {
-        return $this->offerMultiplier;
-    }
-
-    /**
-     * @param float $offerMultiplier
-     * @return $this
-     */
-    public function setOfferMultiplier($offerMultiplier)
-    {
-        $this->offerMultiplier = $offerMultiplier;
         return $this;
     }
 
@@ -429,6 +390,23 @@ class Trade
     {
         return Carbon::createFromTimestamp((int)($this->expireAt))->format('d.m.Y H:i:s');
     }
+
+    /**
+     * @return AssetCharacteristic
+     */
+    public function getAssetCharacteristic(): AssetCharacteristic
+    {
+        return $this->assetCharacteristic;
+    }
+
+    /**
+     * @param AssetCharacteristic $assetCharacteristic
+     */
+    public function setAssetCharacteristic(AssetCharacteristic $assetCharacteristic)
+    {
+        $this->assetCharacteristic = $assetCharacteristic;
+    }
+
 
     public function __toString()
     {
