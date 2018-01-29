@@ -26,3 +26,5 @@ node_modules/
 /exchange_parser/**/*.js
 /exchange.js
 /exchange.js.map
+
+.env
