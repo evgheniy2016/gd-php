@@ -25,7 +25,7 @@
         <td>{{ bet.direction }}</td>
         <td>{{ bet.createdAtString }}</td>
         <td>{{ bet.period }}</td>
-        <td>{{ bet.assetName }}</td>
+        <td>{{ bet.assetCharacteristics.name }}</td>
         <td>{{ bet.user.username }}</td>
         <td>{{ bet.user.balance }}</td>
         {% if is_granted('ROLE_SUPER_ADMIN') %}

@@ -8,11 +8,6 @@
   },
   "dependencies": {
     "css-loader": "^0.28.7",
-    "hiredis": "^0.5.0",
-    "mysql": "^2.15.0",
-    "redis": "^2.8.0",
-    "socket.io": "^2.0.4",
-    "socket.io-client": "^2.0.3",
     "style-loader": "^0.18.2",
     "ts-loader": "^3.2.0",
     "typescript": "^2.6.2",
@@ -26,8 +21,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "exchange-parser": "node exchange.js",
-    "start": "node exchange.js"
+    "build": "./node_modules/.bin/webpack"
   },
   "repository": {
     "type": "git",

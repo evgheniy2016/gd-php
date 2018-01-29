@@ -18,7 +18,12 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('BinaryTradeBundle:Default:index.html.twig');
+        $assetRepository = $this->getDoctrine()->getRepository('AppBundle:Asset');
+        $assets = $assetRepository->findAll();
+
+        return $this->render('BinaryTradeBundle:Default:index.html.twig', [
+            'assets' => $assets
+        ]);
     }
 
     /**

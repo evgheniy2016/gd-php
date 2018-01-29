@@ -19,71 +19,81 @@
           background-size: cover;
         }
 
-        .exchange-rates {
+        .exchange-rates-container {
+
+          overflow-x: hidden;
           position: absolute;
           bottom: 0;
           left: 0;
           width: 100%;
-          overflow-x: hidden;
-          display: flex;
-          padding: $app-base-padding;
           background-color: rgba(0, 0, 0, .4);
-          color: white;
 
-          @include box-sizing();
+          .exchange-rates {
+            position: relative;
 
-          .rate {
+            width: 100%;
             display: flex;
-            align-items: center;
+            padding: $app-base-padding;
+            color: white;
 
-            margin-right: $app-base-padding * 2;
-            font-size: 12px;
+            transition: 0.2s left;
 
-            &:last-of-type {
-              margin-right: 0;
-            }
+            @include box-sizing();
 
-            .direction {
-              width:  $app-base-padding;
-              height: $app-base-padding;
-              position: relative;
+            .rate {
+              display: flex;
+              align-items: center;
 
-              &.direction-up {
-                &:before {
-                  content: "";
-                  width: 0;
-                  height: 0;
-                  border-style: solid;
-                  border-width: 0 5px 10px 5px;
-                  border-color: transparent transparent $app-green-color transparent;
-                  position: absolute;
-                  top: 2px;
-                  left: 0;
+              margin-right: $app-base-padding * 2;
+              font-size: 12px;
+
+              &:last-of-type {
+                margin-right: 0;
+              }
+
+              .direction {
+                width:  $app-base-padding;
+                height: $app-base-padding;
+                position: relative;
+
+                &.direction-up {
+                  &:before {
+                    content: "";
+                    width: 0;
+                    height: 0;
+                    border-style: solid;
+                    border-width: 0 5px 10px 5px;
+                    border-color: transparent transparent $app-green-color transparent;
+                    position: absolute;
+                    top: 2px;
+                    left: 0;
+                  }
+                }
+
+                &.direction-down {
+                  &::before {
+                    content: "";
+                    width: 0;
+                    height: 0;
+                    border-style: solid;
+                    border-width: 10px 5px 0 5px;
+                    border-color: $app-red-color transparent transparent transparent;
+                    position: absolute;
+                    top: 2px;
+                    left: 0;
+                  }
                 }
               }
 
-              &.direction-down {
-                &::before {
-                  content: "";
-                  width: 0;
-                  height: 0;
-                  border-style: solid;
-                  border-width: 10px 5px 0 5px;
-                  border-color: $app-red-color transparent transparent transparent;
-                  position: absolute;
-                  top: 2px;
-                  left: 0;
-                }
+              .pair {
+                margin-right: $app-base-padding / 2;
+                white-space: nowrap;
               }
-            }
 
-            .pair {
-              margin-right: $app-base-padding / 2;
-            }
-
-            .exchange-rate {
-              &.rate-green {
-                color: $app-green-color;
+              .exchange-rate {
+                &.rate-green {
+                  color: $app-green-color;
+                }
               }
             }
           }

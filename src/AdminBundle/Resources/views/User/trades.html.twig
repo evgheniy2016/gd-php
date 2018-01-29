@@ -33,7 +33,7 @@
                     {% endif %}
             {% endspaceless %}</td>
             <td>{{ trade.createdAtString }}</td>
-            <td>{{ trade.assetName }}</td>
+            <td>{{ trade.assetCharacteristic.asset.name }}</td>
             <td>{{ trade.period }}</td>
             <td class="pull-right">{% spaceless %}
                     {% if trade.finished %}

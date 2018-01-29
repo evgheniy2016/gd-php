@@ -1,5 +1,4 @@
 imports:
-    - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@AdminBundle/Resources/config/services.yml" }
@@ -22,8 +21,7 @@ framework:
     translator:
       fallbacks: ['%locale%']
 
-    secret: '%secret%'
-#    secret: '%env(SECRET)%'
+    secret: '%env(MY_SECRET)%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
         strict_requirements: ~
@@ -57,17 +55,11 @@ twig:
 doctrine:
     dbal:
         driver: pdo_mysql
-        host: '%database_host%'
-        port: '%database_port%'
-        dbname: '%database_name%'
-        user: '%database_user%'
-        password: '%database_password%'
-#        host: '%env(DATABASE_HOST)%'
-#        port: '%env(DATABASE_PORT)%'
-#        dbname: '%env(DATABASE_NAME)%'
-#        user: '%env(DATABASE_USER)%'
-#        password: '%env(DATABASE_PASSWORD)%'
-#        path: '%database_path%'
+        host: '%env(DB_HOST)%'
+        port: '%env(DB_PORT)%'
+        dbname: '%env(DB_NAME)%'
+        user: '%env(DB_USER)%'
+        password: '%env(DB_PASSWORD)%'
         charset: UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
@@ -83,14 +75,10 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
+    transport: '%env(MAILER_TRANSPORT)%'
+    host: '%env(MAILER_HOST)%'
+    username: '%env(MAILER_USER)%'
+    password: '%env(MAILER_PASSWORD)%'
     auth_mode: cram-md5
-    port: 2525
-#    transport: '%env(MAILER_TRANSPORT)%'
-#    host: '%env(MAILER_HOST)%'
-#    username: '%env(MAILER_USERNAME)%'
-#    password: '%env(MAILER_PASSWORD)%'
+    port: '%env(MAILER_PORT)%'
     spool: { type: memory }
