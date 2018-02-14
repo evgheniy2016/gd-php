@@ -47,9 +47,13 @@
     {% if is_granted('ROLE_USER') %}
     window.apiKey = '{{ app.user.apiKey }}';
     {% endif %}
+    window.websocketServer = {
+      host: '{{ parser_websocket_server_host }}',
+      port: '{{ parser_websocket_server_port }}'
+    };
 </script>
 {% block js %}{% endblock %}
-<script src="http://192.168.1.102:5001/socket.io/socket.io.js"></script>
+<script src="http://{{ parser_websocket_server_host }}:{{ parser_websocket_server_port }}/socket.io/socket.io.js"></script>
 <script src="{{ asset('dist/frontend.bundle.js') }}"></script>
 </body>
 </html>

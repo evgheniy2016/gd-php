@@ -31,6 +31,8 @@ let lastMouseCoordinates: number[] = [];
 let bisectDate: any = null;
 let circle, width, margin, verticalLine, tooltip, isMouseEntered = false;
 
+let searchAssetInput = null;
+
 const assetPrices = {};
 
 function b64EncodeUnicode(str) {
@@ -134,6 +136,7 @@ export function tradingGraph () {
   exchangeFilterTabShortContent = document.querySelector('.exchange-filter-short');
   exchangeFilterTabLongContent = document.querySelector('.exchange-filter-long');
   currentTimeIntervalAssetElements = document.querySelectorAll('[data-current-date-interval]');
+  searchAssetInput = document.querySelector('#assets-search-field');
 
   const tradingAssets = document.querySelectorAll('.trading-asset');
   const timeIntervals = document.querySelectorAll('[data-time-interval]');
@@ -141,6 +144,21 @@ export function tradingGraph () {
   for (let i = 0; i < currentTimeIntervalElements.length; i++) {
     currentTimeIntervals.push(currentTimeIntervalElements[i]);
   }
+
+  const tradingAssetsArray = [];
+  for (let i = 0; i < tradingAssets.length; i++) {
+    tradingAssetsArray.push(tradingAssets[i]);
+  }
+
+  searchAssetInput.addEventListener('input', () => {
+    const searchText = searchAssetInput.value.toLowerCase();
+
+    tradingAssetsArray
+      .forEach(element => element.classList.remove('not-found'));
+    tradingAssetsArray
+      .filter(element => element.getAttribute('data-asset-name').toLowerCase().indexOf(searchText) < 0)
+      .forEach(element => element.classList.add('not-found'));
+  });
 
   for (let i = 0; i < timeIntervals.length; i++) {
     timeIntervalsElements.push(timeIntervals[i]);

@@ -2,13 +2,20 @@ export class WebSocketClient {
 
   private ioClient: any = null;
 
-  private host: string = '192.168.1.102';
+  private host: string = null;
 
   private port: number = 5001;
 
   private static instance: WebSocketClient = null;
 
   public constructor() {
+    if (typeof window['websocketServer'] === "undefined") {
+      throw "WebSocket configuration are not found";
+    }
+
+    this.host = window['websocketServer']['host'];
+    this.port = window['websocketServer']['port'];
+
     WebSocketClient.instance = this;
     (window as any)['ws'] = this;
     this.socketIoLoaded();
@@ -28,6 +35,7 @@ export class WebSocketClient {
   }
 
   public emit(event: string, data: any) {
+    console.log(event, data);
     this.ioClient.emit(event, data);
   }
 

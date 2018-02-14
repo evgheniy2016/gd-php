@@ -108,6 +108,10 @@ $terminal-exchanges-width: 380px;
           }
           tbody {
             tr {
+              &.not-found {
+                display: none;
+              }
+              
               &:nth-child(2n) {
                 td {
                   background-color: rgba(0, 0, 0, .2);
@@ -153,6 +157,24 @@ $terminal-exchanges-width: 380px;
                 &.price-up {
                   background-color: rgba($app-green-color, .3);
                   color: $app-green-color;
+                }
+
+                &.search-field-column {
+                  padding: 0;
+
+                  .search-field {
+                    display: block;
+                    width: 100%;
+                    border: none;
+                    background-color: transparent;
+                    font-size: 14px;
+                    line-height: 14px * 1.25;
+                    outline: none;
+                    color: rgba(white, .8);
+                    padding: $app-base-padding / 2 $app-base-padding;
+
+                    @include box-sizing();
+                  }
                 }
               }
             }

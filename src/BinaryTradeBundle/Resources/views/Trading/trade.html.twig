@@ -46,6 +46,13 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <tr>
+                                <td colspan="3" class="search-field-column">
+                                    <form action="javascript:">
+                                        <input type="text" id="assets-search-field" class="search-field" placeholder="Введите фразу для поиска" />
+                                    </form>
+                                </td>
+                            </tr>
                             {% for asset in assets %}
                             <tr class="trading-asset" data-asset-name="{{ asset.name }}" data-asset="pid-{{ asset.pid }}" data-time-intervals="{{ asset.timeIntervals }}" {% for characteristic in asset.characteristics %}data-{{ characteristic.time }}="{{ characteristic.time }}" {% endfor %}>
                                 <td>{{ asset.name }}</td>

@@ -27,6 +27,7 @@ export class WebSocketClient {
   }
 
   public emit(event: string, data: any) {
+    console.log(event, data);
     this.ioClient.emit(event, data);
   }
 
