@@ -58,6 +58,11 @@
     <script>
         window.currentPage = '{{ app.request.attributes.get('_route') }}';
         window.apiKey = '{{ app.user.apiKey }}';
+
+        window.websocketServer = {
+          host: '{{ parser_websocket_server_host }}',
+          port: '{{ parser_websocket_server_port }}'
+        };
     </script>
     {% block scripts %}{% endblock %}
     <script src="http://127.0.0.1:5001/socket.io/socket.io.js"></script>
