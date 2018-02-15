@@ -14,8 +14,6 @@ parameters:
       take: 15
     verification_email: verify@goldenforex.com
     emails_from: noreply@goldenforex.com
-    parser.websocket_server.host: 192.168.1.112
-    parser.websocket_server.port: 5001
 
 framework:
     #esi: ~
@@ -52,8 +50,8 @@ twig:
     globals:
         sidebarService: '@AdminBundle\Service\SidebarService'
         tradingService: '@BinaryTradeBundle\Service\TradingService'
-        parser_websocket_server_host: '%parser.websocket_server.host%'
-        parser_websocket_server_port: '%parser.websocket_server.port%'
+        parser_websocket_server_host: '%env(SOCKETS_HOST)%'
+        parser_websocket_server_port: '%env(SOCKETS_PORT)%'
 
 # Doctrine Configuration
 doctrine:
