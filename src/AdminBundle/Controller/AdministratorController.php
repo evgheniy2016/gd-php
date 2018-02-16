@@ -48,8 +48,6 @@ class AdministratorController extends Controller
         $pagination->setMaxPerPage($paginationTake);
         $pagination->setCurrentPage($page);
 
-        dump($pagination);
-
         return $this->render('@Admin/Administrator/index.html.twig', array(
             'administrators' => $pagination
         ));
