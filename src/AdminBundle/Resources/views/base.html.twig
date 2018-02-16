@@ -25,6 +25,7 @@
                 <a href="{{ path('promo_code.index') }}" {% if sidebarService.getCurrentRoute starts with 'promo_code' %}class="active"{% endif %} data-icon="card_giftcard">Промокоды</a>
                 <a href="{{ path('assets.index') }}" {% if sidebarService.getCurrentRoute starts with 'assets' %}class="active"{% endif %} data-icon="euro_symbol">Активы</a>
                 <a href="{{ path('pages.index') }}" {% if sidebarService.getCurrentRoute starts with 'pages' %}class="active"{% endif %} data-icon="insert_drive_file">Статические страницы</a>
+                <a href="{{ path('category.index') }}" {% if sidebarService.getCurrentRoute starts with 'category' %}class="active"{% endif %}>Категории</a>
                 {% endif %}
             </div>
         </div>
