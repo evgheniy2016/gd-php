@@ -18,7 +18,9 @@ class MarkdownType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('markdown', TextareaType::class);
+        $builder->add('markdown', TextareaType::class, [
+            'label' => 'Содержимое'
+        ]);
     }
 
 

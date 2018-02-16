@@ -18,23 +18,26 @@ class AssetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('pid', TextType::class, [
-            'attr' => [ 'placeholder' => 'From investing.com without \'pid-\'' ]
+            'attr' => [ 'placeholder' => 'From investing.com without \'pid-\'', 'label' => 'ID актива' ]
         ])->add('name', TextType::class, [
-            'attr' => [ 'placeholder' => 'Asset name' ]
+            'attr' => [ 'placeholder' => 'Asset name', 'label' => 'Название' ]
         ])->add('type', ChoiceType::class, [
             'choices' => [
                 'Currency pair' => 'currency_pair',
                 'Index' => 'index',
-                'Stock' => 'stock'
-            ]
+                'Stock' => 'stock',
+                'Commodities' => 'commodities'
+            ],
+            'label' => 'Тип'
         ])
-            ->add('tradeFrom', null, [ 'attr' => [ 'placeholder' => 'чч:мм' ] ])
-            ->add('tradeUntil', null, [ 'attr' => [ 'placeholder' => 'чч:мм' ] ])
+            ->add('tradeFrom', null, [ 'attr' => [ 'placeholder' => 'чч:мм' ], 'label' => 'Открыто с' ])
+            ->add('tradeUntil', null, [ 'attr' => [ 'placeholder' => 'чч:мм' ], 'label' => 'Открыто по' ])
             ->add('characteristics', CollectionType::class, [
                 'entry_type' => AssetCharacteristicType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'required' => false
+                'required' => false,
+                'label' => 'Временные интервалы'
             ]);
     }
     
