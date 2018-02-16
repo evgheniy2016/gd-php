@@ -1,0 +1,11 @@
+{% extends "@Admin/base.html.twig" %}
+
+{% block title %}AdminBundle:Category:create{% endblock %}
+
+{% block body %}
+
+    {% form_theme form '@Admin/form.html.twig' %}
+
+    {{ form(form) }}
+
+{% endblock %}

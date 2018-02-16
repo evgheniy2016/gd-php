@@ -1,0 +1,26 @@
+{% extends "@Admin/base.html.twig" %}
+
+{% block title %}AdminBundle:Category:index{% endblock %}
+
+{% block body %}
+<table class="table card">
+    <thead>
+    <tr>
+        <th width="75">id</th>
+        <th>Category</th>
+        <th class="pull-right contains-button">
+            <a href="{{ path('category.create') }}" class="button button-small">создать</a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for category in categories %}
+    <tr>
+        <td>{{ category.id }}</td>
+        <td>{{ category.name }}</td>
+        <td class="pull-right links-list"><a href="{{ url('category.delete', { id: category.id }) }}">delete</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
