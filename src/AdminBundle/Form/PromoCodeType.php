@@ -20,7 +20,7 @@ class PromoCodeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code')
+            ->add('code', null, [ 'label' => 'Код' ])
             ->add('author', ChoiceType::class, [
                 'choices' => $options['choices'],
                 'choice_label' => function ($value, $key, $index) {
@@ -28,7 +28,8 @@ class PromoCodeType extends AbstractType
                         return $value;
                     }
                     return $value;
-                }
+                },
+                'label' => 'Автор'
             ]);
     }
     

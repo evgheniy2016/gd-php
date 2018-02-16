@@ -16,8 +16,8 @@ class SaveAndDeleteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('save', SubmitType::class, [ 'attr' => [ 'class' => 'button' ] ])
-            ->add('delete', SubmitType::class, [ 'attr' => [ 'class' => 'button button-danger' ] ]);
+            ->add('save', SubmitType::class, [ 'attr' => [ 'class' => 'button' ], 'label' => 'Сохранить' ])
+            ->add('delete', SubmitType::class, [ 'attr' => [ 'class' => 'button button-danger' ], 'label' => 'Удалить' ]);
     }
 
     /**

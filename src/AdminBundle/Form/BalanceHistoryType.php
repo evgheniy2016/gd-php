@@ -13,7 +13,10 @@ class BalanceHistoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('type')->add('amount')->add('user');
+        $builder
+            ->add('type', null, [ 'label' => 'Тип' ])
+            ->add('amount', null, [ 'label' => 'Значение' ])
+            ->add('user', null, [ 'label' => 'Пользователь' ]);
     }
     
     /**

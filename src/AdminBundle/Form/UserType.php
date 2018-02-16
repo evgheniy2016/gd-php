@@ -21,17 +21,17 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
-            ->add('password', PasswordType::class, [ 'required' => false ])
-            ->add('email', EmailType::class)
-            ->add('first_name')
-            ->add('last_name')
-            ->add('phone')
-            ->add('country')
-            ->add('city')
-            ->add('address')
-            ->add('zip_code')
-            ->add('currency')
+            ->add('username', null, [ 'label' => 'Логин' ])
+            ->add('password', PasswordType::class, [ 'required' => false, 'label' => 'Пароль' ])
+            ->add('email', EmailType::class, [ 'label' => 'E-Mail' ])
+            ->add('first_name', null, [ 'label' => 'Имя' ])
+            ->add('last_name', null, [ 'label' => 'Фамилия' ])
+            ->add('phone', null, [ 'label' => 'Номер телефона' ])
+            ->add('country', null, [ 'label' => 'Страна' ])
+            ->add('city', null, [ 'label' => 'город' ])
+            ->add('address', null, [ 'label' => 'Адрес' ])
+            ->add('zip_code', null, [ 'label' => 'Индекс' ])
+            ->add('currency', null, [ 'label' => 'Валюта' ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Admin' => 'ROLE_ADMIN',
@@ -40,15 +40,17 @@ class UserType extends AbstractType
                     'Super admin' => 'ROLE_SUPER_ADMIN',
                     'Manager' => 'ROLE_MANAGER'
                 ],
-                'multiple' => true
+                'multiple' => true,
+                'label' => 'Роль'
             ])
             ->add('promoCodes', CollectionType::class, [
                 'entry_type' => TextType::class,
                 'entry_options' => [
                     'disabled' => true
-                ]
+                ],
+                'label' => 'Промокоды'
             ])
-            ->add('promoCode');
+            ->add('promoCode', null, [ 'label' => 'Промокод' ]);
     }
     
     /**

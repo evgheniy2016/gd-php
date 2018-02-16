@@ -13,7 +13,9 @@ class AssetCharacteristicType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('time')->add('multiplier');
+        $builder
+            ->add('time', null, [ 'label' => 'Время' ])
+            ->add('multiplier', null, [ 'label' => 'Множитель' ]);
     }
     
     /**

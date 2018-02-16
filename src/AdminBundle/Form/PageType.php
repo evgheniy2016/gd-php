@@ -18,11 +18,12 @@ class PageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('slug', TextType::class, [ 'required' => false ])
-            ->add('category')
+            ->add('title', null, [ 'label' => 'Заголовок' ])
+            ->add('slug', TextType::class, [ 'required' => false, 'label' => 'Slug' ])
+            ->add('category', null, [ 'label' => 'Категория' ])
             ->add('content', TextareaType::class, [
-                'attr' => [ 'class' => 'markdown-row label-vertical-top' ]
+                'attr' => [ 'class' => 'markdown-row label-vertical-top' ],
+                'label' => 'Содержимое'
             ]);
     }
     
