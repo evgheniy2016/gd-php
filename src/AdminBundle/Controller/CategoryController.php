@@ -57,9 +57,12 @@ class CategoryController extends Controller
      */
     public function deleteAction(int $id)
     {
-        return $this->render('AdminBundle:Category:delete.html.twig', array(
-            // ...
-        ));
+        $categoriesRepository = $this->getDoctrine()->getRepository('AppBundle:PageCategory');
+        $category = $categoriesRepository->find($id);
+        $this->getDoctrine()->getManager()->remove($category);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('category.index');
     }
 
 }
