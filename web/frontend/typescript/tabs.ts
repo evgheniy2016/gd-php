@@ -48,7 +48,7 @@ class TabsContainer {
   }
 
   private setLoadingPlaceholder(element: HTMLElement) {
-    element.innerHTML = '<h1>Loading...</h1>';
+    element.innerHTML = '<h1>Загрузка...</h1>';
   }
 
   private useAjax(root: HTMLElement) {

@@ -87,6 +87,9 @@ class AssetCharacteristic
      */
     public function getTime()
     {
+        if ($this->time === '1M') {
+            return '1_m';
+        }
         return $this->time;
     }
 

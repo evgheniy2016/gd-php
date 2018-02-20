@@ -19,7 +19,7 @@
     <tr>
         <td>{{ trade.id }}</td>
         <td>{{ trade.assetCharacteristic.asset.name }}</td>
-        <td class="pull-right">{{ trade.direction | trans }}</td>
+        <td class="pull-right">{{ ('app.trade.direction.' ~ trade.direction) | trans }}</td>
         <td class="pull-right">{{ trade.amount }} $</td>
         <td class="pull-right">{% spaceless %}
             {% if trade.gainings > 0 %}

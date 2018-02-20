@@ -1,5 +1,7 @@
+app.trade.direction.up: Вверх
+app.trade.direction.down: Вниз
 app.trade.opened: Открыто
 app.trade.finished: Завершена
-app.balance_history.type.income: Постепление
+app.balance_history.type.income: Поступление
 app.balance_history.type.outgoing: Ставка
 app.balance_history.type.bonus: Бонус
