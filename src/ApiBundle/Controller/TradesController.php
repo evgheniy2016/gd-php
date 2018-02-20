@@ -35,10 +35,8 @@ class TradesController extends Controller
     public function positionsAction(UserInterface $user, int $page)
     {
         $tradesRepository = $this->getDoctrine()->getRepository('AppBundle:Trade');
-        $usersRepository = $this->getDoctrine()->getRepository('AppBundle:User');
-        $users = $usersRepository->find(1);
 
-        $trades = $tradesRepository->findOpenedTradesForUser($users);
+        $trades = $tradesRepository->findOpenedTradesForUser($user);
 
         $paginationAdapter = new DoctrineORMAdapter($trades);
         $pagination = new Pagerfanta($paginationAdapter);
