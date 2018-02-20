@@ -162,7 +162,7 @@ export function tradingGraph () {
     timeIntervalsElements.push(timeIntervals[i]);
 
     timeIntervals[i].addEventListener('click', () => {
-      const selectedTimeInterval = timeIntervals[i].getAttribute('data-time-interval');
+      let selectedTimeInterval = timeIntervals[i].getAttribute('data-time-interval');
       if (timeHiddenInput !== null) {
         timeHiddenInput.value = b64EncodeUnicode(JSON.stringify({
           time: b64EncodeUnicode(selectedTimeInterval)
@@ -172,8 +172,12 @@ export function tradingGraph () {
       timeIntervals[i].classList.add('active');
 
       for (let j = 0; j < currentTimeIntervalAssetElements.length; j++) {
+        if (selectedTimeInterval.indexOf('_m') > 0) {
+          selectedTimeInterval = selectedTimeInterval.replace('_m', 'M');
+        }
         currentTimeIntervalAssetElements[j].innerHTML = getTimeIntervalForHuman(selectedTimeInterval);
       }
+      selectedTimeInterval = selectedTimeInterval.replace('M', '_m');
 
       currentTimeInterval = selectedTimeInterval;
 
