@@ -32,6 +32,7 @@ let bisectDate: any = null;
 let circle, width, margin, verticalLine, tooltip, isMouseEntered = false;
 
 let searchAssetInput = null;
+let assetGroupSelect = null;
 
 const assetPrices = {};
 
@@ -135,6 +136,7 @@ export function tradingGraph () {
   exchangeFilterTabLongContent = document.querySelector('.exchange-filter-long');
   currentTimeIntervalAssetElements = document.querySelectorAll('[data-current-date-interval]');
   searchAssetInput = document.querySelector('#assets-search-field');
+  assetGroupSelect = document.querySelector('#asset-group-select');
 
   const tradingAssets = document.querySelectorAll('.trading-asset');
   const timeIntervals = document.querySelectorAll('[data-time-interval]');
@@ -157,6 +159,17 @@ export function tradingGraph () {
       .filter(element => element.getAttribute('data-asset-name').toLowerCase().indexOf(searchText) < 0)
       .forEach(element => element.classList.add('not-found'));
   });
+
+  if (assetGroupSelect !== null) {
+    assetGroupSelect.addEventListener('change', () => {
+      const selectedCategory = assetGroupSelect.value;
+      tradingAssetsArray
+        .forEach(element => element.classList.remove('not-in-selected-category'));
+      tradingAssetsArray
+        .filter(element => element.getAttribute('data-group') !== selectedCategory)
+        .forEach(element => element.classList.add('not-in-selected-category'));
+    });
+  }
 
   for (let i = 0; i < timeIntervals.length; i++) {
     timeIntervalsElements.push(timeIntervals[i]);

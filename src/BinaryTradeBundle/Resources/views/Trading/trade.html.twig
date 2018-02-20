@@ -50,15 +50,23 @@
                                 <td colspan="3" class="search-field-column">
                                     <form action="javascript:">
                                         <input type="text" id="assets-search-field" class="search-field" placeholder="Введите фразу для поиска" />
+                                        <select id="asset-group-select">
+                                            <option value="currency_pair">Currency pair</option>
+                                            <option value="index">Index</option>
+                                            <option value="stock">Stock</option>
+                                            <option value="commodities">Commodities</option>
+                                        </select>
                                     </form>
                                 </td>
                             </tr>
-                            {% for asset in assets %}
-                            <tr class="trading-asset" data-asset-name="{{ asset.name }}" data-asset="pid-{{ asset.pid }}" data-time-intervals="{{ asset.timeIntervals }}" {% for characteristic in asset.characteristics %}data-{{ characteristic.time }}="{{ characteristic.time }}" {% endfor %}>
-                                <td>{{ asset.name }}</td>
-                                <td data-asset-value="pid-{{ asset.pid }}">-</td>
-                                <td class="pull-right"><span data-current-date-interval></span></td>
-                            </tr>
+                            {% for key, assets in assetsGroups %}
+                                {% for asset in assets %}
+                                <tr class="trading-asset" data-asset-name="{{ asset.name }}" data-asset="pid-{{ asset.pid }}" data-time-intervals="{{ asset.timeIntervals }}" {% for characteristic in asset.characteristics %}data-{{ characteristic.time }}="{{ characteristic.time }}" {% endfor %} data-group="{{ key }}">
+                                    <td>{{ asset.name }}</td>
+                                    <td data-asset-value="pid-{{ asset.pid }}">-</td>
+                                    <td class="pull-right"><span data-current-date-interval></span></td>
+                                </tr>
+                                {% endfor %}
                             {% endfor %}
                             </tbody>
                         </table>

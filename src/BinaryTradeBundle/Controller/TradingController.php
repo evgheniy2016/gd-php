@@ -2,6 +2,7 @@
 
 namespace BinaryTradeBundle\Controller;
 
+use AppBundle\Entity\Asset;
 use AppBundle\Entity\BalanceHistory;
 use AppBundle\Entity\Trade;
 use BinaryTradeBundle\Service\TradingService;
@@ -25,8 +26,20 @@ class TradingController extends Controller
         $assetsRepository = $this->getDoctrine()->getRepository('AppBundle:Asset');
         $assets = $assetsRepository->findAllOrderById()->getQuery()->getResult();
 
+        $assetsGrouped = [
+            'currency_pair' => [],
+            'index' => [],
+            'stock' => [],
+            'commodities' => []
+        ];
+
+        /** @var Asset $asset */
+        foreach ($assets as $asset) {
+            array_push($assetsGrouped[$asset->getType()], $asset);
+        }
+
         return $this->render('BinaryTradeBundle:Trading:trade.html.twig', array(
-            'assets' => $assets
+            'assetsGroups' => $assetsGrouped
         ));
     }
 

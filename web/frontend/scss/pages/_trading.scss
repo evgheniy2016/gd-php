@@ -108,7 +108,7 @@ $terminal-exchanges-width: 380px;
           }
           tbody {
             tr {
-              &.not-found {
+              &.not-found, &.not-in-selected-category {
                 display: none;
               }
               
@@ -161,6 +161,18 @@ $terminal-exchanges-width: 380px;
 
                 &.search-field-column {
                   padding: 0;
+
+                  form {
+                    display: flex;
+
+                    select {
+                      border: none;
+                      background-color: rgba(black, .5);
+                      color: rgba(white, .7);
+                      outline: none;
+                      padding: $app-base-padding / 2 $app-base-padding;
+                    }
+                  }
 
                   .search-field {
                     display: block;
