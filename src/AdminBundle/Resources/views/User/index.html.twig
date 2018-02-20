@@ -22,7 +22,11 @@
         <tr>
             <td>{{ user.id }}</td>
             <td><a href="{{ path('users.edit', { id: user.id }) }}">{{ user.username }}</a></td>
-            <td {% if is_granted('ROLE_SUPER_ADMIN') %} colspan="2" {% endif %}><a href="{{ url('users.index', { promo: user.promocode.code }) }}">{{ user.promocode }}</a></td>
+            <td {% if is_granted('ROLE_SUPER_ADMIN') %} colspan="2" {% endif %}>
+                {% if user.promocode != null %}
+                <a href="{{ url('users.index', { promo: user.promocode.code }) }}">{{ user.promocode }}</a>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
         </tbody>
