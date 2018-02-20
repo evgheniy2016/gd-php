@@ -165,9 +165,11 @@ export function tradingGraph () {
       const selectedCategory = assetGroupSelect.value;
       tradingAssetsArray
         .forEach(element => element.classList.remove('not-in-selected-category'));
-      tradingAssetsArray
-        .filter(element => element.getAttribute('data-group') !== selectedCategory)
-        .forEach(element => element.classList.add('not-in-selected-category'));
+      if (selectedCategory !== '-1') {
+        tradingAssetsArray
+          .filter(element => element.getAttribute('data-group') !== selectedCategory)
+          .forEach(element => element.classList.add('not-in-selected-category'));
+      }
     });
   }
 
