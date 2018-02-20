@@ -87,8 +87,8 @@ class AssetCharacteristic
      */
     public function getTime()
     {
-        if ($this->time === '1M') {
-            return '1_m';
+        if (strpos($this->time, 'M') !== false) {
+            return str_replace($this->time, 'M', '_m');
         }
         return $this->time;
     }
