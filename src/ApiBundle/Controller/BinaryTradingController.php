@@ -45,6 +45,9 @@ class BinaryTradingController extends Controller
             $time = json_decode($time);
             $time = $time->time;
             $time = base64_decode($time);
+            if (strpos($time, '_m') !== false) {
+                $time = str_replace('_m', 'M', $time);
+            }
         } catch (\Exception $e) {
             return new JsonResponse([
                 'response' => 'error',
