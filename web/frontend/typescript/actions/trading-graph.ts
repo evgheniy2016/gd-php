@@ -88,8 +88,6 @@ function onMouseMove(isExternal: boolean = false) {
   let tooltipX = x(d.date);
   let tooltipPresumptiveWidth = 140;
 
-  console.log(width);
-
   if (tooltipX + tooltipPresumptiveWidth >= width) {
     tooltipX -= tooltipPresumptiveWidth;
   }
@@ -344,10 +342,10 @@ function appendZero(number: any) {
 }
 
 function drawGraph() {
-  margin = {top: 25, right: 20, bottom: 110, left: 40};
+  margin = {top: 25, right: 20, bottom: 110, left: 70};
 
   let svg = d3.select("svg"),
-    margin2 = {top: 430, right: 20, bottom: 30, left: 40},
+    margin2 = {top: 430, right: 20, bottom: 30, left: 70},
     height = +svg.attr("height") - margin.top - margin.bottom,
     height2 = +svg.attr("height") - margin2.top - margin2.bottom;
 
@@ -512,11 +510,11 @@ function drawGraph() {
       let maxAbsoluteDecimalPart = getDecimal(absoluteMax) * 10000;
       let maxAbsoluteIntegerPart = Math.floor(absoluteMax);
 
-      let domainFrom = minIntegerPart + (minDecimalPart - 10) / 10000;
-      let domainTo = integerPart + (decimalPart + 10) / 10000;
+      let domainFrom = minIntegerPart + (minDecimalPart - 100) / 10000;
+      let domainTo = integerPart + (decimalPart + 100) / 10000;
 
-      let domainFromAbsolute = minAbsoluteIntegerPart + (minAbsoluteDecimalPart - 10) / 10000;
-      let domainToAbsolute = maxAbsoluteIntegerPart + (maxAbsoluteDecimalPart + 10) / 10000;
+      let domainFromAbsolute = minAbsoluteIntegerPart + (minAbsoluteDecimalPart - 100) / 10000;
+      let domainToAbsolute = maxAbsoluteIntegerPart + (maxAbsoluteDecimalPart + 100) / 10000;
 
       y.domain([domainFrom, domainTo]);
       x2.domain(x.domain());
