@@ -431,6 +431,18 @@ function drawGraph() {
     .attr('y', 16)
     .attr('width', 150);
 
+  const emptyLabel = svg.append('text')
+    .text('Нет данных для отображения')
+    .attr("font-size", "20px")
+    .attr("fill", "#3594e6")
+    .attr('x', function(d, i) {
+      const labelWidth = this.getComputedTextLength();
+
+      return width / 2 - labelWidth / 2 + margin.left;
+    })
+    .attr('y', height / 2)
+    .attr('width', 150);
+
   x.domain(d3.extent(data, function(d) { return d.date; }));
   y.domain([0, d3.min(data, function(d) { return d.price; })]);
   x2.domain(x.domain());
@@ -486,6 +498,11 @@ function drawGraph() {
     const timestamp = asset.timestamp;
     const date = new Date(timestamp);
     data.push({ date: date, price: asset.price });
+
+    if (data.length > 0) {
+      emptyLabel.text('');
+    }
+
     if (currentAssetPrice !== null) {
       currentAssetPrice.innerHTML = asset.price;
       assetPriceInput.value = asset.price;
