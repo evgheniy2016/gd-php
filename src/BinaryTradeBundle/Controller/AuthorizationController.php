@@ -8,7 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class AuthorizationController extends Controller
 {
@@ -72,7 +74,9 @@ class AuthorizationController extends Controller
         $user->setPassword($password);
         $user->setRoles(['ROLE_USER']);
         $user->setEmail($email);
-        $user->setPromoCode($promoCode);
+        if ($promoCode !== null) {
+            $user->setPromoCode($promoCode);
+        }
         $user->setBalance(0);
         $user->setFirstName($firstName);
         $user->setLastName($lastName);
@@ -88,6 +92,12 @@ class AuthorizationController extends Controller
 
         $manager->persist($user);
         $manager->flush();
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $event = new InteractiveLoginEvent($request, $token);
+        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 
         return new RedirectResponse('/trade');
     }
