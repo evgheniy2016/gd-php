@@ -549,12 +549,40 @@ function drawGraph() {
       let maxAbsoluteDecimalPart = getDecimal(absoluteMax) * 10000;
       let maxAbsoluteIntegerPart = Math.floor(absoluteMax);
 
-      let domainFrom = minIntegerPart + (minDecimalPart - 100) / 10000;
-      let domainTo = integerPart + (decimalPart + 100) / 10000;
+      if (minDecimalPart > 0) {
+        minDecimalPart = minDecimalPart - 100;
+      } else {
+        minIntegerPart *= 1.05;
+      }
 
-      let domainFromAbsolute = minAbsoluteIntegerPart + (minAbsoluteDecimalPart - 100) / 10000;
-      let domainToAbsolute = maxAbsoluteIntegerPart + (maxAbsoluteDecimalPart + 100) / 10000;
+      // let percents = 5 * Math.pow(10, -1 * (decimalPart.toString().length / 2));
 
+      let percents = 0.05;
+
+      let decimalLength = decimalPart.toString().length;
+      if (decimalLength > 3) {
+        percents = 0.0005;
+      } else if (decimalLength > 4) {
+        percents = 0.00005;
+      } else if (decimalLength > 5) {
+        percents = 0.000005;
+      } else if (decimalLength > 6) {
+        percents = 0.0000005;
+      }
+
+      let domainFrom = min * (1 - percents);
+      let domainTo = max * (1 + percents);
+
+      let domainFromAbsolute = absoluteMin * (1 - percents);
+      let domainToAbsolute = absoluteMax * (1 + percents);
+
+      // let domainFrom = minIntegerPart + (minDecimalPart - 100) / 10000;
+      // let domainTo = integerPart + (decimalPart + 100) / 10000;
+
+      // let domainFromAbsolute = minAbsoluteIntegerPart + (minAbsoluteDecimalPart - 100) / 10000;
+      // let domainToAbsolute = maxAbsoluteIntegerPart + (maxAbsoluteDecimalPart + 100) / 10000;
+
+      // y.domain([domainFrom, domainTo]);
       y.domain([domainFrom, domainTo]);
       x2.domain(x.domain());
       y2.domain([domainFromAbsolute, domainToAbsolute]);
