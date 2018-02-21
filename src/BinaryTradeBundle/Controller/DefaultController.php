@@ -40,6 +40,33 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/contact-us", name="contact-us")
+     */
+    public function contactUsAction(Request $request)
+    {
+        $name = $request->get('username');
+        $email = $request->get('email');
+        $subject = $request->get('subject');
+        $content = $request->get('content');
+
+        $message = \Swift_Message::newInstance()
+            ->setFrom($_SERVER['MAILER_USER'])
+            ->setTo('goldenforex.info@gmail.com')
+            ->setSubject('Новое сообщение формы обратной связи: ' . $subject)
+            ->setBody($content);
+
+        $transporter = \Swift_SmtpTransport::newInstance($_SERVER['MAILER_HOST'], $_SERVER['MAILER_PORT'], 'tls')
+            ->setUsername($_SERVER['MAILER_USER'])
+            ->setPassword($_SERVER['MAILER_PASSWORD']);
+
+        $mailer = \Swift_Mailer::newInstance($transporter);
+
+        $mailer->send($message);
+
+        return $this->render('BinaryTradeBundle:Default:contact_us.html.twig', [  ]);
+    }
+
+    /**
      * @Route("/email")
      */
     public function sendEmail(Request $request) {

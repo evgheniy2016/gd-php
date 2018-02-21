@@ -81,6 +81,6 @@ swiftmailer:
     host: '%env(MAILER_HOST)%'
     username: '%env(MAILER_USER)%'
     password: '%env(MAILER_PASSWORD)%'
-    auth_mode: cram-md5
+    auth_mode: login
     port: '%env(MAILER_PORT)%'
     spool: { type: memory }
