@@ -419,6 +419,10 @@ function drawGraph() {
     .attr("class", "context")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
+  if (currentTimeInterval.indexOf('_m') > -1) {
+    currentTimeInterval = currentTimeInterval.replace('_m', 'M');
+  }
+
   svg.append('text')
     .text(getTimeIntervalForHuman(currentTimeInterval) + ' - ' + currentAssetName)
     .attr("font-size", "20px")
@@ -483,7 +487,6 @@ function drawGraph() {
     .datum(data)
     .attr("class", "area")
     .attr("d", area2);
-
 
   lastZoom = null;
 

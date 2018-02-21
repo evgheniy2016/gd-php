@@ -171,6 +171,10 @@ $terminal-exchanges-width: 380px;
                       color: rgba(white, .7);
                       outline: none;
                       padding: $app-base-padding / 2 $app-base-padding;
+
+                      option {
+                        background-color: rgba(0, 0, 0, .8);
+                      }
                     }
                   }
 
