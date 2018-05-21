@@ -1,0 +1,43 @@
+{% extends '@BinaryTrade/Layout/application.html.twig' %}
+
+{% block title "Оформление заявки на вывод средств - " ~ parent() %}
+
+{% block content %}
+
+    <form method="post" class="form form-withdraw-full" action="{{ url('api.trades.withdraw.finish') }}">
+        <div class="form-field">
+            <label for="withdraw-type">Вывод на:</label>
+            <select name="withdraw-type" id="withdraw-type" class="field-content">
+                <option value="empty" data-type="">----------</option>
+                <option value="qiwi" data-type="qiwi">Qiwi</option>
+                <option value="webmoney" data-type="webmoney">Webmoney</option>
+                <option value="wiretransfer" data-type="wiretransfer">Wire Transfer</option>
+            </select>
+        </div>
+        <div class="form-field">
+            <label for="withdraw-amount">Сумма:</label>
+            <input type="text" id="withdraw-amount" name="amount" class="field-content" value="{{ amount }}" />
+        </div>
+        <div class="form-field">
+            <label for="withdraw-comment">Комментарий:</label>
+            <input type="text" id="withdraw-comment" name="comment" class="field-content" value="{{ comment }}" />
+        </div>
+        <div class="form-field" data-withraw-type="webmoney">
+            <label for="withdraw-webmoney-wallet">Кошелёк</label>
+            <input type="text" id="withdraw-webmoney-wallet" name="withdraw[webmoney][wallet]" class="field-content" />
+        </div>
+        <div class="form-field" data-withraw-type="qiwi">
+            <label for="withdraw-qiwi-wallet">Кошелёк</label>
+            <input type="text" id="withdraw-qiwi-wallet" name="withdraw[qiwi][wallet]" class="field-content" />
+        </div>
+        <div class="form-field" data-withraw-type="wiretransfer">
+            <label for="withdraw-wiretransfer-field1">Field #1</label>
+            <input type="text" id="withdraw-wiretransfer-field1" name="withdraw[wiretransfer][field1]" class="field-content" />
+        </div>
+        <div class="form-field">
+            <label>&nbsp;</label>
+            <input type="submit" value="Продолжить" />
+        </div>
+    </form>
+
+{% endblock %}

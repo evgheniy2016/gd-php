@@ -18,12 +18,12 @@
                 {% if is_granted('ROLE_USER') %}
                 <div class="wallet">
                     <span id="wallet-amount">{{ app.user.balance }} $</span><!--
-                    --><a href="javascript:" class="refill">Пополнить счёт</a>
+                    --><a href="{{ url('trade') }}" class="refill">Пополнить счёт</a>
                 </div>
                 {% endif %}
                 <ul class="header-links">
                     {% if is_granted('ROLE_USER') %}
-                    <li>Здравствуйте, <span class="text-blue">{{ app.user.firstName }} {{ app.user.lastName }}</span></li>
+                    <li>Здравствуйте, <span class="text-blue client-data">{{ app.user.firstName }} {{ app.user.lastName }} <span class="client-id">Номер клиента: {{ app.user.id }}</span></span></li>
                     {% if is_granted('ROLE_ADMIN') %}
                         <li><a href="/admin">Админпанель</a></li>
                     {% endif %}

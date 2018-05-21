@@ -1,9 +1,9 @@
 {% extends '@Admin/User/show.html.twig' %}
 
-{% block title user.username ~ " balance" %}
+{% block title user.username ~ " Банас пользователя" %}
 
 {% block show_user_content %}
-    <h3 class="offset-left offset-bottom">Balance: {{ user.balance }}$</h3>
+    <h3 class="offset-left offset-bottom">Текущий баланс: {{ user.balance }}$</h3>
 
     <table class="table">
         <thead>

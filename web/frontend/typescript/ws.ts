@@ -35,8 +35,15 @@ export class WebSocketClient {
   }
 
   public emit(event: string, data: any) {
-    console.log(event, data);
     this.ioClient.emit(event, data);
+  }
+
+  public removeAllListeners(eventName: string) {
+    this.ioClient.removeAllListeners(eventName);
+  }
+
+  public removeListener(eventName: string) {
+    this.ioClient.removeListener(eventName);
   }
 
 }

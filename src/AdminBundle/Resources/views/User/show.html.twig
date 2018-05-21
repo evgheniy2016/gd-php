@@ -1,7 +1,7 @@
 {% extends '@Admin/base.html.twig' %}
 
 {% block body_classes "no-paddings" %}
-{% block title "Show user" %}
+{% block title "Пользователь - " ~ parent() %}
 
 {% block body %}
 
@@ -9,10 +9,10 @@
         <div class="tabs-sticky">
             <div class="tabs-navigation-header">
                 <h3>{{ user.username }}<small class="new-line with-offset">{{ user.email }}</small></h3>
+                <div class="user-status small-offset-top">{% if is_online %}Online{% else %}Offline{% endif %}</div>
                 {% for message in app.flashes('notice') %}
                     <div class="alert alert-one-line">{{ message }}</div>
                 {% endfor %}
-                <div class="user-status small-offset-top">{% if is_online %}Online{% else %}Offline{% endif %}</div>
             </div>
             <div class="tabs-navigation">
                 <a href="{{ path('users.edit', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.edit' %}active{% endif %}">Информация</a>
@@ -21,6 +21,9 @@
                 <a href="{{ path('users.show.give_a_bonus', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.give_a_bonus' %}active{% endif %}">Бонусные средства</a>
                 <a href="{{ path('users.show.notes', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.notes' %}active{% endif %}">Заметки</a>
                 <a href="{{ path('users.show.sessions.page', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.sessions' %}active{% endif %}">Сессии</a>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <a href="{{ path('users.show.withdraw', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.withdraw' %}active{% endif %}">Вывод средств</a>
+                {% endif %}
             </div>
         </div>
         <div class="tabs-content {% block tabs_content_classes %}{% endblock %}">

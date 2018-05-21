@@ -53,6 +53,18 @@
            }
          }
       }
+
+      .client-data {
+        position: relative;
+
+        .client-id {
+          position: absolute;
+          left: 0;
+          bottom: -100%;
+          font-size: 12px;
+          white-space: pre;
+        }
+      }
     }
 
     .wallet {

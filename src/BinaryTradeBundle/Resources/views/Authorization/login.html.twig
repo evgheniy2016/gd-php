@@ -4,9 +4,12 @@
 
 {% block content %}
 
-    <div style="text-align: center; margin-bottom: 16px;">
-        {{ errors.message ?? "" }}
-    </div>
+    {% if errors != null %}
+        <div style="text-align: center; margin-bottom: 16px;">
+            Пользователь не найден
+            {#{{ errors.message ?? "" }}#}
+        </div>
+    {% endif %}
 
     <form action="{{ path('login') }}" method="post" class="form form-compact">
         <div class="form-group">

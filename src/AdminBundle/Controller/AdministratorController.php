@@ -90,6 +90,7 @@ class AdministratorController extends Controller
     {
         $doctrine = $this->getDoctrine();
         $userRepository = $doctrine->getRepository('AppBundle:User');
+        /** @var User $administrator */
         $administrator = $userRepository->find($id);
         $currentPassword = $administrator->getPassword();
 
@@ -102,6 +103,14 @@ class AdministratorController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $roles = $administrator->getRoles();
+            if (in_array('ROLE_MANAGER', $roles) || in_array('ROLE_SUPER_ADMIN', $roles) || in_array('ROLE_EDITOR', $roles)) {
+                if (!in_array('ROLE_ADMIN', $roles)) {
+                    $roles[] = 'ROLE_ADMIN';
+                    $administrator->setRoles($roles);
+                }
+            }
+
             if ($administrator->getPassword() !== null) {
                 $administrator->setUpdatedPassword($administrator->getPassword());
             } else {

@@ -84,6 +84,9 @@ class TabsContainer {
 
     for (let i = 0; i < forms.length; i++) {
       const form = forms[i];
+      if (form.hasAttribute('data-use-native')) {
+        continue;
+      }
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(form);

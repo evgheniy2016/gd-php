@@ -1,0 +1,28 @@
+<table cellpadding="5">
+    <thead>
+    <tr>
+        <th align="left">Поле</th>
+        <th align="left">Значение</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Сумма</td>
+        <td>{{ amount }}</td>
+    </tr>
+    <tr>
+        <td>Комментарий</td>
+        <td>{{ comment }}</td>
+    </tr>
+    <tr>
+        <td>Пользователь</td>
+        <td><a href="{{ url('users.edit', { id: user.id }) }}" target="_blank">{{ url('users.show', { id: user.id }) }}</a></td>
+    </tr>
+    {% for name,value in params %}
+        <tr>
+            <td>{{ labels[name] }}</td>
+            <td>{{ value }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

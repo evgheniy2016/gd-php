@@ -214,7 +214,52 @@ class TradesController extends Controller
      */
     public function withdrawPostAction(Request $request)
     {
-        return new Response("Response");
+        return $this->render('BinaryTradeBundle:Trading:withdraw.html.twig', [
+            'amount' => $request->get('amount'),
+            'comment' => $request->get('comment')
+        ]);
+    }
+
+    /**
+     * @Route("/withdraw/finish", methods={"post"}, name="api.trades.withdraw.finish")
+     */
+    public function withdrawFinishAction(Request $request, UserInterface $user) {
+        $withdrawType = $request->get('withdraw-type');
+        $withdrawParams = $request->get('withdraw')[$withdrawType];
+
+        $withdrawParamsMap = [
+            'qiwi' => [
+                'wallet' => 'Кошелёк'
+            ],
+            'webmoney' => [
+                'wallet' => 'Кошелёк'
+            ],
+            'wiretransfer' => [
+                'field1' => 'Поле №1'
+            ]
+        ];
+
+        $message = \Swift_Message::newInstance()
+            ->setFrom($_SERVER['MAILER_TO'])
+            ->setTo($_SERVER['MAILER_TO'])
+            ->setSubject('Новая заявка на вывод средств')
+            ->setBody($this->renderView('ApiBundle:emails:withdraw.html.twig', [
+                'type' => $withdrawType,
+                'params' => $withdrawParams,
+                'labels' => $withdrawParamsMap[$withdrawType],
+                'amount' => $request->get('amount'),
+                'comment' => $request->get('comment'),
+                'user' => $user
+            ]), 'text/html');
+
+        $transporter = \Swift_SmtpTransport::newInstance($_SERVER['MAILER_HOST'], $_SERVER['MAILER_PORT'], 'tls')
+            ->setUsername($_SERVER['MAILER_USER'])
+            ->setPassword($_SERVER['MAILER_PASSWORD']);
+
+        $mailer = \Swift_Mailer::newInstance($transporter);
+        $mailer->send($message);
+
+        return $this->render('BinaryTradeBundle:Trading:withdraw_submitted.html.twig', [ /* empty */ ]);
     }
 
     /**

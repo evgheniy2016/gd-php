@@ -1,6 +1,6 @@
 {% extends '@Admin/User/show.html.twig' %}
 
-{% block title user.username ~ " - Notes" %}
+{% block title user.username ~ " - Заметки о пользователи" %}
 
 {% block show_user_content %}
     <form action="{{ url('users.note.create', { id: user.id }) }}" method="post" class="form-note">

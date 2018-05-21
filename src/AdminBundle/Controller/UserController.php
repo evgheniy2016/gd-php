@@ -295,7 +295,7 @@ class UserController extends Controller
             $this->getDoctrine()->getManager()->persist($user);
             $this->getDoctrine()->getManager()->flush();
 
-            $this->addFlash('notice', 'app.bonus.created');
+            $this->addFlash('notice', 'Бонусные средства успешно зачислены');
         }
 
         $viewVariables = [
@@ -364,6 +364,57 @@ class UserController extends Controller
         $viewVariables = array_merge($viewVariables, $this->generalActions($user));
 
         return $this->render('@Admin/User/sessions.html.twig', $viewVariables);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserInterface $user
+     *
+     * @Route("/{id}/withdraw", requirements={"id": "\d+"}, name="users.show.withdraw")
+     * @Route("/{id}/withdraw", methods={"post"}, requirements={"id": "\d+"}, name="users.show.withdraw.post")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function withdrawAction(int $id, Request $request) {
+        $usersRepository = $this->getDoctrine()->getRepository('AppBundle:User');
+        $sessionsRepository = $this->getDoctrine()->getRepository('AppBundle:Session');
+        $user = $usersRepository->find($id);
+
+        $balanceHistory = new BalanceHistory();
+        $balanceHistory->setType('outgoing');
+        $balanceHistory->setUser($user);
+
+        $form = $this->createForm(BalanceHistoryType::class, $balanceHistory);
+
+        $form->remove('type')->remove('user');
+        $form->add('save', SubmitType::class, [
+            'attr' => [
+                'class' => 'button'
+            ],
+            'label' => 'Сохранить'
+        ]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $currentBalance = (float)($user->getBalance());
+            $currentBalance -= $balanceHistory->getAmount();
+            $user->setBalance($currentBalance);
+            $user->setBalanceUpdatedAt(Carbon::now()->getTimestamp());
+
+            $this->getDoctrine()->getManager()->persist($balanceHistory);
+            $this->getDoctrine()->getManager()->persist($user);
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('notice', 'Средства списаны со счёта пользователя');
+        }
+
+        $viewVariables = [
+            'user' => $user,
+            'form' => $form->createView()
+        ];
+
+        $viewVariables = array_merge($viewVariables, $this->generalActions($user));
+        return $this->render('@Admin/User/withdraw.html.twig', $viewVariables);
     }
 
     /**

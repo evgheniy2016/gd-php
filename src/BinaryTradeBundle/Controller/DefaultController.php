@@ -51,7 +51,7 @@ class DefaultController extends Controller
 
         $message = \Swift_Message::newInstance()
             ->setFrom($_SERVER['MAILER_USER'])
-            ->setTo('goldenforex.info@gmail.com')
+            ->setTo('﻿customer.goldenforex@gmail.com')
             ->setSubject('Новое сообщение формы обратной связи: ' . $subject)
             ->setBody($content);
 
