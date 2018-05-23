@@ -178,12 +178,10 @@ class TradesController extends Controller
         }
 
         if ($verificationFilesForm->isSubmitted() && $verificationFilesForm->isValid()) {
-            $toEmail = $this->getParameter('verification_email');
-            $fromEmail = $this->getParameter('emails_from');
             $message = \Swift_Message::newInstance()
-                ->setFrom($fromEmail)
-                ->setTo($toEmail)
-                ->setSubject($user->getUsername() . ' files')
+                ->setFrom($_SERVER['MAILER_TO'])
+                ->setTo($_SERVER['MAILER_TO'])
+                ->setSubject('Запрос верификации пользователя: ' . $user->getUsername())
                 ->setBody($this->renderView('ApiBundle:emails:verify.html.twig', [ 'user' => $user ]))
                 ->setContentType('text/html');
 
