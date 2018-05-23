@@ -52,4 +52,17 @@ class SessionRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('isOnline', false);
     }
 
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findAllActiveOverdueSessions() {
+        /** @var Carbon $currentTimestamp */
+        $currentTimestamp = Carbon::now();
+        $currentTimestamp->addMinutes(-15);
+
+        return $this->createQueryBuilder('session')
+            ->andWhere('session.updatedAt <= :current_timestamp')
+            ->setParameter('current_timestamp', $currentTimestamp);
+    }
+
 }
