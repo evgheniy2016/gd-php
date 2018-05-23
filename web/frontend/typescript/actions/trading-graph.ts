@@ -34,6 +34,7 @@ let emptyLabel = null;
 
 let searchAssetInput = null;
 let assetGroupSelect = null;
+let historyLoaded = false;
 
 const assetPrices = {};
 
@@ -300,6 +301,7 @@ export function tradingGraph() {
             })
             .reverse()
             .forEach(item => data.push(item));
+        historyLoaded = true;
     });
 
     if (placeABetButton !== null) {
@@ -355,25 +357,26 @@ export function tradingGraph() {
     }
 
     wsInstance.on('asset-updated', (asset) => {
-        if (asset.active !== currentAsset) {
-            const assetPrice = assetPrices[asset.active];
-            if (typeof assetPrice === "undefined") {
-                return;
-            }
-            const currentPrice = Number(assetPrice.innerHTML);
-            const newPrice = Number(asset.price.toFixed(5));
-            assetPrice.innerHTML = newPrice.toFixed(5);
+        const assetPrice = assetPrices[asset.active];
+        if (typeof assetPrice === "undefined") {
+            return;
+        }
+        const currentPrice = Number(assetPrice.innerHTML);
+        const newPrice = Number(asset.price.toFixed(5));
+        assetPrice.innerHTML = newPrice.toFixed(5);
 
-            if (currentPrice == newPrice) {
-                assetPrice.classList.remove('price-down');
-                assetPrice.classList.remove('price-up');
-            } else if (currentPrice > newPrice) {
-                assetPrice.classList.add('price-down');
-                assetPrice.classList.remove('price-up');
-            } else {
-                assetPrice.classList.add('price-up');
-                assetPrice.classList.remove('price-down');
-            }
+        if (currentPrice == newPrice) {
+            assetPrice.classList.remove('price-down');
+            assetPrice.classList.remove('price-up');
+        } else if (currentPrice > newPrice) {
+            assetPrice.classList.add('price-down');
+            assetPrice.classList.remove('price-up');
+        } else {
+            assetPrice.classList.add('price-up');
+            assetPrice.classList.remove('price-down');
+        }
+
+        if (asset.active !== currentAsset || !historyLoaded) {
             return;
         }
 
@@ -496,6 +499,7 @@ let i = 0;
 
 function clearGraph() {
     data = [];
+    historyLoaded = false;
 
     if (svgInstance !== null) {
         const container = document.querySelector('.graph-container');
@@ -547,7 +551,7 @@ function drawGraph() {
         .on("zoom", zoomed);
 
     area = d3.area()
-        .curve(d3.curveMonotoneX)
+        // .curve(d3.curveMonotoneX)
         .x(function (d) {
             return x(d.date);
         })
@@ -557,12 +561,13 @@ function drawGraph() {
         });
 
     area2 = d3.area()
-        .curve(d3.curveMonotoneX)
+        // .curve(d3.curveMonotoneX)
         .x(function (d) {
             return x2(d.date);
         })
         .y0(height2)
         .y1(function (d) {
+            console.log(height2, d.price);
             return y2(d.price);
         });
 
