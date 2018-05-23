@@ -24,6 +24,8 @@ class CloseSessionsCommand extends ContainerAwareCommand
         $sessionsRepository = $doctrine->getRepository('AppBundle:Session');
         $overdueSessions = $sessionsRepository->findAllActiveOverdueSessions()->getQuery()->getResult();
 
+        dump($overdueSessions);
+
         $manager = $doctrine->getManager();
 
         /** @var Session $session */
