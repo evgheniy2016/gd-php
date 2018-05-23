@@ -61,6 +61,7 @@ class SessionRepository extends \Doctrine\ORM\EntityRepository
         $currentTimestamp->addMinutes(-15);
 
         return $this->createQueryBuilder('session')
+            ->where('session.isOnline = true')
             ->andWhere('session.updatedAt <= :current_timestamp')
             ->setParameter('current_timestamp', $currentTimestamp);
     }
