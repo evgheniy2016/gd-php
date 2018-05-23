@@ -34,6 +34,8 @@ class CloseSessionsCommand extends ContainerAwareCommand
 
         $manager->flush();
 
+        $logger = $this->getContainer()->get('logger');
+        $logger->info("All overdue sessions are closed now");
         $output->writeln('All overdue sessions are closed now');
     }
 
