@@ -28,7 +28,7 @@ class UserType extends AbstractType
             ->add('last_name', null, [ 'label' => 'Фамилия' ])
             ->add('phone', null, [ 'label' => 'Номер телефона' ])
             ->add('country', null, [ 'label' => 'Страна' ])
-            ->add('city', null, [ 'label' => 'город' ])
+            ->add('city', null, [ 'label' => 'Город' ])
             ->add('address', null, [ 'label' => 'Адрес' ])
             ->add('zip_code', null, [ 'label' => 'Индекс' ])
             ->add('currency', null, [ 'label' => 'Валюта' ])
