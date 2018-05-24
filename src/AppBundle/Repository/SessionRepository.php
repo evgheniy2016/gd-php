@@ -48,6 +48,7 @@ class SessionRepository extends \Doctrine\ORM\EntityRepository
         return $this->createQueryBuilder('session')
             ->where('session.user = :user')
             ->andWhere('session.isOnline = :isOnline')
+            ->orderBy('session.id', 'desk')
             ->setParameter('user', $user)
             ->setParameter('isOnline', false);
     }
