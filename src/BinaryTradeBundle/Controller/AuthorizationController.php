@@ -37,7 +37,7 @@ class AuthorizationController extends Controller
     public function registrationAction()
     {
         return $this->render('BinaryTradeBundle:Authorization:registration.html.twig', array(
-            // ...
+            'error' => null
         ));
     }
 
@@ -90,8 +90,14 @@ class AuthorizationController extends Controller
 
         $user->generateApiKey();
 
-        $manager->persist($user);
-        $manager->flush();
+        try {
+            $manager->persist($user);
+            $manager->flush();
+        } catch (\Exception $e) {
+            return $this->render('BinaryTradeBundle:Authorization:registration.html.twig', array(
+                'error' => $e->getMessage()
+            ));
+        }
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
