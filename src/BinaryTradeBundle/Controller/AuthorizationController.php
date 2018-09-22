@@ -94,9 +94,11 @@ class AuthorizationController extends Controller
             $manager->persist($user);
             $manager->flush();
         } catch (\Exception $e) {
-            return $this->render('BinaryTradeBundle:Authorization:registration.html.twig', array(
-                'error' => $e->getMessage()
-            ));
+            echo $e->getMessage();
+            die();
+//            return $this->render('BinaryTradeBundle:Authorization:registration.html.twig', array(
+//                'error' => $e->getMessage()
+//            ));
         }
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
