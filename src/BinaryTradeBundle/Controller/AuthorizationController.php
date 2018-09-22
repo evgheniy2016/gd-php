@@ -94,8 +94,6 @@ class AuthorizationController extends Controller
             $manager->persist($user);
             $manager->flush();
         } catch (\Exception $e) {
-            echo $e->getMessage();
-            die();
             return $this->render('BinaryTradeBundle:Authorization:registration_error.html.twig', array(
                 'error' => $e->getMessage()
             ));
