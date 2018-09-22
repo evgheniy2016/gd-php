@@ -7,6 +7,7 @@
 {% block content %}
     <div class="content-page-header">Регистрация</div>
     <div class="registration-content">
+        {{ dump() }}
         {% if error != null %}
             <div style="text-align: center">Во время выполнения запроса произошла ошибка</div>
         {% endif %}
