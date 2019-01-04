@@ -105,7 +105,7 @@ class AuthorizationController extends Controller
         $event = new InteractiveLoginEvent($request, $token);
         $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 
-        return new RedirectResponse('/trade');
+        return new RedirectResponse('/');
     }
 
     public function generateRandomString($length = 16, $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')

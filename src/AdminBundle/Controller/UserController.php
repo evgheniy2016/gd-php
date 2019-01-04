@@ -307,6 +307,51 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/{id}/give-a-refund", name="users.show.give_a_refund", requirements={"id": "\d+"})
+     * @param int $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function giveARefundAction(int $id, Request $request)
+    {
+        $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
+        $user = $userRepository->find($id);
+
+        $balanceHistory = new BalanceHistory();
+        $balanceHistory->setType('refund');
+        $balanceHistory->setUser($user);
+
+        $form = $this->createForm(BalanceHistoryType::class, $balanceHistory);
+        $form->remove('type')->remove('user');
+        $form->add('save', SubmitType::class, [
+            'attr' => [
+                'class' => 'button'
+            ]
+        ]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $currentBalance = (float)($user->getBalance());
+            $currentBalance += $balanceHistory->getAmount();
+            $user->setBalance($currentBalance);
+            $user->setBalanceUpdatedAt(Carbon::now()->getTimestamp());
+
+            $this->getDoctrine()->getManager()->persist($balanceHistory);
+            $this->getDoctrine()->getManager()->persist($user);
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('notice', 'Refund успешно зачислен');
+        }
+
+        $viewVariables = [
+            'user' => $user,
+            'form' => $form->createView()
+        ];
+        $viewVariables = array_merge($viewVariables, $this->generalActions($user));
+        return $this->render('@Admin/User/give_a_refund.html.twig', $viewVariables);
+    }
+
+    /**
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      *

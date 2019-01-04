@@ -9,13 +9,7 @@
     {% for record in records %}
     <tr>
         <td>{% spaceless %}
-            {% if record.type == 'income' %}
-                {{ 'app.balance_history.type.income' | trans }}
-            {% elseif record.type == 'outgoing' %}
-                {{ 'app.balance_history.type.outgoing' | trans }}
-            {% elseif record.type == 'bonus' %}
-                {{ 'app.balance_history.type.bonus' | trans }}
-            {% endif %}
+                {{ ('app.balance_history.type.' ~ record.type) | trans }}
         {% endspaceless %}</td>
         <td>{{ record.amount }} $</td>
     </tr>

@@ -14,7 +14,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-
         $usersRepository = $this->getDoctrine()->getRepository('AppBundle:User');
         $tradesRepository = $this->getDoctrine()->getRepository('AppBundle:Trade');
 

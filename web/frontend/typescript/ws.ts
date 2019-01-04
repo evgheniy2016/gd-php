@@ -22,7 +22,7 @@ export class WebSocketClient {
   }
 
   private socketIoLoaded() {
-    this.ioClient = (window as any).io(`http://${this.host}:${this.port}`);
+    this.ioClient = (window as any).io(`https://${this.host}`, { secure: true });
     this.ioClient.emit('register', (window as any).apiKey);
   }
 

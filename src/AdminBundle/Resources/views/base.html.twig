@@ -66,7 +66,7 @@
         };
     </script>
     {% block scripts %}{% endblock %}
-    <script src="http://{{ parser_websocket_server_host }}:{{ parser_websocket_server_port }}/socket.io/socket.io.js"></script>
+    <script src="https://{{ parser_websocket_server_host }}}/socket.io/socket.io.js"></script>
     <script src="{{ asset('dist/dashboard.bundle.js') }}"></script>
 </body>
 </html>

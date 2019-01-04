@@ -5,3 +5,4 @@ app.trade.finished: Завершена
 app.balance_history.type.income: Поступление
 app.balance_history.type.outgoing: Ставка
 app.balance_history.type.bonus: Бонус
+app.balance_history.type.refund: Refund

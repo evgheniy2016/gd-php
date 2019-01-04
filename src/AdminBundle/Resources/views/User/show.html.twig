@@ -19,6 +19,7 @@
                 <a href="{{ path('users.show.trades', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute == 'users.show.trades' %}active{% endif %}">Ставки</a>
                 <a href="{{ path('users.show.balance', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.balance' %}active{% endif %}">Баланс</a>
                 <a href="{{ path('users.show.give_a_bonus', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.give_a_bonus' %}active{% endif %}">Бонусные средства</a>
+                <a href="{{ path('users.show.give_a_refund', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.give_a_refund' %}active{% endif %}">Refund</a>
                 <a href="{{ path('users.show.notes', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.notes' %}active{% endif %}">Заметки</a>
                 <a href="{{ path('users.show.sessions.page', { id: user.id }) }}" class="tab-item {% if sidebarService.getCurrentRoute starts with 'users.show.sessions' %}active{% endif %}">Сессии</a>
                 {% if is_granted('ROLE_SUPER_ADMIN') %}

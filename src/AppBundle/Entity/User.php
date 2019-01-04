@@ -134,6 +134,13 @@ class User implements UserInterface
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="reset_password_token", type="string", length=255, nullable=true)
+     */
+    private $reset_password_token = null;
+
+    /**
+     * @var string
      * @ORM\Column(name="balance_updated_at", type="string", length=16, nullable=true)
      */
     private $balanceUpdatedAt = "";
@@ -525,6 +532,36 @@ class User implements UserInterface
     public function setBalance(string $balance)
     {
         $this->balance = $balance;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResetPasswordToken(): string
+    {
+        return $this->reset_password_token;
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getResetPasswordSalt()
+    {
+        return $this->id . '#' . $this->username . '#' . $this->email . '#' . $this->password;
+    }
+
+    /**
+     * @param string $reset_password_token
+     */
+    public function setResetPasswordToken(string $reset_password_token)
+    {
+        $this->reset_password_token = $reset_password_token;
+
+        return $this;
     }
 
     /**
